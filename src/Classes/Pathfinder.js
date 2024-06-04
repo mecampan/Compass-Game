@@ -107,12 +107,15 @@ class Pathfinder {
         this.finder.calculate();
     }
 
-    moveCharacter(path, character, onComplete) {
-        // Remove existing tween if any
+    // Remove existing tween if any
+    stopCharacter() {
         if (this.currentTween) {
             this.currentTween.stop();
         }
+    }
 
+    moveCharacter(path, character, onComplete) {
+        this.stopCharacter();
         var tweens = [];
         for (var i = 0; i < path.length - 1; i++) {
             var ex = path[i + 1].x;

@@ -27,11 +27,6 @@ class Level_1 extends Phaser.Scene {
         this.evil_wizard = new Enemy(this, 0, 0, "evil_wizard");
         //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard");
         console.log(this.evil_wizard);
-
-        // Handle pointer input
-        this.input.on('pointerup', (pointer) => {
-            this.evil_wizard.moveTo(pointer);
-        });
     }    
 
     update() {
