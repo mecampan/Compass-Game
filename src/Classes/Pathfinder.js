@@ -164,6 +164,28 @@ class Pathfinder {
         this.finder.calculate();
     }
 
+    chase(player) {
+        // Grab the player location
+        let toX = player.x;
+        let toY = player.y;
+
+        let fromX = Math.floor(this.activeCharacter.x / this.TILESIZE);
+        let fromY = Math.floor(this.activeCharacter.y / this.TILESIZE);
+        
+        this.finder.findPath(fromX, fromY, toX, toY, (path) => {
+            if (path === null) {
+                console.warn("Path was not found.");
+                this.roam(); // Try to roam to another random point
+            } else {
+                console.log(path);
+                this.moveCharacter(path, this.activeCharacter, () => {
+                    this.roam(); // Start roaming again after reaching the destination
+                });
+            }
+        });
+        this.finder.calculate();        
+    }
+
     setCost(tileset) {
         for (let i = tileset.firstgid; i < tileset.total; i++) {
             let props = tileset.getTileProperties(i);

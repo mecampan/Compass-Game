@@ -16,7 +16,7 @@ class Enemy {
             this.enemyAttack = false;
 
             // Prevent the enemy from being stunned more than once
-            this.scene.time.delayedCall(3000, () => {
+            this.scene.time.delayedCall(5000, () => {
                 this.stunned = false;
                 this.enemyAttack = true;
                 this.pathfinder.roam();
