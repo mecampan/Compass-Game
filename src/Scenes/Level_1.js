@@ -21,6 +21,8 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(2.0);
 
+        this.player = this.physics.add.sprite(100, 100, 'character');
+        this.player.play('idle');
         // Initialize enemy
         this.evil_wizard = new Enemy(this, 0, 0, "evil_wizard");
         //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard");
