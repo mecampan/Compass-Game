@@ -6,8 +6,11 @@ class PlayerControl {
         // Scale down the player size by half
         this.player.setScale(0.5);
 
-        // Create animations
-        this.createAnimations();
+        if (loadAnim === false) {
+            // Create animations
+            this.createAnimations();
+        }
+        
 
         // Set default animation
         this.player.anims.play('frontIdle');
@@ -117,6 +120,7 @@ class PlayerControl {
             frameRate: 2,
             repeat: -1
         });
+        loadAnim = true;
     }
 
     update() {

@@ -18,6 +18,8 @@ class Level_1 extends Phaser.Scene {
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+        // Fade in camera
+        this.cameras.main.fadeIn(500, 0, 0, 0);
         // Enable collision for the wallLayer
         this.wallLayer.setCollisionByExclusion([-1]);
 
@@ -35,6 +37,7 @@ class Level_1 extends Phaser.Scene {
 
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
+        this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
 
         
         
