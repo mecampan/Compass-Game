@@ -29,7 +29,7 @@ let config = {
     },
     width: 1440,
     height: 900,
-    scene: [Load, Level_1, mainDungeon]
+    scene: [Load, TitleScreen, Level_1, mainDungeon]
 }
 
 var cursors;
