@@ -19,7 +19,7 @@ class Pathfinder {
             ...this.range(1251, 1262),
         ];
 
-        console.log(walkables);
+        //console.log(walkables);
 
         // Initialize EasyStar pathfinder
         this.finder = new EasyStar.js();
@@ -85,7 +85,7 @@ class Pathfinder {
             return;
         }
 
-        console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')');
+        //console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')');
 
         // Create a marker at the clicked position
         let marker = this.scene.add.sprite(toX * this.TILESIZE, toY * this.TILESIZE, null).setScale(0.1);
@@ -100,7 +100,7 @@ class Pathfinder {
             if (path === null) {
                 console.warn("Path was not found.");
             } else {
-                console.log(path);
+                //console.log(path);
                 this.moveCharacter(path, this.activeCharacter);
             }
         });
@@ -110,12 +110,14 @@ class Pathfinder {
     // Remove existing tween if any
     stopCharacter() {
         if (this.currentTween) {
-            this.currentTween.stop();
+            //console.log(this.currentTween);
+            this.currentTween = null; // Nullify the reference
         }
     }
 
     moveCharacter(path, character, onComplete) {
         this.stopCharacter();
+        //console.log(path);
         var tweens = [];
         for (var i = 0; i < path.length - 1; i++) {
             var ex = path[i + 1].x;
@@ -151,11 +153,10 @@ class Pathfinder {
         let fromY = Math.floor(this.activeCharacter.y / this.TILESIZE);
 
         this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-            if (path === null) {
-                console.warn("Path was not found.");
+            if (path === null || path.length === 0 ) {
+                //console.warn("Path was not found or empty.");
                 this.roam(); // Try to roam to another random point
             } else {
-                console.log(path);
                 this.moveCharacter(path, this.activeCharacter, () => {
                     this.roam(); // Start roaming again after reaching the destination
                 });
@@ -164,22 +165,22 @@ class Pathfinder {
         this.finder.calculate();
     }
 
-    chase(player) {
+    chase() {
         // Grab the player location
-        let toX = player.x;
-        let toY = player.y;
+        let toX = Math.floor(this.scene.player.x / this.TILESIZE);
+        let toY = Math.floor(this.scene.player.y / this.TILESIZE);
 
+        // Enemy's current location
         let fromX = Math.floor(this.activeCharacter.x / this.TILESIZE);
         let fromY = Math.floor(this.activeCharacter.y / this.TILESIZE);
-        
+
         this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-            if (path === null) {
-                console.warn("Path was not found.");
-                this.roam(); // Try to roam to another random point
+            if (path === null || path.length === 0 ) {
+                //console.warn("Path was not found or empty.");
+                this.chase(); // Try to roam to another random point
             } else {
-                console.log(path);
                 this.moveCharacter(path, this.activeCharacter, () => {
-                    this.roam(); // Start roaming again after reaching the destination
+                    this.chase(); // Start roaming again after reaching the destination
                 });
             }
         });
