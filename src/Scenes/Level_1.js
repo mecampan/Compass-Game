@@ -5,6 +5,7 @@ class Level_1 extends Phaser.Scene {
 
     preload() {
         // Load necessary assets here
+        this.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     }
 
     create() {
@@ -17,19 +18,64 @@ class Level_1 extends Phaser.Scene {
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+        // Enable collision for the wallLayer
+        this.wallLayer.setCollisionByExclusion([-1]);
 
+        // Set the bounds of the world to match the map dimensions
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        this.player = this.physics.add.sprite(100, 100, 'player');
+        // this.physics.world.enable(this.player);
+        this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
+        this.playerControl = new PlayerControl(this, this.player);
+        // Camera control
+        this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.setZoom(2.0);
+        this.cameras.main.setZoom(4.0);
 
-        this.player = this.physics.add.sprite(100, 100, 'character');
-        this.player.play('idle');
+
+        // this.wallLayer.setCollisionByProperty({collides: true});
+        this.physics.add.collider(this.player, this.wallLayer);
+
+        
+        
         // Initialize enemy
         this.evil_wizard = new Enemy(this, 0, 0, "evil_wizard");
         //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard");
         console.log(this.evil_wizard);
+
+
+        // Debug graphics for collision boxes
+        this.debugGraphics = this.add.graphics();
+        this.debugActive = false; // Track debug mode status
+
+        // Add key listener for toggling debug mode
+        this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
     }    
+
+    toggleDebug() {
+        this.debugActive = !this.debugActive;
+        if (this.debugActive) {
+            console.log("debugging on");
+            this.drawDebug();
+        } else {
+            console.log("debugging off");
+            this.debugGraphics.clear();
+        }
+    }
+
+    drawDebug() {
+        this.debugGraphics.clear();
+        this.debugGraphics.lineStyle(1, 0xff0000, 1); // Red color for collision boxes
+        this.wallLayer.renderDebug(this.debugGraphics, {
+            tileColor: null, // No color for tiles
+            collidingTileColor: new Phaser.Display.Color(255, 0, 0, 30), // Red color for colliding tiles
+            faceColor: new Phaser.Display.Color(0, 255, 0, 255) // Green color for face edges
+        });
+    }
+
 
     update() {
         this.evil_wizard.update();
+        this.playerControl.update();
     }
 }

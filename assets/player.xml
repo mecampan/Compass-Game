@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="player.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="back1" x="98" y="32" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back2" x="60" y="128" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back3" x="0" y="98" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back4" x="60" y="34" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back5" x="30" y="34" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back6" x="90" y="98" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back7" x="128" y="62" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="back8" x="60" y="34" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="backIdle1" x="128" y="0" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="backIdle2" x="120" y="98" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="31"/>
+	<SubTexture name="front1" x="30" y="66" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front2" x="60" y="98" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front3" x="158" y="90" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front4" x="0" y="66" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front5" x="90" y="66" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front6" x="158" y="30" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front7" x="30" y="98" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="front8" x="0" y="66" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="frontIdle1" x="98" y="0" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="frontIdle2" x="0" y="128" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right1" x="60" y="66" width="30" height="32" frameX="0" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right2" x="128" y="32" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right3" x="158" y="60" width="30" height="30" frameX="0" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right4" x="188" y="96" width="26" height="32" frameX="-2" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right5" x="188" y="32" width="26" height="32" frameX="-2" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right6" x="90" y="128" width="26" height="30" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right7" x="142" y="128" width="26" height="30" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="right8" x="0" y="158" width="26" height="32" frameX="-2" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="rightIdle1" x="188" y="0" width="26" height="32" frameX="-2" frameY="0" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="rightIdle2" x="116" y="128" width="26" height="30" frameX="-2" frameY="-2" frameWidth="32" frameHeight="32"/>
+	<SubTexture name="tile060" x="68" y="0" width="30" height="34" frameX="2" frameY="2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile061" x="188" y="64" width="26" height="32" frameX="-3" frameY="0" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile062" x="188" y="128" width="26" height="30" frameX="-4" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile063" x="116" y="128" width="26" height="30" frameX="-5" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile064" x="0" y="0" width="34" height="34" frameX="2" frameY="2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile065" x="0" y="34" width="30" height="32" frameX="-1" frameY="0" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile066" x="158" y="0" width="30" height="30" frameX="-2" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile067" x="0" y="128" width="30" height="30" frameX="-3" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile068" x="34" y="0" width="34" height="32" frameX="2" frameY="0" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile069" x="30" y="128" width="30" height="30" frameX="-1" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile070" x="30" y="128" width="30" height="30" frameX="-2" frameY="-2" frameWidth="31" frameHeight="32"/>
+	<SubTexture name="tile071" x="120" y="98" width="30" height="30" frameX="-3" frameY="-2" frameWidth="31" frameHeight="32"/>
+</TextureAtlas>
