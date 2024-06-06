@@ -26,24 +26,25 @@ class TitleScreen extends Phaser.Scene{
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
     
-        let title = this.add.text(centerX, centerY - 50, 'Exorcism Dungeon', {
-            fontFamily: 'IM Fell English SC', 
-            fontSize: '56px'
-        }).setOrigin(0.5);
+        let title = this.add.bitmapText(centerX, centerY - 50, 'myFont', 'Exorcism Dungeon', 56).setOrigin(0.5);
     
-        let play = this.add.text(centerX, centerY + 120, 'Play', {
-            fontFamily: 'IM Fell English SC',
-            fontSize: '32px', 
-            fill: '#fff'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true });
+        // For the 'Play' button
+        let play = this.add.bitmapText(centerX, centerY + 120, 'myFont', 'Play', 32)
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true });
+        play.on('pointerdown', () => {
+            // Code to start the game or go to the game scene
+            this.scene.start('GameScene');  // Example scene change
+        });
 
-        let credits = this.add.text(centerX, centerY + 50, 'Credits', {
-            fontFamily: 'IM Fell English SC',
-            fontSize: '32px', 
-            fill: '#fff'
-        }).setOrigin(0.5)
-        .setInteractive({ useHandCursor: true });
+        // For the 'Credits' button
+        let credits = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Credits', 32)
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true });
+        credits.on('pointerdown', () => {
+            // Code to go to the credits scene
+            this.scene.start('CreditsScene');  // Example scene change
+        });
         // add credits scene
     
         play.on('pointerdown', () => {

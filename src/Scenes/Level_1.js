@@ -1,6 +1,7 @@
 class Level_1 extends Phaser.Scene {
     constructor() {
         super("level1Scene");
+        this.collectedBooks = 0;
     }
 
     preload() {
@@ -23,6 +24,13 @@ class Level_1 extends Phaser.Scene {
         // Enable collision for the wallLayer
         this.wallLayer.setCollisionByExclusion([-1]);
 
+        // Add collectable books:
+        this.books = [
+            new Book(this, 50, 100, 'spell_book1').setScale(.3),
+            new Book(this, 150, 100, 'spell_book2').setScale(.3),
+            new Book(this, 250, 100, 'spell_book3').setScale(.3)
+        ];
+
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.player = this.physics.add.sprite(100, 100, 'player');
@@ -36,6 +44,12 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
+
+        // Collision detection for the books:
+        this.books.forEach(book => {
+            this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+        });
+        
 
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
@@ -113,4 +127,18 @@ class Level_1 extends Phaser.Scene {
         }
 
     }
+
+    collectBook(player, book) {
+        this.collectedBooks++;
+        book.collect();
+        if (this.collectedBooks === 3) {
+            this.triggerEvent();
+        }
+    }
+
+    // GAME FINISHED EVENT to be triggered:
+    triggerEvent() {
+        console.log('All books collected!');
+    }
+
 }

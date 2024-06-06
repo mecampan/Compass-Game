@@ -12,6 +12,15 @@ class Load extends Phaser.Scene {
         // Load Enemy
         this.load.atlas("evil_wizard", "evil_wizard.png", "evil_wizard.json");
 
+        //load bitmap:
+        //this.load.bitmapFont("myFont", "gameFontTest.png", "gameFontTest.fnt");
+        this.load.bitmapFont("myFont", "font_2.png", "font_2.xml");
+
+        // books:
+        this.load.image("spell_book1", "spellBook1.png");
+        this.load.image("spell_book2", "spellBook2.png");
+        this.load.image("spell_book3", "spellBook3.png");
+
         // Load tilemap information
         this.load.image("tilemap_tiles", "catacombs_tilemap.png");
         this.load.tilemapTiledJSON("dungeon_map", "dungeon_map.tmj");
