@@ -111,6 +111,7 @@ class Pathfinder {
     stopCharacter() {
         if (this.currentTween) {
             //console.log(this.currentTween);
+            this.currentTween.stop();
             this.currentTween = null; // Nullify the reference
         }
     }

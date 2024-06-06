@@ -38,10 +38,10 @@ class Level_1 extends Phaser.Scene {
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
-        
+
         // Initialize enemy
         this.evil_wizard = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
-        //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard");
+        //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard", 'idle_01.png');
         console.log(this.evil_wizard);
         console.log(this.player);
 
@@ -54,7 +54,7 @@ class Level_1 extends Phaser.Scene {
 
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
-    }    
+    }
 
     toggleDebug() {
         this.debugActive = !this.debugActive;
@@ -75,15 +75,24 @@ class Level_1 extends Phaser.Scene {
             collidingTileColor: new Phaser.Display.Color(255, 0, 0, 30), // Red color for colliding tiles
             faceColor: new Phaser.Display.Color(0, 255, 0, 255) // Green color for face edges
         });
+
+        this.evil_wizard.renderDebug(this.debugGraphics);
     }
 
     playerEnemyCollision(player, enemy) {
-        console.log("Dead");
+        //console.log("Dead", enemy);
+        this.evil_wizard.enemyAttack();
         //this.scene.restart();
     }
 
     update() {
         this.evil_wizard.update();
         this.playerControl.update();
+
+        // Draw debug graphics if debug mode is active
+        if (this.debugActive) {
+            this.drawDebug();
+        }
+
     }
 }
