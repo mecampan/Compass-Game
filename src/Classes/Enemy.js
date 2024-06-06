@@ -6,6 +6,7 @@ class Enemy {
         this.attacking = false;
 
         this.sprite.body.setSize(50, 70); // Example values
+        this.sprite.enemyInstance = this; // Reference to the Enemy instance
 
         // Play run animation
         this.sprite.anims.play('run');
@@ -22,7 +23,7 @@ class Enemy {
             this.pathfinder.stopCharacter();
             this.sprite.anims.play('attackB');
 
-            this.scene.time.delayedCall(1500, () => {
+            this.scene.time.delayedCall(1000, () => {
                 this.sprite.anims.play('run');
                 this.pathfinder.roam();
 

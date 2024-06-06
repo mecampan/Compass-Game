@@ -29,28 +29,32 @@ class Level_1 extends Phaser.Scene {
         // this.physics.world.enable(this.player);
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
+        // Create player FOV
+        this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
+
         // Camera control
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
 
-
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
 
-        // Initialize enemy
-        this.evil_wizard = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
-        //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard", 'idle_01.png');
-        console.log(this.evil_wizard);
-        console.log(this.player);
+        // Initialize enemies
+        this.enemies = this.physics.add.group();
+
+        // Create enemies and add them to the group
+        const enemy1 = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
+        //const enemy2 = new Enemy(this, 100, 100, 'evil_wizard', 'idle_01.png');
+        this.enemies.add(enemy1.sprite);
+        //this.enemies.add(enemy2.sprite);    
+        // Player and Enemy Collider
+        this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollision, null, this);    
 
         // Debug graphics for collision boxes
         this.debugGraphics = this.add.graphics();
         this.debugActive = false; // Track debug mode status
-
-        // Player and Enemy Collider
-        this.physics.add.overlap(this.player, this.evil_wizard.sprite, this.playerEnemyCollision, null, this);
 
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
@@ -76,18 +80,32 @@ class Level_1 extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(0, 255, 0, 255) // Green color for face edges
         });
 
-        this.evil_wizard.renderDebug(this.debugGraphics);
+        // Draw debug for each enemy in the group
+        this.enemies.getChildren().forEach(enemy => {
+            enemy.renderDebug(this.debugGraphics);
+        });
     }
 
-    playerEnemyCollision(player, enemy) {
-        //console.log("Dead", enemy);
-        this.evil_wizard.enemyAttack();
-        //this.scene.restart();
+    playerEnemyCollision(player, enemySprite) {
+        const enemy = enemySprite.enemyInstance; // Access the Enemy instance
+        if (enemy) {
+            enemy.enemyAttack();
+        }
+    }
+
+    isTileTransparent(x, y) {
+        const tile = this.groundLayer.getTileAt(x, y);
+        return tile && tile.index !== -1; // Example condition, adjust as needed
     }
 
     update() {
-        this.evil_wizard.update();
         this.playerControl.update();
+        this.playerFOV.updateFOV(5); // Adjust the radius as needed
+
+        // Update each enemy in the group
+        this.enemies.getChildren().forEach(enemy => {
+            enemy.update();
+        });
 
         // Draw debug graphics if debug mode is active
         if (this.debugActive) {
