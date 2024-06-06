@@ -38,7 +38,7 @@ class Level_1 extends Phaser.Scene {
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
         // Create player FOV
-        this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
+        //this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
 
         // Camera control
         this.cameras.main.startFollow(this.player);
@@ -50,7 +50,6 @@ class Level_1 extends Phaser.Scene {
             this.physics.add.overlap(this.player, book, this.collectBook, null, this);
         });
         
-
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
@@ -62,7 +61,8 @@ class Level_1 extends Phaser.Scene {
         const enemy1 = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
         //const enemy2 = new Enemy(this, 100, 100, 'evil_wizard', 'idle_01.png');
         this.enemies.add(enemy1.sprite);
-        //this.enemies.add(enemy2.sprite);    
+        //this.enemies.add(enemy2.sprite);   
+
         // Player and Enemy Collider
         this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollision, null, this);    
 
@@ -94,9 +94,16 @@ class Level_1 extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(0, 255, 0, 255) // Green color for face edges
         });
 
+        this.debugGraphics.strokeRect(
+            this.player.body.x,
+            this.player.body.y,
+            this.player.body.width,
+            this.player.body.height
+        );
+
         // Draw debug for each enemy in the group
         this.enemies.getChildren().forEach(enemy => {
-            enemy.renderDebug(this.debugGraphics);
+            enemy.enemyInstance.renderDebug(this.debugGraphics);
         });
     }
 
@@ -114,7 +121,9 @@ class Level_1 extends Phaser.Scene {
 
     update() {
         this.playerControl.update();
-        this.playerFOV.updateFOV(5); // Adjust the radius as needed
+        if(this.playerFOV) {
+            this.playerFOV.updateFOV(5); // Adjust the radius as needed
+        }
 
         // Update each enemy in the group
         this.enemies.getChildren().forEach(enemy => {

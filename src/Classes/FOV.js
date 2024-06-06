@@ -52,13 +52,23 @@ class FOV {
         this.scene.enemies.getChildren().forEach(enemySprite => {
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
+            let isInFOV = false;
+            
             for (let { x, y } of this.visibleTiles) {
                 if (x === enemyTileX && y === enemyTileY) {
+                    isInFOV = true;
                     const enemy = enemySprite.enemyInstance; // Reference to the Enemy instance
                     if (enemy) {
-                        enemy.pathfinder.chase();
+                        enemy.startChasing(this.scene.player);
                     }
                     break;
+                }
+            }
+
+            if (!isInFOV) {
+                const enemy = enemySprite.enemyInstance;
+                if (enemy) {
+                    enemy.stopChasing();
                 }
             }
         });

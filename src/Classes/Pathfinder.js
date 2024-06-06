@@ -4,6 +4,7 @@ class Pathfinder {
         this.activeCharacter = activeCharacter;
         this.TILESIZE = 16;
         this.currentTween = null; // Track the current tween
+        this.chasing = false;
     }
 
     create() {
@@ -109,6 +110,7 @@ class Pathfinder {
 
     // Remove existing tween if any
     stopCharacter() {
+        this.chasing = false;
         if (this.currentTween) {
             //console.log(this.currentTween);
             this.currentTween.stop();
@@ -178,10 +180,11 @@ class Pathfinder {
         this.finder.findPath(fromX, fromY, toX, toY, (path) => {
             if (path === null || path.length === 0 ) {
                 //console.warn("Path was not found or empty.");
-                this.chase(); // Try to roam to another random point
+                this.roam(); // Try to roam to another random point
             } else {
                 this.moveCharacter(path, this.activeCharacter, () => {
-                    this.chase(); // Start roaming again after reaching the destination
+                    this.chasing = true;
+                    this.roam(); // Start roaming again after reaching the destination
                 });
             }
         });

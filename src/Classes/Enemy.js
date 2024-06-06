@@ -4,21 +4,36 @@ class Enemy {
         this.sprite = this.scene.physics.add.sprite(x, y, texture, frame).setOrigin(0.5, 0.5).setScale(0.4);
         this.stunned = false;
         this.attacking = false;
+        this.isChasing = false; // Track if the enemy is currently chasing the player
 
         this.sprite.body.setSize(50, 70); // Example values
         this.sprite.enemyInstance = this; // Reference to the Enemy instance
 
-        // Play run animation
         this.sprite.anims.play('run');
 
         this.pathfinder = new Pathfinder(this.scene, this.sprite);
         this.pathfinder.create();
         this.pathfinder.roam(); // Start roaming when the enemy is created
-        //this.pathfinder.chase(); // Start chasing the player
+    }
+
+    startChasing(player) {
+        if (!this.attacking) {
+            this.isChasing = true;
+            this.pathfinder.chase(player);
+            console.log("Enemy is now chasing the player!");
+        }
+    }
+
+    stopChasing() {
+        if (this.isChasing && !this.attacking) {
+            this.isChasing = false;
+            this.pathfinder.roam(); // Return to roaming if the player is out of FOV
+            console.log("Enemy stopped chasing the player!");
+        }
     }
 
     enemyAttack() {
-        if (!this.attacking){
+        if (!this.attacking) {
             this.attacking = true;
             this.pathfinder.stopCharacter();
             this.sprite.anims.play('attackB');
@@ -40,7 +55,6 @@ class Enemy {
             this.canAttack = false;
             this.sprite.anims.play('stunned');
 
-            // Prevent the enemy from being stunned more than once
             this.scene.time.delayedCall(10000, () => {
                 this.stunned = false;
                 this.canAttack = true;
@@ -51,7 +65,6 @@ class Enemy {
     }
 
     renderDebug(graphics) {
-        // Draw the body collision box
         graphics.lineStyle(1, 0xff0000, 1); // Red color for collision boxes
         graphics.strokeRect(
             this.sprite.body.x,
@@ -63,5 +76,8 @@ class Enemy {
 
     update() {
         // Update logic for the enemy
+        if (this.isChasing && !this.attacking) {
+            this.pathfinder.chase(this.scene.player);
+        }
     }
 }
