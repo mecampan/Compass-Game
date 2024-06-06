@@ -40,7 +40,7 @@ class Level_1 extends Phaser.Scene {
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
         
         // Initialize enemy
-        this.evil_wizard = new Enemy(this, 0, 0, "evil_wizard");
+        this.evil_wizard = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
         //this.evil_wizard_2 = new Enemy(this, this.map.width, this.map.height, "evil_wizard");
         console.log(this.evil_wizard);
         console.log(this.player);
@@ -50,8 +50,7 @@ class Level_1 extends Phaser.Scene {
         this.debugActive = false; // Track debug mode status
 
         // Player and Enemy Collider
-        this.physics.add.collider(this.player, this.evil_wizard);
-        this.physics.add.overlap(this.player, this.evil_wizard, this.playerEnemyCollision, null, this);
+        this.physics.add.overlap(this.player, this.evil_wizard.sprite, this.playerEnemyCollision, null, this);
 
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
@@ -80,7 +79,7 @@ class Level_1 extends Phaser.Scene {
 
     playerEnemyCollision(player, enemy) {
         console.log("Dead");
-        this.scene.restart();
+        //this.scene.restart();
     }
 
     update() {
