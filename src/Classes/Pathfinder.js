@@ -230,10 +230,16 @@ class Pathfinder {
             this.searchingTimerEvent.remove(false);
         }
     
+        if(!this.searching) {
+            console.log("The enemy has started to search for you!");
+        }
+
         // Set the searching state and create a new timer
         this.searching = true;
         this.searchingTimerEvent = this.scene.time.delayedCall(5000, () => {
+            console.log("Search timer is up. Enemy roaming");
             this.searching = false;
+            this.roam();
         });
     }    
 

@@ -46,11 +46,7 @@ class FOV {
     updateFOV(radius) {
         const currentX = this.map.worldToTileX(this.entity.x);
         const currentY = this.map.worldToTileY(this.entity.y);
-        if (this.hasMoved(currentX, currentY)) {
-            this.calculateFOV(currentX, currentY, radius);
-        } else {
-            this.checkEnemiesInFOV(); // Ensure FOV check is done even if player hasn't moved
-        }
+        this.calculateFOV(currentX, currentY, radius); // Always recalculate FOV
     }
 
     checkEnemiesInFOV() {
@@ -67,26 +63,18 @@ class FOV {
                 }
             }
 
-            if (this.movingFrequency % 50 === 0) {
+            if (this.movingFrequency % 100 === 0) {
                 if (enemy) {
                     if (isInFOV) {
                         //console.log("Enemy in FOV");
                         enemy.pathfinder.chase();
-                    }
-
-                    else {
-                        //console.log("Not in FOV");
-                        // Ensure roaming is only called once to prevent constant updates to path
-                        if (!enemy.pathfinder.roaming && !enemy.pathfinder.chasing && !enemy.pathfinder.searching) {
-                            enemy.pathfinder.roam();
-                        }
                     }
                 }
             }
 
             if (enemy.pathfinder.chasing && !isInFOV) {
                 enemy.pathfinder.searchingTimer();
-            }          
+            }
         });
     }
 
@@ -134,9 +122,33 @@ class FOV {
             }
         });
 
+        this.updateEnemyVisibility(originX, originY, radius);
+
         if (this.showFOVOutline) {
             this.drawFOVOutline(); // Draw the FOV outline
         }
+    }
+
+    updateEnemyVisibility(originX, originY, radius) {
+        this.scene.enemies.getChildren().forEach(enemySprite => {
+            const enemyTileX = this.map.worldToTileX(enemySprite.x);
+            const enemyTileY = this.map.worldToTileY(enemySprite.y);
+
+            let isInFOV = false;
+            for (let { x, y } of this.visibleTiles) {
+                if (x === enemyTileX && y === enemyTileY) {
+                    isInFOV = true;
+                    const distance = Phaser.Math.Distance.Between(originX, originY, enemyTileX, enemyTileY);
+                    const alpha = 1.4 - (distance / radius);
+                    enemySprite.alpha = alpha;
+                    break;
+                }
+            }
+
+            if (!isInFOV) {
+                enemySprite.alpha = 0;
+            }
+        });
     }
 
     drawFOVOutline() {
@@ -153,6 +165,10 @@ class FOV {
             const worldY = this.map.tileToWorldY(y);
             this.fovGraphics.strokeRect(worldX, worldY, this.map.tileWidth, this.map.tileHeight);
         });
+    }
+
+    clearFOVOutline() {
+        this.fovGraphics.clear();
     }
 
     checkTransparency(x, y) {

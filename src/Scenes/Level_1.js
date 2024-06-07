@@ -43,7 +43,7 @@ class Level_1 extends Phaser.Scene {
         // Camera control
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.setZoom(2.0);
+        this.cameras.main.setZoom(4.0);
 
         // Collision detection for the books:
         this.books.forEach(book => {
@@ -83,6 +83,7 @@ class Level_1 extends Phaser.Scene {
         } else {
             console.log("debugging off");
             this.debugGraphics.clear();
+            this.playerFOV.clearFOVOutline();
         }
     }
 
