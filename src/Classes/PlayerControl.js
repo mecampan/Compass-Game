@@ -6,6 +6,9 @@ class PlayerControl {
         // Scale down the player size by half
         this.player.setScale(0.5);
 
+        // Set the hitbox to half the player's width
+        this.player.body.setSize(this.player.width * 0.5, this.player.height, true);
+
         if (loadAnim === false) {
             // Create animations
             this.createAnimations();
