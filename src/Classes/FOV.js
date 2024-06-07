@@ -60,26 +60,26 @@ class FOV {
             for (let { x, y } of this.visibleTiles) {
                 if (x === enemyTileX && y === enemyTileY) {
                     isInFOV = true;
-                    if (enemy && !enemy.pathfinder.chasing) {
-                        enemy.pathfinder.chase();       
-                    }                 
+                    if (enemy) {
+                        if (!enemy.pathfinder.chasing) {
+                            enemy.pathfinder.chase();       
+                        }                 
+                    }
                     break;
                 }
             }
-    
-            /*
-            // Not needed since enemy auto roams after chasing
+
             if (!isInFOV) {
                 if (enemy) {
                     if (!enemy.pathfinder.roaming) {
-                    enemy.pathfinder.roam(); // Switch back to roaming if out of FOV
+                        enemy.pathfinder.roam(); 
                     }
                 }
             }
-            */
+
+            console.log("chasing:", enemy.pathfinder.chasing);
         });
     }
-    
 
     updateTileVisibility(originX, originY, radius) {
         const camera = this.scene.cameras.main;

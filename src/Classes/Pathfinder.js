@@ -128,7 +128,7 @@ class Pathfinder {
             tweens.push({
                 x: ex * this.TILESIZE,
                 y: ey * this.TILESIZE,
-                duration: 200,
+                duration: 300,
                 onStart: () => {
                     if (character.x > ex * this.TILESIZE) {
                         character.flipX = true; // Flip sprite when moving left

@@ -13,9 +13,6 @@ class Enemy {
         this.pathfinder = new Pathfinder(this.scene, this.sprite);
         this.pathfinder.create();
         this.pathfinder.roam(); // Start roaming when the enemy is created
-
-        this.lastChaseTime = 0;
-        this.chaseInterval = 500; // Chase update interval in milliseconds
     }
 
     enemyAttack() {
@@ -60,16 +57,10 @@ class Enemy {
         );
     }
 
-    update(time) {
+    update() {
         // Update logic for the enemy
-        if (!this.stunned && !this.attacking) {
-            if (this.pathfinder.chasing) {
-                // Update the pathfinder more frequently to chase the player
-                if (time > this.lastChaseTime + this.chaseInterval) {
-                    this.pathfinder.chase();
-                    this.lastChaseTime = time;
-                }
-            }
+        if (!this.pathfinder.chasing && !this.attacking) {
+            this.pathfinder.chase(this.scene.player);
         }
     }
 }
