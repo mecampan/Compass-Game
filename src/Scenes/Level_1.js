@@ -43,7 +43,7 @@ class Level_1 extends Phaser.Scene {
         // Camera control
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.setZoom(4.0);
+        this.cameras.main.setZoom(2.0);
 
         // Collision detection for the books:
         this.books.forEach(book => {
@@ -101,6 +101,8 @@ class Level_1 extends Phaser.Scene {
             this.player.body.height
         );
 
+        this.playerFOV.drawFOVOutline(this.debugGraphics);
+
         // Draw debug for each enemy in the group
         this.enemies.getChildren().forEach(enemy => {
             enemy.enemyInstance.renderDebug(this.debugGraphics);
@@ -122,7 +124,7 @@ class Level_1 extends Phaser.Scene {
     update() {
         this.playerControl.update();
         if(this.playerFOV) {
-            this.playerFOV.updateFOV(5); // Adjust the radius as needed
+            this.playerFOV.update(); // Adjust the radius as needed
         }
         
         // Update enemies

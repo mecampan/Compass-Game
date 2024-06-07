@@ -60,7 +60,7 @@ class Enemy {
     update() {
         // Update logic for the enemy
         if (!this.pathfinder.chasing && !this.attacking) {
-            this.pathfinder.chase(this.scene.player);
+            //this.pathfinder.chase(this.scene.player);
         }
     }
 }

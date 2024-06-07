@@ -11,15 +11,18 @@ class FOV {
         this.visibleTiles = [];
         this.prevX = null;
         this.prevY = null;
+        this.fovGraphics = null; // Graphics object for drawing the FOV outline
+        this.showFOVOutline = false; // Boolean to track FOV outline visibility
+        this.movingFrequency = 0;
     }
 
     calculateFOV(originX, originY, radius) {
         this.visibleTiles = [];
         this.mrpas.compute(
-            originX, 
-            originY, 
-            radius, 
-            (x, y) => this.checkTransparency(x, y), 
+            originX,
+            originY,
+            radius,
+            (x, y) => this.checkTransparency(x, y),
             (x, y) => this.visibleTiles.push({ x, y })
         );
 
@@ -56,28 +59,34 @@ class FOV {
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
             let isInFOV = false;
-            
+
             for (let { x, y } of this.visibleTiles) {
                 if (x === enemyTileX && y === enemyTileY) {
                     isInFOV = true;
-                    if (enemy) {
-                        if (!enemy.pathfinder.chasing) {
-                            enemy.pathfinder.chase();       
-                        }                 
-                    }
                     break;
                 }
             }
 
-            if (!isInFOV) {
+            if (this.movingFrequency % 50 === 0) {
                 if (enemy) {
-                    if (!enemy.pathfinder.roaming) {
-                        enemy.pathfinder.roam(); 
+                    if (isInFOV) {
+                        //console.log("Enemy in FOV");
+                        enemy.pathfinder.chase();
+                    }
+
+                    else {
+                        //console.log("Not in FOV");
+                        // Ensure roaming is only called once to prevent constant updates to path
+                        if (!enemy.pathfinder.roaming && !enemy.pathfinder.chasing && !enemy.pathfinder.searching) {
+                            enemy.pathfinder.roam();
+                        }
                     }
                 }
             }
 
-            console.log("chasing:", enemy.pathfinder.chasing);
+            if (enemy.pathfinder.chasing && !isInFOV) {
+                enemy.pathfinder.searchingTimer();
+            }          
         });
     }
 
@@ -114,15 +123,35 @@ class FOV {
 
             if (groundTile) {
                 const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
-                const alpha = 1 - (distance / radius);
+                const alpha = 1.4 - (distance / radius);
                 groundTile.alpha = alpha;
             }
 
             if (wallTile) {
                 const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
-                const alpha = 1 - (distance / radius);
+                const alpha = 1.4 - (distance / radius);
                 wallTile.alpha = alpha;
             }
+        });
+
+        if (this.showFOVOutline) {
+            this.drawFOVOutline(); // Draw the FOV outline
+        }
+    }
+
+    drawFOVOutline() {
+        if (this.fovGraphics) {
+            this.fovGraphics.clear(); // Clear previous drawings
+        } else {
+            this.fovGraphics = this.scene.add.graphics();
+        }
+
+        this.fovGraphics.lineStyle(1, 0xff0000, 1); // Red outline
+
+        this.visibleTiles.forEach(({ x, y }) => {
+            const worldX = this.map.tileToWorldX(x);
+            const worldY = this.map.tileToWorldY(y);
+            this.fovGraphics.strokeRect(worldX, worldY, this.map.tileWidth, this.map.tileHeight);
         });
     }
 
@@ -134,5 +163,10 @@ class FOV {
 
         const groundTile = this.scene.groundLayer.getTileAt(x, y);
         return groundTile && groundTile.index !== -1; // Example condition, adjust as needed
+    }
+
+    update() {
+        this.movingFrequency++;
+        this.updateFOV(5);
     }
 }

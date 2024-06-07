@@ -5,7 +5,9 @@ class Pathfinder {
         this.TILESIZE = 16;
         this.currentTween = null; // Track the current tween
         this.chasing = false;
+        this.searching = false; // Enemy will continue to chase player for a set time outside of FOV
         this.roaming = false;
+        this.currentTravelDot = null; // Track the current travel dot
     }
 
     create() {
@@ -125,6 +127,12 @@ class Pathfinder {
         for (var i = 0; i < path.length - 1; i++) {
             var ex = path[i + 1].x;
             var ey = path[i + 1].y;
+
+            // Place a travel dot at the next position
+            // Place a travel dot at the end position
+            if (i === path.length - 2) {
+                this.placeTravelDot(this.tileXtoWorld(ex), this.tileYtoWorld(ey));
+            }
             tweens.push({
                 x: ex * this.TILESIZE,
                 y: ey * this.TILESIZE,
@@ -138,6 +146,7 @@ class Pathfinder {
                 },
                 onComplete: i === path.length - 2 ? () => {
                     onComplete(); // Call onComplete callback
+                    //console.log("Set chasing to false");
                     this.chasing = false;
                     this.roaming = false;
                 } : null
@@ -153,6 +162,7 @@ class Pathfinder {
 
     roam() {
         this.roaming = true;
+        this.chasing = false;
 
         // Choose a random point to move to within the map boundaries
         let toX = Phaser.Math.Between(0, this.scene.map.width - 1);
@@ -162,7 +172,7 @@ class Pathfinder {
         let fromY = Math.floor(this.activeCharacter.y / this.TILESIZE);
 
         this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-            if (path === null || path.length === 0 ) {
+            if (path === null || path.length === 0) {
                 //console.warn("Path was not found or empty.");
                 this.roam(); // Try to roam to another random point
             } else {
@@ -176,6 +186,7 @@ class Pathfinder {
 
     chase() {
         this.chasing = true;
+        this.roaming = false;
 
         // Grab the player location
         let toX = Math.floor(this.scene.player.x / this.TILESIZE);
@@ -186,16 +197,21 @@ class Pathfinder {
         let fromY = Math.floor(this.activeCharacter.y / this.TILESIZE);
 
         this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-            if (path === null || path.length === 0 ) {
+            if (path === null || path.length === 0) {
                 //console.warn("Path was not found or empty.");
                 this.roam(); // Try to roam to another random point
             } else {
                 this.moveCharacter(path, this.activeCharacter, () => {
-                    this.roam(); // Start roaming again after reaching the destination
+                    if (this.searching) {
+                        this.chase(); // Continue chasing player outside of FOV for a bit
+                    }
+                    else {
+                        this.roam(); // Start roaming again after reaching the destination
+                    }
                 });
             }
         });
-        this.finder.calculate();        
+        this.finder.calculate();
     }
 
     setCost(tileset) {
@@ -207,4 +223,29 @@ class Pathfinder {
             }
         }
     }
+
+    searchingTimer() {
+        // If a timer is already running, remove it
+        if (this.searchingTimerEvent) {
+            this.searchingTimerEvent.remove(false);
+        }
+    
+        // Set the searching state and create a new timer
+        this.searching = true;
+        this.searchingTimerEvent = this.scene.time.delayedCall(5000, () => {
+            this.searching = false;
+        });
+    }    
+
+    placeTravelDot(x, y) {
+        // Remove the current travel dot if it exists
+        if (this.currentTravelDot) {
+            this.currentTravelDot.destroy();
+        }
+
+        // Create a new dot at the specified position
+        this.currentTravelDot = this.scene.add.circle(x, y, 5, 0xff0000); // A small red dot
+        this.currentTravelDot.setDepth(10); // Ensure the dot appears above other sprites
+    }
+
 }
