@@ -128,11 +128,11 @@ class Pathfinder {
             var ex = path[i + 1].x;
             var ey = path[i + 1].y;
 
-            // Place a travel dot at the next position
             // Place a travel dot at the end position
             if (i === path.length - 2) {
-                this.placeTravelDot(this.tileXtoWorld(ex), this.tileYtoWorld(ey));
+                //this.placeTravelDot(this.tileXtoWorld(ex), this.tileYtoWorld(ey));
             }
+
             tweens.push({
                 x: ex * this.TILESIZE,
                 y: ey * this.TILESIZE,

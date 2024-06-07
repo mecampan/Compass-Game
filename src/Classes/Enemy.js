@@ -19,7 +19,7 @@ class Enemy {
         if (!this.attacking) {
             this.attacking = true;
             this.pathfinder.stopCharacter();
-            this.sprite.anims.play('attackB');
+            this.sprite.anims.play('attackA');
 
             this.scene.time.delayedCall(1000, () => {
                 this.sprite.anims.play('run');

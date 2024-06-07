@@ -65,7 +65,7 @@ class FOV {
 
             if (this.movingFrequency % 100 === 0) {
                 if (enemy) {
-                    if (isInFOV) {
+                    if (isInFOV && !enemy.attacking) {
                         //console.log("Enemy in FOV");
                         enemy.pathfinder.chase();
                     }
@@ -139,7 +139,7 @@ class FOV {
                 if (x === enemyTileX && y === enemyTileY) {
                     isInFOV = true;
                     const distance = Phaser.Math.Distance.Between(originX, originY, enemyTileX, enemyTileY);
-                    const alpha = 1.4 - (distance / radius);
+                    const alpha = 1.8 - (distance / radius);
                     enemySprite.alpha = alpha;
                     break;
                 }

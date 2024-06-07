@@ -60,12 +60,12 @@ class Load extends Phaser.Scene {
             key: 'attackA',
             frames: this.anims.generateFrameNames('evil_wizard', {
                 prefix: "attackA_",
-                start: 7,
+                start: 1,
                 end: 8,
                 suffix: ".png",
                 zeroPad: 2
             }),
-            frameRate: 2,
+            frameRate: 10,
         });        
 
         this.anims.create({
