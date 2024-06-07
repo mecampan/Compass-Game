@@ -26,9 +26,9 @@ class Level_1 extends Phaser.Scene {
 
         // Add collectable books:
         this.books = [
-            new Book(this, 50, 100, 'spell_book1').setScale(.3),
-            new Book(this, 150, 100, 'spell_book2').setScale(.3),
-            new Book(this, 250, 100, 'spell_book3').setScale(.3)
+            new Book(this, 50, 100, 'spell_book1'),
+            new Book(this, 150, 100, 'spell_book2'),
+            new Book(this, 250, 100, 'spell_book3')
         ];
 
         // Set the bounds of the world to match the map dimensions

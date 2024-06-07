@@ -3,7 +3,11 @@ class Book extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.setScale(0.3);
 
+        let newWidth = this.body.width * 0.3; // Adjust these values based on your sprite's scale
+        let newHeight = this.body.height * 0.3;
+        this.body.setSize(newWidth, newHeight, true);
     }
 
     collect() {
@@ -19,5 +23,7 @@ class Book extends Phaser.Physics.Arcade.Sprite {
         this.scene.time.delayedCall(1000, () => {
             message.destroy(); // This will remove the text from the scene
         });
+
+        this.destroy();
     }
 }
