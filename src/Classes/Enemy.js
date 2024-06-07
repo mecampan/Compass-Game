@@ -4,7 +4,6 @@ class Enemy {
         this.sprite = this.scene.physics.add.sprite(x, y, texture, frame).setOrigin(0.5, 0.5).setScale(0.4);
         this.stunned = false;
         this.attacking = false;
-        this.isChasing = false; // Track if the enemy is currently chasing the player
 
         this.sprite.body.setSize(50, 70); // Example values
         this.sprite.enemyInstance = this; // Reference to the Enemy instance
@@ -14,22 +13,9 @@ class Enemy {
         this.pathfinder = new Pathfinder(this.scene, this.sprite);
         this.pathfinder.create();
         this.pathfinder.roam(); // Start roaming when the enemy is created
-    }
 
-    startChasing(player) {
-        if (!this.attacking) {
-            this.isChasing = true;
-            this.pathfinder.chase(player);
-            console.log("Enemy is now chasing the player!");
-        }
-    }
-
-    stopChasing() {
-        if (this.isChasing && !this.attacking) {
-            this.isChasing = false;
-            this.pathfinder.roam(); // Return to roaming if the player is out of FOV
-            console.log("Enemy stopped chasing the player!");
-        }
+        this.lastChaseTime = 0;
+        this.chaseInterval = 500; // Chase update interval in milliseconds
     }
 
     enemyAttack() {
@@ -74,10 +60,16 @@ class Enemy {
         );
     }
 
-    update() {
+    update(time) {
         // Update logic for the enemy
-        if (this.isChasing && !this.attacking) {
-            this.pathfinder.chase(this.scene.player);
+        if (!this.stunned && !this.attacking) {
+            if (this.pathfinder.chasing) {
+                // Update the pathfinder more frequently to chase the player
+                if (time > this.lastChaseTime + this.chaseInterval) {
+                    this.pathfinder.chase();
+                    this.lastChaseTime = time;
+                }
+            }
         }
     }
 }

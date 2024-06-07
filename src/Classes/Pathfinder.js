@@ -5,6 +5,7 @@ class Pathfinder {
         this.TILESIZE = 16;
         this.currentTween = null; // Track the current tween
         this.chasing = false;
+        this.roaming = false;
     }
 
     create() {
@@ -110,7 +111,6 @@ class Pathfinder {
 
     // Remove existing tween if any
     stopCharacter() {
-        this.chasing = false;
         if (this.currentTween) {
             //console.log(this.currentTween);
             this.currentTween.stop();
@@ -120,7 +120,7 @@ class Pathfinder {
 
     moveCharacter(path, character, onComplete) {
         this.stopCharacter();
-        //console.log(path);
+
         var tweens = [];
         for (var i = 0; i < path.length - 1; i++) {
             var ex = path[i + 1].x;
@@ -136,7 +136,11 @@ class Pathfinder {
                         character.flipX = false; // Reset flip when moving right
                     }
                 },
-                onComplete: i === path.length - 2 ? onComplete : null // Call onComplete on the last tween
+                onComplete: i === path.length - 2 ? () => {
+                    onComplete(); // Call onComplete callback
+                    this.chasing = false;
+                    this.roaming = false;
+                } : null
             });
         }
 
@@ -148,6 +152,8 @@ class Pathfinder {
     }
 
     roam() {
+        this.roaming = true;
+
         // Choose a random point to move to within the map boundaries
         let toX = Phaser.Math.Between(0, this.scene.map.width - 1);
         let toY = Phaser.Math.Between(0, this.scene.map.height - 1);
@@ -169,6 +175,8 @@ class Pathfinder {
     }
 
     chase() {
+        this.chasing = true;
+
         // Grab the player location
         let toX = Math.floor(this.scene.player.x / this.TILESIZE);
         let toY = Math.floor(this.scene.player.y / this.TILESIZE);
@@ -183,7 +191,6 @@ class Pathfinder {
                 this.roam(); // Try to roam to another random point
             } else {
                 this.moveCharacter(path, this.activeCharacter, () => {
-                    this.chasing = true;
                     this.roam(); // Start roaming again after reaching the destination
                 });
             }

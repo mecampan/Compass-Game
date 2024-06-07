@@ -45,11 +45,14 @@ class FOV {
         const currentY = this.map.worldToTileY(this.entity.y);
         if (this.hasMoved(currentX, currentY)) {
             this.calculateFOV(currentX, currentY, radius);
+        } else {
+            this.checkEnemiesInFOV(); // Ensure FOV check is done even if player hasn't moved
         }
     }
 
     checkEnemiesInFOV() {
         this.scene.enemies.getChildren().forEach(enemySprite => {
+            const enemy = enemySprite.enemyInstance; // Reference to the Enemy instance
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
             let isInFOV = false;
@@ -57,22 +60,26 @@ class FOV {
             for (let { x, y } of this.visibleTiles) {
                 if (x === enemyTileX && y === enemyTileY) {
                     isInFOV = true;
-                    const enemy = enemySprite.enemyInstance; // Reference to the Enemy instance
-                    if (enemy) {
-                        enemy.startChasing(this.scene.player);
-                    }
+                    if (enemy && !enemy.pathfinder.chasing) {
+                        enemy.pathfinder.chase();       
+                    }                 
                     break;
                 }
             }
-
+    
+            /*
+            // Not needed since enemy auto roams after chasing
             if (!isInFOV) {
-                const enemy = enemySprite.enemyInstance;
                 if (enemy) {
-                    enemy.stopChasing();
+                    if (!enemy.pathfinder.roaming) {
+                    enemy.pathfinder.roam(); // Switch back to roaming if out of FOV
+                    }
                 }
             }
+            */
         });
     }
+    
 
     updateTileVisibility(originX, originY, radius) {
         const camera = this.scene.cameras.main;

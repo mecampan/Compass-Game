@@ -38,7 +38,7 @@ class Level_1 extends Phaser.Scene {
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
         // Create player FOV
-        //this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
+        this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
 
         // Camera control
         this.cameras.main.startFollow(this.player);
@@ -124,10 +124,13 @@ class Level_1 extends Phaser.Scene {
         if(this.playerFOV) {
             this.playerFOV.updateFOV(5); // Adjust the radius as needed
         }
-
-        // Update each enemy in the group
-        this.enemies.getChildren().forEach(enemy => {
-            enemy.update();
+        
+        // Update enemies
+        this.enemies.getChildren().forEach(enemySprite => {
+            const enemy = enemySprite.enemyInstance;
+            if (enemy) {
+                enemy.update();
+            }
         });
 
         // Draw debug graphics if debug mode is active
