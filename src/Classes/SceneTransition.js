@@ -75,7 +75,6 @@ class SceneTransition {
                 console.log(`Transitioning to ${this.nextSceneName}`);
                 this.scene.scene.start(this.nextSceneName, {}, () => {
                     // When the next scene starts, destroy the rectangle and fade in the camera
-                    
                     this.scene.cameras.main.fadeIn(500, 0, 0, 0);
                     rectangle.destroy();
                 });

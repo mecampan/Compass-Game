@@ -78,6 +78,7 @@ class Level_1 extends Phaser.Scene {
         this.debugActive = !this.debugActive;
         if (this.debugActive) {
             console.log("debugging on");
+            console.log(this.player.x, this.player.y);
             this.drawDebug();
         } else {
             console.log("debugging off");
