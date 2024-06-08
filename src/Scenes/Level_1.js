@@ -30,7 +30,7 @@ class Level_1 extends Phaser.Scene {
             new Book(this, 150, 100, 'spell_book2'),
             new Book(this, 250, 100, 'spell_book3')
         ];
-        this.createHudDisplay();
+        this.scene.launch('hudScene'); // Start the UI scene
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -99,36 +99,12 @@ class Level_1 extends Phaser.Scene {
     collectBook(player, book) {
         this.collectedBooks++;
         book.collect();
-        this.updateHudDisplay();
         if (this.collectedBooks === 3) {
             this.triggerEvent();
         }
-    }
 
-    createHudDisplay() {
-        this.bookHudDisplay = [];
-        //this.add.sprite(20, this.cameras.main.height - 40, 'spellbook1').setScrollFactor(0);
-        this.livesText = this.add.text(0, 0, 'Books: ').setScrollFactor(0);
-
-        for (let i = 0; i < 3; i++) {
-            let bookHudPos = 10 + i * 50; // Calculate x position based on number of books
-            let bookHud = this.add.sprite(bookHudPos, this.cameras.main.height - 40, 'spellbook1').setScrollFactor(0);
-            bookHud.setVisible(false); // Initially hide the HUD elements
-            this.bookHudDisplay.push(bookHud); // Add the new book sprite to the bookHudDisplay array
-        }
-        this.livesText = this.add.text(20, this.cameras.main.height - 40, 'Books: ', {
-            fontFamily: 'cursive',
-            fontSize: '24px',
-            color: '#ffffff', // Set text color
-        }).setScrollFactor(0);
-    }
-
-    updateHudDisplay() {
-        for (let i = 0; i < this.collectedBooks; i++) {
-            if (this.bookHudDisplay[i]) {
-                this.bookHudDisplay[i].setVisible(true);
-            }
-        }
+        // Update the UI scene with the collected book count
+        this.scene.get('hudScene').events.emit('updateHud', this.collectedBooks);
     }
 
     // GAME FINISHED EVENT to be triggered:
