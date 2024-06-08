@@ -12,7 +12,7 @@ class HUD extends Phaser.Scene {
             this.bookHudDisplay.push(bookHud);
         }
 
-        this.add.text(20, this.scale.height - 40, 'Books Collected: ', {
+        this.add.text(20, this.scale.height - 40, 'Books: ', {
             fontFamily: 'cursive',
             fontSize: '24px',
             color: '#ffffff',
