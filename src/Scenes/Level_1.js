@@ -30,6 +30,7 @@ class Level_1 extends Phaser.Scene {
             new Book(this, 150, 100, 'spell_book2'),
             new Book(this, 250, 100, 'spell_book3')
         ];
+        this.createHudDisplay();
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -49,7 +50,7 @@ class Level_1 extends Phaser.Scene {
         this.books.forEach(book => {
             this.physics.add.overlap(this.player, book, this.collectBook, null, this);
         });
-        
+
         // this.wallLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.wallLayer);
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
@@ -64,7 +65,7 @@ class Level_1 extends Phaser.Scene {
         //this.enemies.add(enemy2.sprite);   
 
         // Player and Enemy Collider
-        this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollision, null, this);    
+        this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollision, null, this);
 
         // Debug graphics for collision boxes
         this.debugGraphics = this.add.graphics();
@@ -72,6 +73,67 @@ class Level_1 extends Phaser.Scene {
 
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
+    }
+
+    update() {
+        this.playerControl.update();
+        if (this.playerFOV) {
+            this.playerFOV.update(); // Adjust the radius as needed
+        }
+
+        // Update enemies
+        this.enemies.getChildren().forEach(enemySprite => {
+            const enemy = enemySprite.enemyInstance;
+            if (enemy) {
+                enemy.update();
+            }
+        });
+
+        // Draw debug graphics if debug mode is active
+        if (this.debugActive) {
+            this.drawDebug();
+        }
+
+    }
+
+    collectBook(player, book) {
+        this.collectedBooks++;
+        book.collect();
+        this.updateHudDisplay();
+        if (this.collectedBooks === 3) {
+            this.triggerEvent();
+        }
+    }
+
+    createHudDisplay() {
+        this.bookHudDisplay = [];
+        //this.add.sprite(20, this.cameras.main.height - 40, 'spellbook1').setScrollFactor(0);
+        this.livesText = this.add.text(0, 0, 'Books: ').setScrollFactor(0);
+
+        for (let i = 0; i < 3; i++) {
+            let bookHudPos = 10 + i * 50; // Calculate x position based on number of books
+            let bookHud = this.add.sprite(bookHudPos, this.cameras.main.height - 40, 'spellbook1').setScrollFactor(0);
+            bookHud.setVisible(false); // Initially hide the HUD elements
+            this.bookHudDisplay.push(bookHud); // Add the new book sprite to the bookHudDisplay array
+        }
+        this.livesText = this.add.text(20, this.cameras.main.height - 40, 'Books: ', {
+            fontFamily: 'cursive',
+            fontSize: '24px',
+            color: '#ffffff', // Set text color
+        }).setScrollFactor(0);
+    }
+
+    updateHudDisplay() {
+        for (let i = 0; i < this.collectedBooks; i++) {
+            if (this.bookHudDisplay[i]) {
+                this.bookHudDisplay[i].setVisible(true);
+            }
+        }
+    }
+
+    // GAME FINISHED EVENT to be triggered:
+    triggerEvent() {
+        console.log('All books collected!');
     }
 
     toggleDebug() {
@@ -122,39 +184,4 @@ class Level_1 extends Phaser.Scene {
         const tile = this.groundLayer.getTileAt(x, y);
         return tile && tile.index !== -1; // Example condition, adjust as needed
     }
-
-    update() {
-        this.playerControl.update();
-        if(this.playerFOV) {
-            this.playerFOV.update(); // Adjust the radius as needed
-        }
-        
-        // Update enemies
-        this.enemies.getChildren().forEach(enemySprite => {
-            const enemy = enemySprite.enemyInstance;
-            if (enemy) {
-                enemy.update();
-            }
-        });
-
-        // Draw debug graphics if debug mode is active
-        if (this.debugActive) {
-            this.drawDebug();
-        }
-
-    }
-
-    collectBook(player, book) {
-        this.collectedBooks++;
-        book.collect();
-        if (this.collectedBooks === 3) {
-            this.triggerEvent();
-        }
-    }
-
-    // GAME FINISHED EVENT to be triggered:
-    triggerEvent() {
-        console.log('All books collected!');
-    }
-
 }
