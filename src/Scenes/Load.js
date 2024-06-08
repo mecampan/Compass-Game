@@ -9,6 +9,7 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
+        this.load.audio("ui_sound", "UI_click.wav");
         // Load Enemy
         this.load.atlas("evil_wizard", "evil_wizard.png", "evil_wizard.json");
 

@@ -4,6 +4,7 @@ class TitleScreen extends Phaser.Scene{
     }
 
     create(){
+        let sound = this.sound.add('ui_sound');
         // Load the tilemap and tileset
         this.map = this.add.tilemap("dungeon", 62, 52, 16, 16);
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
@@ -31,37 +32,25 @@ class TitleScreen extends Phaser.Scene{
         // For the 'Play' button
         let play = this.add.bitmapText(centerX, centerY + 120, 'myFont', 'Play', 32)
             .setOrigin(0.5)
-            .setInteractive({ useHandCursor: true });
-        play.on('pointerdown', () => {
-            // Code to start the game or go to the game scene
-            this.scene.start('GameScene');  // Example scene change
-        });
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => play.setScale(1.2))
+            .on('pointerout', () => play.setScale(1))
+            .on('pointerdown', () => {
+                sound.play();
+                this.scene.stop("titleScreenScene");
+                this.scene.start("level1Scene");
+            });
 
         // For the 'Credits' button
         let credits = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Credits', 32)
             .setOrigin(0.5)
-            .setInteractive({ useHandCursor: true });
-        credits.on('pointerdown', () => {
-            // Code to go to the credits scene
-            this.scene.start('creditsScene');  // Example scene change
-        });
-        // add credits scene
-    
-        play.on('pointerdown', () => {
-            this.scene.stop("titleScreenScene");
-            this.scene.start("level1Scene");
-        });    
-    
-        // Adding a tween for the text elements
-        this.tweens.add({
-            targets: [play],
-            scaleX: 1.2,
-            scaleY: 1.2,
-            ease: 'Sine.easeInOut', // Smooth sinusoidal easing
-            duration: 1000, // Duration of one-way scaling
-            yoyo: true, // Apply the tween back to the original state
-            repeat: -1 // Repeat infinitely
-        });
+            .setInteractive({ useHandCursor: true })
+            .on('pointerover', () => credits.setScale(1.2))
+            .on('pointerout', () => credits.setScale(1))
+            .on('pointerdown', () => {
+                sound.play();
+                this.scene.start('creditsScene');  // Example scene change
+            });
     }
     
     
