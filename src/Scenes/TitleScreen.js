@@ -43,7 +43,7 @@ class TitleScreen extends Phaser.Scene{
             .setInteractive({ useHandCursor: true });
         credits.on('pointerdown', () => {
             // Code to go to the credits scene
-            this.scene.start('CreditsScene');  // Example scene change
+            this.scene.start('creditsScene');  // Example scene change
         });
         // add credits scene
     
