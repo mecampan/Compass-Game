@@ -36,12 +36,13 @@ class mainDungeon extends Phaser.Scene {
         // Camera control
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.cameras.main.setZoom(3.0);
+        this.cameras.main.setZoom(4.0);
 
         this.sceneTransition = new SceneTransition(this, "Scene2->1", "level1Scene", this.player);
 
         // Generate the maze (unfinished, do not touch)
-        // this.createMaze(this.wallLayer, this.tileset);
+        this.createMaze(this.map, this.wallLayer, this.tileset);
+        //this.createMaze(this.map, this.groundLayer, this.tileset);
 
         // Debug graphics for collision boxes
         this.debugGraphics = this.add.graphics();
@@ -50,28 +51,50 @@ class mainDungeon extends Phaser.Scene {
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
 
         // Add key listener for teleporting player (checking maze)
-        // this.input.keyboard.on('keydown-B', () => this.DBTeleport(this.player, "PlayerDBSpawn"), this);
+        this.input.keyboard.on('keydown-B', () => this.DBTeleport(this.player, "PlayerDBSpawn"), this);
 
+        // Create minimap and fog of war
+        this.createMinimap();
+        // NOTE: comment out this line below to show full minimap (1/5)
+        //this.fogOfWar = new Array(this.map.height).fill(null).map(() => new Array(this.map.width).fill(true)); // Initialize fog of war
     }
 
 
-    // This function is unfinished, it currently isn't working.
-    // createMaze(wallLayer, tilePic) {
-    //     const mazeWidth = 66;
-    //     const mazeHeight = 42;
-    //     const startX = 105;
-    //     const startY = -104;
-    //     const endX = 168;
-    //     const endY = -62;
-    //     const wallTileID = 607;
-    //     const layer = wallLayer;
-    //     const tileset = tilePic;
+    //This function is unfinished, it currently isn't working.
+    createMaze(map, wallLayer, tileset) {
+        const mazeWidth = 66;
+        const mazeHeight = 42;
+        // const startX = 105;
+        // const startY = -104;
+        const endX = 170;
+        const endY = -62;
+        const startX = 104;
+        const startY = 1;
+        // const endX = 33;
+        // const endY = 21;
+        const wallTileID = 1234;
+        //const wallTileID = 403;
 
-    //     // console.log(`Creating maze from (${startX}, ${startY}) to (${endX}, ${endY})`);
-        
-    //     const mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight, startX, startY, endX, endY, wallTileID, this.map, layer, tileset);
-    //     mazeGenerator.applyMaze();
-    // }
+        const mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight, startX, startY, endX, endY, wallTileID, map, wallLayer, tileset);
+        mazeGenerator.applyMaze();
+
+        // Ensure the layer is visible
+        wallLayer.setVisible(true);
+    }
+
+
+
+    createMinimap() {
+        const minimapWidth = 250; // Width of the minimap
+        const minimapHeight = 250; // Height of the minimap
+
+        // Create a graphics object for the minimap
+        this.minimapGraphics = this.add.graphics();
+        this.minimapGraphics.setScrollFactor(0); // Ensure it stays in place
+
+        // Trigger an event to update the HUD with the minimap
+        this.scene.get('hudScene').events.emit('createMinimap', this.minimapGraphics, minimapWidth, minimapHeight);
+    }
 
     //debug function to check maze
     DBTeleport(player, spawnName) {
@@ -82,6 +105,8 @@ class mainDungeon extends Phaser.Scene {
         } else {
             console.log(`Spawn point "${spawnName}" not found`);
         }
+        //this.player.setPosition(1500, 141);
+        //this.player.setPosition(105, -104);
     }
 
     toggleDebug() {
@@ -121,12 +146,76 @@ class mainDungeon extends Phaser.Scene {
         // });
     }
 
+
+
+
     update() {
         this.playerControl.update();
 
         // Draw debug graphics if debug mode is active
         if (this.debugActive) {
             this.drawDebug();
+        }
+
+        this.updateMinimap();
+        // NOTE: comment out this line below to show full minimap (2/5)
+        //this.revealMinimap();
+    }
+
+    updateMinimap() {
+        const minimapWidth = 250; // Width of the minimap
+        const minimapHeight = 250; // Height of the minimap
+        const scaleX = minimapWidth / this.map.widthInPixels;
+        const scaleY = minimapHeight / this.map.heightInPixels;
+
+        // Clear previous minimap graphics
+        this.minimapGraphics.clear();
+
+        // Draw the ground and walls layers onto the minimap based on fog of war
+        this.map.layers.forEach(layer => {
+            layer.data.forEach(row => {
+                row.forEach(tile => {
+                    // NOTE: uncomment out this line below to show full minimap (3/5)
+                    if (tile.index !== -1) {
+                    // NOTE: comment out this line below to show full minimap (4/5)
+                    //if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) { // Only draw non-empty and revealed tiles
+                        const color = layer.name === 'Ground' ? 0x888888 : 0xcccccc; // Differentiate wall and ground tiles
+                        this.minimapGraphics.fillStyle(color, 1);
+                        this.minimapGraphics.fillRect(tile.pixelX * scaleX, tile.pixelY * scaleY, scaleX * tile.width, scaleY * tile.height);
+                    }
+                });
+            });
+        });
+
+        // Define a scale factor for the player on the minimap
+        const playerMinimapScale = 2.5;
+
+        // Draw the player onto the minimap
+        this.minimapGraphics.fillStyle(0x00ff00, 1); // Green for the player
+        this.minimapGraphics.fillRect(
+            (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2), 
+            (this.player.y * scaleY) - ((scaleY * this.player.height * (playerMinimapScale - 1)) / 2), 
+            scaleX * this.player.width * playerMinimapScale, 
+            scaleY * this.player.height * playerMinimapScale
+        );
+        // Trigger an event to update the HUD with the new minimap graphics
+        this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
+    }
+
+    // NOTE: comment out this function below to show full minimap (5/5)
+    revealMinimap() {
+        const revealRadius = 5; // Radius around the player to reveal tiles
+        const playerTileX = Math.floor(this.player.x / this.map.tileWidth);
+        const playerTileY = Math.floor(this.player.y / this.map.tileHeight);
+
+        for (let y = -revealRadius; y <= revealRadius; y++) {
+            for (let x = -revealRadius; x <= revealRadius; x++) {
+                const revealX = playerTileX + x;
+                const revealY = playerTileY + y;
+                if (revealX >= 0 && revealX < this.map.width && revealY >= 0 && revealY < this.map.height) {
+                    this.fogOfWar[revealY][revealX] = false; // Reveal the tile
+                }
+            }
         }
     }
 }
