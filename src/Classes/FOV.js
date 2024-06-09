@@ -104,11 +104,7 @@ class FOV {
             }
         }
 
-        //let HUD = this.scene.get('hudScene');
-        //console.log(HUD);
-
-        //let oilAmount = this.scene.get('hudScene').getOilAmount();
-        //console.log(oilAmount)
+        let oilLevel = this.scene.HUD.getOilAmount(); 
 
         console.log()
         this.visibleTiles.forEach(({ x, y }) => {
@@ -117,13 +113,13 @@ class FOV {
 
             if (groundTile) {
                 const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
-                const alpha = 1.4 - (distance / radius);
+                const alpha = 1.4 - (distance / radius) + oilLevel - 0.6;
                 groundTile.alpha = alpha;
             }
 
             if (wallTile) {
                 const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
-                const alpha = 1.4 - (distance / radius);
+                const alpha = 1.4 - (distance / radius) + oilLevel - 0.6;
                 wallTile.alpha = alpha;
             }
         });
@@ -140,12 +136,14 @@ class FOV {
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
 
+            let oilLevel = this.scene.HUD.getOilAmount(); 
+
             let isInFOV = false;
             for (let { x, y } of this.visibleTiles) {
                 if (x === enemyTileX && y === enemyTileY) {
                     isInFOV = true;
                     const distance = Phaser.Math.Distance.Between(originX, originY, enemyTileX, enemyTileY);
-                    const alpha = 1.8 - (distance / radius);
+                    const alpha = 1.8 - (distance / radius) + oilLevel - 0.6;
                     enemySprite.alpha = alpha;
                     break;
                 }

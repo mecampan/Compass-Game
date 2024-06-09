@@ -25,8 +25,7 @@ class Level_1 extends Phaser.Scene {
         this.wallLayer.setCollisionByExclusion([-1]);
 
         this.scene.launch('hudScene'); // Start the UI scene
-
-        console.log(this.scene.oilAmount);
+        this.HUD = this.scene.get('hudScene');
 
         // Add collectable books:
         this.books = [

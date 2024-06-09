@@ -22,7 +22,7 @@ class HUD extends Phaser.Scene {
 
     setOilLevel() {
         //scale the bar
-        this.oilBar.scaleY = this.getOilAmount;
+        this.oilBar.scaleY = this.oilAmount / 100;
     }
 
     getOilAmount() {
