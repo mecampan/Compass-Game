@@ -24,13 +24,16 @@ class Level_1 extends Phaser.Scene {
         // Enable collision for the wallLayer
         this.wallLayer.setCollisionByExclusion([-1]);
 
+        this.scene.launch('hudScene'); // Start the UI scene
+
+        console.log(this.scene.oilAmount);
+
         // Add collectable books:
         this.books = [
             new Book(this, 50, 100, 'spell_book1'),
             new Book(this, 150, 100, 'spell_book2'),
             new Book(this, 250, 100, 'spell_book3')
         ];
-        this.scene.launch('hudScene'); // Start the UI scene
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);

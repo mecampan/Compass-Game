@@ -1,9 +1,53 @@
 class HUD extends Phaser.Scene {
     constructor() {
         super({ key: 'hudScene' });
+
+        this.oilBar;
+        this.oilAmount = 100;
     }
 
     create() {
+        this.createBookHud();
+        this.createLanternHud();
+        this.oilDeplete();
+
+        this.events.on('updateHud', this.updateHud, this);
+    }
+
+    createLanternHud() {
+        this.oilBar = this.add.sprite(30, this.scale.height - 66, 'oilBar').setOrigin(0.5, 1);
+        this.setOilLevel();
+        this.add.sprite(60, this.scale.height - 96, 'lantern').setScale(0.5);
+    }
+
+    setOilLevel() {
+        //scale the bar
+        this.oilBar.scaleY = this.getOilAmount;
+    }
+
+    getOilAmount() {
+        return this.oilAmount / 100;
+    }
+
+    refilOil() {
+        this.oilAmount += 50;
+        if (this.oilAmount > 100) {
+            this.oilAmount = 100;
+        }
+        this.setOilLevel();
+    }
+
+    oilDeplete() {
+        this.time.delayedCall(1000, () => {
+            if (this.oilAmount > 0) {
+                this.oilAmount--;
+            }
+            this.setOilLevel();
+            this.oilDeplete();
+        });
+    }
+
+    createBookHud() {
         this.bookHudDisplay = [];
         for (let i = 0; i < 3; i++) {
             let bookHudPos = 120 + i * 50;
@@ -13,8 +57,6 @@ class HUD extends Phaser.Scene {
         }
 
         this.add.bitmapText(20, this.scale.height - 40, 'myFont', 'Books: ', 24);
-
-        this.events.on('updateHud', this.updateHud, this);
     }
 
     updateHud(collectedBooks) {

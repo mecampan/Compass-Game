@@ -66,7 +66,6 @@ class FOV {
             if (this.movingFrequency % 100 === 0) {
                 if (enemy) {
                     if (isInFOV && !enemy.attacking) {
-                        //console.log("Enemy in FOV");
                         enemy.pathfinder.chase();
                     }
                 }
@@ -105,6 +104,13 @@ class FOV {
             }
         }
 
+        let HUD = this.scene.get('hudScene');
+        console.log(HUD);
+        
+        let oilAmount = this.scene.get('hudScene').getOilAmount();
+        console.log(oilAmount)
+
+        console.log()
         this.visibleTiles.forEach(({ x, y }) => {
             const groundTile = this.scene.groundLayer.getTileAt(x, y);
             const wallTile = this.scene.wallLayer.getTileAt(x, y);
