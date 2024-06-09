@@ -6,22 +6,22 @@ class TitleScreen extends Phaser.Scene{
     create(){
         let sound = this.sound.add('ui_sound');
         // Load the tilemap and tileset
-        this.map = this.add.tilemap("dungeon", 62, 52, 16, 16);
-        this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
-        this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
+        // this.map = this.add.tilemap("dungeon", 62, 52, 16, 16);
+        // this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
+        // this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
     
         // Calculate scale factors to fit the screen
-        const scaleX = this.sys.game.config.width / this.groundLayer.width;
-        const scaleY = this.sys.game.config.height / this.groundLayer.height;
+        // const scaleX = this.sys.game.config.width / this.groundLayer.width;
+        // const scaleY = this.sys.game.config.height / this.groundLayer.height;
     
         // Scale the layer
-        this.groundLayer.setScale(scaleX, scaleY);
+        // this.groundLayer.setScale(scaleX, scaleY);
     
         // Fade in the scene
         this.cameras.main.fadeIn(500, 0, 0, 0);
     
         // Set the bounds of the world to match the scaled map dimensions
-        this.physics.world.setBounds(0, 0, this.map.widthInPixels * scaleX, this.map.heightInPixels * scaleY);
+        // this.physics.world.setBounds(0, 0, this.map.widthInPixels * scaleX, this.map.heightInPixels * scaleY);
     
         // Centering text based on the game's configuration
         let centerX = this.sys.game.config.width / 2;
