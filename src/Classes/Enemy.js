@@ -5,7 +5,7 @@ class Enemy {
         this.stunned = false;
         this.attacking = false;
 
-        this.sprite.body.setSize(50, 70); // Example values
+        this.sprite.body.setSize(50, 60); // Example values
         this.sprite.enemyInstance = this; // Reference to the Enemy instance
 
         this.sprite.anims.play('run');

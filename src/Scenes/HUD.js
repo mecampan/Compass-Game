@@ -12,6 +12,7 @@ class HUD extends Phaser.Scene {
         this.oilDeplete();
 
         this.events.on('updateHud', this.updateHud, this);
+        this.events.on('refilOil', this.refilOil, this);
     }
 
     createLanternHud() {

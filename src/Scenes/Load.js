@@ -25,6 +25,7 @@ class Load extends Phaser.Scene {
         // Lantern:
         this.load.image("lantern", "lantern.png");
         this.load.image("oilBar", "oilBar.png");
+        this.load.image("oilBottle", "oilBottle.png");
 
         // Load tilemap information
         this.load.image("tilemap_tiles", "catacombs_tilemap.png");

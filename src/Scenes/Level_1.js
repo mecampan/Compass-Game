@@ -34,6 +34,11 @@ class Level_1 extends Phaser.Scene {
             new Book(this, 250, 100, 'spell_book3')
         ];
 
+        // Add collectable oil bottles:
+        this.oilBottles = [
+            this.physics.add.sprite(100, 50, 'oilBottle')
+        ];
+
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.player = this.physics.add.sprite(100, 100, 'player');
@@ -51,6 +56,11 @@ class Level_1 extends Phaser.Scene {
         // Collision detection for the books:
         this.books.forEach(book => {
             this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+        });
+
+        // Collision detection for the oil:
+        this.oilBottles.forEach(bottle => {
+            this.physics.add.overlap(this.player, bottle, this.collectOil, null, this);
         });
 
         // this.wallLayer.setCollisionByProperty({collides: true});
@@ -107,6 +117,10 @@ class Level_1 extends Phaser.Scene {
 
         // Update the UI scene with the collected book count
         this.scene.get('hudScene').events.emit('updateHud', this.collectedBooks);
+    }
+
+    collectOil(player, oil) {
+        this.HUD.refilOil();
     }
 
     // GAME FINISHED EVENT to be triggered:
