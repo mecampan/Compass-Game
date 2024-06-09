@@ -1,6 +1,6 @@
-// Global variable to only call the player animation once
+// Global variables
 loadAnim = false;
-
+minimapCreated = false;
 class Load extends Phaser.Scene {
     constructor() {
         super("loadScene");

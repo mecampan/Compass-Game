@@ -14,7 +14,7 @@ class mainDungeon extends Phaser.Scene {
         this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("Walls", this.tileset, 0, 0);
         this.wallLayer.setCollisionByProperty({collides: true});
-
+        
         // Fade in the scene
         this.cameras.main.fadeIn(500, 0, 0, 0);
 
@@ -55,7 +55,7 @@ class mainDungeon extends Phaser.Scene {
 
         // Create minimap and fog of war
         this.createMinimap();
-        // NOTE: comment out this line below to show full minimap (1/5)
+        // NOTE: comment out this line below to show full minimap (1/4)
         //this.fogOfWar = new Array(this.map.height).fill(null).map(() => new Array(this.map.width).fill(true)); // Initialize fog of war
     }
 
@@ -94,6 +94,7 @@ class mainDungeon extends Phaser.Scene {
 
         // Trigger an event to update the HUD with the minimap
         this.scene.get('hudScene').events.emit('createMinimap', this.minimapGraphics, minimapWidth, minimapHeight);
+        minimapCreated = true;
     }
 
     //debug function to check maze
@@ -105,8 +106,6 @@ class mainDungeon extends Phaser.Scene {
         } else {
             console.log(`Spawn point "${spawnName}" not found`);
         }
-        //this.player.setPosition(1500, 141);
-        //this.player.setPosition(105, -104);
     }
 
     toggleDebug() {
@@ -158,7 +157,7 @@ class mainDungeon extends Phaser.Scene {
         }
 
         this.updateMinimap();
-        // NOTE: comment out this line below to show full minimap (2/5)
+        // NOTE: comment out this line below to show full minimap (2/4)
         //this.revealMinimap();
     }
 
@@ -175,9 +174,9 @@ class mainDungeon extends Phaser.Scene {
         this.map.layers.forEach(layer => {
             layer.data.forEach(row => {
                 row.forEach(tile => {
-                    // NOTE: uncomment out this line below to show full minimap (3/5)
+                    // NOTE: uncomment out this line below to show full minimap (3/4)
                     if (tile.index !== -1) {
-                    // NOTE: comment out this line below to show full minimap (4/5)
+                    // NOTE: comment out this line below to show full minimap (4/4)
                     //if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) { // Only draw non-empty and revealed tiles
                         const color = layer.name === 'Ground' ? 0x888888 : 0xcccccc; // Differentiate wall and ground tiles
                         this.minimapGraphics.fillStyle(color, 1);
@@ -202,9 +201,8 @@ class mainDungeon extends Phaser.Scene {
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
     }
 
-    // NOTE: comment out this function below to show full minimap (5/5)
     revealMinimap() {
-        const revealRadius = 5; // Radius around the player to reveal tiles
+        const revealRadius = 10; // Radius around the player to reveal tiles
         const playerTileX = Math.floor(this.player.x / this.map.tileWidth);
         const playerTileY = Math.floor(this.player.y / this.map.tileHeight);
 

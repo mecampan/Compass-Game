@@ -13,6 +13,16 @@ class HUD extends Phaser.Scene {
 
         this.events.on('updateHud', this.updateHud, this);
         this.events.on('refilOil', this.refilOil, this);
+
+        // Create a container for the minimap
+        this.minimapContainer = this.add.container(this.scale.width - 270, 10); // Positioning in the top right corner
+
+        // Listen for the createMinimap and updateMinimap events
+        if (minimapCreated === false) {
+            this.events.on('createMinimap', this.createMinimap, this);
+        }
+        
+        this.events.on('updateMinimap', this.updateMinimap, this);
     }
 
     createLanternHud() {
@@ -58,13 +68,6 @@ class HUD extends Phaser.Scene {
         }
 
         this.add.bitmapText(20, this.scale.height - 40, 'myFont', 'Books: ', 24);
-
-         // Create a container for the minimap
-         this.minimapContainer = this.add.container(this.scale.width - 270, 10); // Positioning in the top right corner
-
-         // Listen for the createMinimap and updateMinimap events
-         this.events.on('createMinimap', this.createMinimap, this);
-         this.events.on('updateMinimap', this.updateMinimap, this);
     }
 
     updateHud(collectedBooks) {
@@ -74,24 +77,36 @@ class HUD extends Phaser.Scene {
         }
     }
 
-        createMinimap(minimapGraphics, width, height) {
+    createMinimap(minimapGraphics, width, height) {
         // Remove any existing minimap from the container
-        this.minimapContainer.removeAll(true);
-
+        if (this.minimapContainer) {
+            this.minimapContainer.removeAll(true);
+        } else {
+            console.error('minimapContainer is not defined');
+            return;
+        }
+        
         // Add the background square
         const background = this.add.graphics();
         background.fillStyle(0x000000, 0.5); // Black color with 50% opacity
         background.fillRect(0, 0, width, height);
         background.setScrollFactor(0); // Ensure it stays in place
         this.minimapContainer.add(background);
-
+        
         // Add the new minimap graphics to the container
         this.minimapGraphics = minimapGraphics;
         this.minimapGraphics.setPosition(0, 0);
         this.minimapContainer.add(this.minimapGraphics);
+        
     }
+    
 
     updateMinimap(minimapGraphics) {
+        if (!this.minimapGraphics) {
+            console.error('minimapGraphics is not defined');
+            return;
+        }
+    
         // Ensure the minimap graphics in the container are updated
         this.minimapGraphics = minimapGraphics;
     }
