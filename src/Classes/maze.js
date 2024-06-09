@@ -80,7 +80,7 @@ class MazeGenerator {
                 const tileID = this.maze[y][x] === 1 ? this.wallTileID : -1;
                 if (tileID === this.wallTileID) {
                     this.map.putTileAt(tileID, this.startX + x, this.startY + y, false, this.layer);
-                    console.log(`Setting tile at (${this.startX + x}, ${this.startY + y}) to ${tileID}`);
+                    //console.log(`Setting tile at (${this.startX + x}, ${this.startY + y}) to ${tileID}`);
                 }
             }
         }
