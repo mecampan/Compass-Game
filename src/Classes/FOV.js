@@ -104,11 +104,11 @@ class FOV {
             }
         }
 
-        let HUD = this.scene.get('hudScene');
-        console.log(HUD);
-        
-        let oilAmount = this.scene.get('hudScene').getOilAmount();
-        console.log(oilAmount)
+        //let HUD = this.scene.get('hudScene');
+        //console.log(HUD);
+
+        //let oilAmount = this.scene.get('hudScene').getOilAmount();
+        //console.log(oilAmount)
 
         console.log()
         this.visibleTiles.forEach(({ x, y }) => {
