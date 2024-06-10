@@ -28,7 +28,7 @@ class TitleScreen extends Phaser.Scene{
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
     
-        let title = this.add.bitmapText(centerX, centerY - 50, 'myFont', 'Exorcism Dungeon', 56).setOrigin(0.5);
+        let title = this.add.bitmapText(centerX, centerY - 100, 'myFont', 'Exorcism Dungeon', 56).setOrigin(0.5);
     
         // For the 'Play' button
         let play = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Play', 64)
