@@ -12,7 +12,7 @@
 // game config
 let config = {
     parent: 'phaser-game',
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,//Phaser.CANVAS,
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
@@ -26,7 +26,7 @@ let config = {
         default: 'arcade',
         arcade: {
             tileBias: 24,
-            debug: true,
+            debug: false,
             gravity: {
                 x: 0,
                 y: 0
