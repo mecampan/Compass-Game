@@ -86,6 +86,7 @@ class MazeGenerator {
         }
         this.layer.setVisible(true);
         console.log('Maze applied.');
-        this.map.setCollision(this.wallTileID, true, this.layer); // Add collision
+        this.layer.setCollision(this.wallTileID, true);
+        //this.map.setCollision(this.wallTileID, true, this.layer); // Add collision
     }
 }

@@ -20,6 +20,7 @@ class Level_1 extends Phaser.Scene {
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+        this.wallLayer.setCollisionByProperty({collides: true});
         // Layer that doesn't interact with light source
         this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0); 
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
@@ -27,7 +28,7 @@ class Level_1 extends Phaser.Scene {
         // Fade in camera
         this.cameras.main.fadeIn(500, 0, 0, 0);
         // Enable collision for the wallLayer
-        this.wallLayer.setCollisionByExclusion([-1]);
+        //this.wallLayer.setCollisionByExclusion([-1]);
 
         this.scene.launch('hudScene'); // Start the UI scene
         this.HUD = this.scene.get('hudScene');
@@ -101,6 +102,8 @@ class Level_1 extends Phaser.Scene {
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
         this.input.keyboard.on('keydown-SPACE', this.stunEnemy, this);
+        // Add key listener for teleporting player (checking maze)
+        this.input.keyboard.on('keydown-B', () => this.DBTeleport(this.player, "PlayerDBSpawn"), this);
     }
 
     update() {
@@ -140,6 +143,17 @@ class Level_1 extends Phaser.Scene {
         mazeGenerator.applyMaze();
         // Ensure the layer is visible
         wallLayer.setVisible(true);
+    }
+
+    //debug function to check maze
+    DBTeleport(player, spawnName) {
+        const playerDBSpawn = this.map.findObject("spawnLayer", obj => obj.name === spawnName);
+        if (playerDBSpawn) {
+            player.setPosition(playerDBSpawn.x, playerDBSpawn.y);
+            console.log(`Player teleported to ${playerDBSpawn.x}, ${playerDBSpawn.y}`);
+        } else {
+            console.log(`Spawn point "${spawnName}" not found`);
+        }
     }
 
     createMinimap() {
