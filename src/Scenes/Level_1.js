@@ -1,7 +1,6 @@
 class Level_1 extends Phaser.Scene {
     constructor() {
         super("level1Scene");
-        this.collectedBooks = 0;
     }
 
     preload() {
@@ -11,8 +10,10 @@ class Level_1 extends Phaser.Scene {
 
     create() {
         // Create a new tilemap which uses 16x16 tiles, and is 40 tiles wide and 25 tiles tall
-        this.map = this.add.tilemap("dungeon_map", 30, 20, 16, 16);
-
+        this.map = this.add.tilemap("dungeon_map");
+        this.collectedBooks = 0;
+        this.allBooksCollected = false;
+        this.books = [];
         // Add a tileset to the map
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
@@ -31,12 +32,7 @@ class Level_1 extends Phaser.Scene {
         this.scene.launch('hudScene'); // Start the UI scene
         this.HUD = this.scene.get('hudScene');
 
-        // Add collectable books:
-        this.books = [
-            new Book(this, 50, 100, 'spell_book1'),
-            new Book(this, 150, 100, 'spell_book2'),
-            new Book(this, 250, 100, 'spell_book3')
-        ];
+       
 
         // Add collectable oil bottles:
         this.oilBottles = [
@@ -59,10 +55,12 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
 
-        // Collision detection for the books:
-        this.books.forEach(book => {
-            this.physics.add.overlap(this.player, book, this.collectBook, null, this);
-        });
+        this.createMaze(this.map, this.wallLayer, this.tileset);
+
+        // // Collision detection for the books:
+        // this.books.forEach(book => {
+        //     this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+        // });
 
         // Collision detection for the oil:
         this.oilBottles.forEach(bottle => {
@@ -93,6 +91,8 @@ class Level_1 extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollision, null, this);
 
         this.createMinimap();
+        this.spawnBooks(this.player);
+        this.fogOfWar = new Array(this.map.height).fill(null).map(() => new Array(this.map.width).fill(true)); // Initialize fog of war
 
         // Debug graphics for collision boxes
         this.debugGraphics = this.add.graphics();
@@ -106,6 +106,7 @@ class Level_1 extends Phaser.Scene {
     update() {
         this.playerControl.update();
         this.updateMinimap();
+        this.revealMinimap();
 
         if (this.playerFOV) {
             this.playerFOV.update(); // Adjust the radius as needed
@@ -126,6 +127,21 @@ class Level_1 extends Phaser.Scene {
 
     }
 
+    //This function is unfinished, it currently isn't working.
+    createMaze(map, wallLayer, tileset) {
+        const mazeWidth = 66;
+        const mazeHeight = 42;
+        const endX = 170;
+        const endY = -62;
+        const startX = 104;
+        const startY = 1;
+        const wallTileID = 1234;
+        const mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight, startX, startY, endX, endY, wallTileID, map, wallLayer, tileset);
+        mazeGenerator.applyMaze();
+        // Ensure the layer is visible
+        wallLayer.setVisible(true);
+    }
+
     createMinimap() {
         const minimapWidth = 250; // Width of the minimap
         const minimapHeight = 250; // Height of the minimap
@@ -139,19 +155,47 @@ class Level_1 extends Phaser.Scene {
         minimapCreated = true;
     }
 
-    collectBook(player, book) {
-        this.collectedBooks++;
-        book.collect();
-
-        this.minimapGraphics.clear();
-
-        if (this.collectedBooks === 3) {
-            this.triggerEvent();
+    spawnBooks(player) {
+        // Only spawn books if there are no books or if some books have been collected
+        if (this.allBooksCollected === false) {
+            this.player = player;
+            const bookSpawnPoints = {
+                "spell_book1": ["bookA1", "bookA2", "bookA3", "bookA4"],
+                "spell_book2": ["bookB1", "bookB2", "bookB3", "bookB4", "bookB5", "bookB6", "bookB7", "bookB8", "bookB9", "bookB10", "bookB11"],
+                "spell_book3": ["bookC1", "bookC2", "bookC3"]
+            };
+    
+            Object.keys(bookSpawnPoints).forEach(bookType => {
+                const spawnPoints = bookSpawnPoints[bookType];
+                const randomSpawnPointName = Phaser.Utils.Array.GetRandom(spawnPoints);
+                const spawnPoint = this.map.findObject("spawnLayer", obj => obj.name === randomSpawnPointName);
+    
+                if (spawnPoint) {
+                    const book = new Book(this, spawnPoint.x, spawnPoint.y, bookType);
+                    this.books.push(book);
+                    this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+                }
+            });
         }
+    }
+    
 
+    collectBook(player, book) {
+        book.collect();
+        this.collectedBooks++; // Increment book count
+        // Remove the collected book from the books array
+        this.books = this.books.filter(b => b !== book);
+        this.minimapGraphics.clear();
+        // Check if all books are collected
+        if (this.collectedBooks === 3) {
+            console.log("All Books collected");
+            this.allBooksCollected = true;
+            //this.collectedBooks = 0; // Reset book count
+            // Reinitialize books if needed
+            this.spawnBooks(this.player);
+        }
         // Update the minimap
         this.updateMinimap();
-
         // Update the UI scene with the collected book count
         this.scene.get('hudScene').events.emit('updateHud', this.collectedBooks);
     }
@@ -183,11 +227,6 @@ class Level_1 extends Phaser.Scene {
                 circle.destroy();
             }
         });
-    }
-
-    // GAME FINISHED EVENT to be triggered:
-    triggerEvent() {
-        console.log('All books collected!');
     }
 
     toggleDebug() {
@@ -253,9 +292,9 @@ class Level_1 extends Phaser.Scene {
             layer.data.forEach(row => {
                 row.forEach(tile => {
                     // NOTE: uncomment out this line below to show full minimap (3/4)
-                    if (tile.index !== -1) {
+                    //if (tile.index !== -1) {
                     // NOTE: comment out this line below to show full minimap (4/4)
-                    //if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) { // Only draw non-empty and revealed tiles
+                    if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) { // Only draw non-empty and revealed tiles
                         const color = layer.name === 'Ground' ? 0x888888 : 0xcccccc; // Differentiate wall and ground tiles
                         this.minimapGraphics.fillStyle(color, 1);
                         this.minimapGraphics.fillRect(tile.pixelX * scaleX, tile.pixelY * scaleY, scaleX * tile.width, scaleY * tile.height);
