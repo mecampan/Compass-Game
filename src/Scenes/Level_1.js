@@ -19,6 +19,10 @@ class Level_1 extends Phaser.Scene {
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+        // Layer that doesn't interact with light source
+        this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0); 
+        this.spawnLayer = this.map.getObjectLayer('spawnLayer');
+
         // Fade in camera
         this.cameras.main.fadeIn(500, 0, 0, 0);
         // Enable collision for the wallLayer
@@ -41,7 +45,9 @@ class Level_1 extends Phaser.Scene {
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        this.player = this.physics.add.sprite(100, 100, 'player');
+
+        this.startPoint = this.spawnLayer.objects.find(obj => obj.name === "playerSpawn");
+        this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
         // this.physics.world.enable(this.player);
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
@@ -71,7 +77,8 @@ class Level_1 extends Phaser.Scene {
         this.enemies = this.physics.add.group();
 
         // Create enemies and add them to the group
-        const enemy1 = new Enemy(this, 0, 0, 'evil_wizard', 'idle_01.png');
+        this.enemyStartPoint1 = this.spawnLayer.objects.find(obj => obj.name === "enemySpawn1");
+        const enemy1 = new Enemy(this, this.enemyStartPoint1.x, this.enemyStartPoint1.y, 'evil_wizard', 'idle_01.png');
         //const enemy2 = new Enemy(this, 100, 100, 'evil_wizard', 'idle_01.png');
         this.enemies.add(enemy1.sprite);
         //this.enemies.add(enemy2.sprite);   

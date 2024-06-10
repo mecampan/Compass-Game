@@ -117,7 +117,7 @@ class FOV {
             }
         }
 
-        let oilLevel = this.scene.HUD.getOilAmount();
+        let oilLevel = this.scene.scene.get('hudScene').getOilAmount();
         this.visibleTiles.forEach(({ x, y }) => {
             const groundTile = this.scene.groundLayer.getTileAt(x, y);
             const wallTile = this.scene.wallLayer.getTileAt(x, y);
@@ -135,6 +135,8 @@ class FOV {
             }
         });
 
+        this.updateFrontLayerVisibility(originX, originY, radius);
+
         this.updateEnemyVisibility(originX, originY, radius);
 
         if (this.showFOVOutline) {
@@ -142,12 +144,25 @@ class FOV {
         }
     }
 
+    updateFrontLayerVisibility(originX, originY, radius) {
+        this.scene.frontLayer.forEachTile((tile) => {
+            const distance = Phaser.Math.Distance.Between(
+                originX,
+                originY,
+                tile.x,
+                tile.y
+            );
+            const alpha = 1.4 - (distance / radius) + this.scene.scene.get('hudScene').getOilAmount() - 0.6;
+            tile.alpha = alpha;
+        });
+    }
+
     updateEnemyVisibility(originX, originY, radius) {
         this.scene.enemies.getChildren().forEach(enemySprite => {
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
 
-            let oilLevel = this.scene.HUD.getOilAmount();
+            let oilLevel = this.scene.scene.get('hudScene').getOilAmount();
 
             let isInFOV = false;
             for (let { x, y } of this.visibleTiles) {
@@ -193,7 +208,11 @@ class FOV {
         }
 
         const groundTile = this.scene.groundLayer.getTileAt(x, y);
-        return groundTile && groundTile.index !== -1; // Example condition, adjust as needed
+        if (groundTile) {
+            return true; // Treat ground layer tiles as transparent
+        }
+
+        return true; // Default to transparent if no tile is found
     }
 
     update() {
