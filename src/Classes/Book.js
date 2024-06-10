@@ -15,6 +15,7 @@ class Book extends Phaser.Physics.Arcade.Sprite {
         // add ui to bottom of screen to confirm book has been collected
         this.disableBody(true, true);
         this.setVisible(false);
+        console.log("Book collected");
 
         let message = this.scene.add.bitmapText(this.x, this.y - 20, 'myFont', 'Spell Book Collected.', 5)
         .setOrigin(0.5);    
