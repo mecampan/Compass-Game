@@ -85,6 +85,7 @@ class Level_1 extends Phaser.Scene {
 
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
+        this.input.keyboard.on('keydown-SPACE', this.stunEnemy, this);
     }
 
     update() {
@@ -120,7 +121,32 @@ class Level_1 extends Phaser.Scene {
     }
 
     collectOil(player, oil) {
+        oil.destroy();
         this.HUD.refilOil();
+    }
+
+    stunEnemy() {
+        this.HUD.useOilStun();
+        this.playerFOV.stunEnemiesInFOV();
+
+        const radius = 3 * this.map.tileWidth; // Circle radius in pixels
+        let circle = this.add.graphics();
+
+        // Draw the gradient circle
+        for (let i = radius; i > 0; i--) {
+            let alpha = i / radius;
+            circle.fillStyle(0xffe64e, alpha);
+            circle.fillCircle(this.player.x, this.player.y, i);
+        }
+
+        this.tweens.add({
+            targets: circle,
+            alpha: { from: 0.1, to: 0 },
+            duration: 500, // Duration of the flash effect in milliseconds
+            onComplete: () => {
+                circle.destroy();
+            }
+        });
     }
 
     // GAME FINISHED EVENT to be triggered:

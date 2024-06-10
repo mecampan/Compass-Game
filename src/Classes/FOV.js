@@ -49,6 +49,19 @@ class FOV {
         this.calculateFOV(currentX, currentY, radius); // Always recalculate FOV
     }
 
+    stunEnemiesInFOV() {
+        this.scene.enemies.getChildren().forEach(enemySprite => {
+            const enemy = enemySprite.enemyInstance; // Reference to the Enemy instance
+            const enemyTileX = this.map.worldToTileX(enemySprite.x);
+            const enemyTileY = this.map.worldToTileY(enemySprite.y);
+
+            const distance = Phaser.Math.Distance.Between(this.entity.x, this.entity.y, enemySprite.x, enemySprite.y);
+            if (distance <= 3 * this.map.tileWidth) {
+                enemy.enemyStun();
+            }
+        });
+    }
+
     checkEnemiesInFOV() {
         this.scene.enemies.getChildren().forEach(enemySprite => {
             const enemy = enemySprite.enemyInstance; // Reference to the Enemy instance
@@ -65,13 +78,13 @@ class FOV {
 
             if (this.movingFrequency % 100 === 0) {
                 if (enemy) {
-                    if (isInFOV && !enemy.attacking) {
+                    if (isInFOV && !enemy.attacking && !enemy.stunned) {
                         enemy.pathfinder.chase();
                     }
                 }
             }
 
-            if (enemy.pathfinder.chasing && !isInFOV) {
+            if (enemy.pathfinder.chasing && !isInFOV && !enemy.stunned) {
                 enemy.pathfinder.searchingTimer();
             }
         });
@@ -104,9 +117,7 @@ class FOV {
             }
         }
 
-        let oilLevel = this.scene.HUD.getOilAmount(); 
-
-        console.log()
+        let oilLevel = this.scene.HUD.getOilAmount();
         this.visibleTiles.forEach(({ x, y }) => {
             const groundTile = this.scene.groundLayer.getTileAt(x, y);
             const wallTile = this.scene.wallLayer.getTileAt(x, y);
@@ -136,7 +147,7 @@ class FOV {
             const enemyTileX = this.map.worldToTileX(enemySprite.x);
             const enemyTileY = this.map.worldToTileY(enemySprite.y);
 
-            let oilLevel = this.scene.HUD.getOilAmount(); 
+            let oilLevel = this.scene.HUD.getOilAmount();
 
             let isInFOV = false;
             for (let { x, y } of this.visibleTiles) {

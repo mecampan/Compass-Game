@@ -16,7 +16,7 @@ class Enemy {
     }
 
     enemyAttack() {
-        if (!this.attacking) {
+        if (!this.attacking && !this.stunned) {
             this.attacking = true;
             this.pathfinder.stopCharacter();
             this.sprite.anims.play('attackA');
@@ -33,9 +33,11 @@ class Enemy {
     }
 
     enemyStun() {
+        console.log("Enemy stunned", this.stunned);
         if (!this.stunned) {
             this.stunned = true;
             this.canAttack = false;
+            this.pathfinder.stopCharacter();
             this.sprite.anims.play('stunned');
 
             this.scene.time.delayedCall(10000, () => {
