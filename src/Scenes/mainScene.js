@@ -13,8 +13,8 @@ class mainDungeon extends Phaser.Scene {
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
         // Create the layers
-        this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
-        this.wallLayer = this.map.createLayer("Walls", this.tileset, 0, 0);
+        this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
+        this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
         this.wallLayer.setCollisionByProperty({collides: true});
         
         // Fade in the scene
@@ -26,6 +26,7 @@ class mainDungeon extends Phaser.Scene {
         // Add the player to the scene
         const playerSpawn = this.map.findObject("spawnsLayer", obj => obj.name === "PlayerSpawn1");
         this.player = this.physics.add.sprite(playerSpawn.x, playerSpawn.y, "player");
+        this.playerFOV = new FOV(this, this.player, (x, y) => this.isTileTransparent(x, y), true);
 
         //this.player = this.physics.add.sprite(3213, 1989, 'player');
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
@@ -263,5 +264,10 @@ class mainDungeon extends Phaser.Scene {
                 }
             }
         }
+    }
+
+    isTileTransparent(x, y) {
+        const tile = this.groundLayer.getTileAt(x, y);
+        return tile && tile.index !== -1; // Example condition, adjust as needed
     }
 }
