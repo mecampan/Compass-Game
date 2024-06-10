@@ -78,8 +78,14 @@ class Level_1 extends Phaser.Scene {
 
         // Create enemies and add them to the group
         this.enemyStartPoint1 = this.spawnLayer.objects.find(obj => obj.name === "enemySpawn1");
+        this.enemyStartPoint2 = this.spawnLayer.objects.find(obj => obj.name === "enemySpawn2");
+        this.enemyStartPoint3 = this.spawnLayer.objects.find(obj => obj.name === "enemySpawn3");
+
         const enemy1 = new Enemy(this, this.enemyStartPoint1.x, this.enemyStartPoint1.y, 'evil_wizard', 'idle_01.png');
-        //const enemy2 = new Enemy(this, 100, 100, 'evil_wizard', 'idle_01.png');
+        const enemy2 = new Enemy(this, this.enemyStartPoint1.x, this.enemyStartPoint1.y, 'evil_wizard', 'idle_01.png');
+        const enemy3 = new Enemy(this, this.enemyStartPoint1.x, this.enemyStartPoint1.y, 'evil_wizard', 'idle_01.png');
+
+
         this.enemies.add(enemy1.sprite);
         //this.enemies.add(enemy2.sprite);   
 
