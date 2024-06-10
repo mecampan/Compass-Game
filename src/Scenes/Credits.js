@@ -9,9 +9,9 @@ class Credits extends Phaser.Scene{
         // Centering text based on the game's configuration
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
-    
+
         this.add.bitmapText(centerX, centerY - 350, 'myFont', 'Credits', 56).setOrigin(0.5);
-    
+
         this.add.bitmapText(centerX, centerY - 100, 'myFont', 'Asset Packs: Szadi Art, Bagong Games, LuizMelo', 42).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY - 200, 'myFont', 'Game Designers: Micheal Campanile, Jacqueline Gracey', 42).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY, 'myFont', 'Level Designer: Luan Ta', 42).setOrigin(0.5);
@@ -27,8 +27,8 @@ class Credits extends Phaser.Scene{
                 sound.play();
                 this.scene.stop("creditsScene");
                 this.scene.start("titleScreenScene");
-            });    
-    
-    
+            });
+
+
     }
 }
