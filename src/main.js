@@ -16,6 +16,12 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
+    scale: {
+        mode: Phaser.Scale.FIT, // Fit to window
+        autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game canvas in the window
+        width: 1900,
+        height: 900
+    },
     physics: {
         default: 'arcade',
         arcade: {
@@ -27,8 +33,6 @@ let config = {
             }
         }
     },
-    width: 1440,
-    height: 900,
     scene: [Load, TitleScreen, Credits, HowToPlay, Level_1, mainDungeon, HUD]
 }
 
