@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="247" height="232" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="23">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="247" height="232" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="33">
  <editorsettings>
   <export target="dungeon.tmj" format="json"/>
  </editorsettings>
@@ -4166,6 +4166,36 @@
    <point/>
   </object>
   <object id="22" name="bookC3" x="1928.88" y="862.127">
+   <point/>
+  </object>
+  <object id="23" name="oilSpawn1" x="3215" y="3133">
+   <point/>
+  </object>
+  <object id="24" name="oilSpawn2" x="2839" y="2729">
+   <point/>
+  </object>
+  <object id="25" name="oilSpawn3" x="3858" y="2241">
+   <point/>
+  </object>
+  <object id="26" name="oilSpawn4" x="1169" y="1789">
+   <point/>
+  </object>
+  <object id="27" name="oilSpawn5" x="37" y="2447">
+   <point/>
+  </object>
+  <object id="28" name="oilSpawn6" x="923" y="1852">
+   <point/>
+  </object>
+  <object id="29" name="oilSpawn7" x="2887" y="1450">
+   <point/>
+  </object>
+  <object id="30" name="oilSpawn8" x="1582" y="1310">
+   <point/>
+  </object>
+  <object id="31" name="oilSpawn9" x="2184" y="350.667">
+   <point/>
+  </object>
+  <object id="32" name="oilSpawn10" x="2961.33" y="1856">
    <point/>
   </object>
  </objectgroup>

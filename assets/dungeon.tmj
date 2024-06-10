@@ -791,8 +791,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2132.68869191512,
-                 "y":2667.20386784851
+                 "x":2132.69,
+                 "y":2667.2
                 }, 
                 {
                  "height":0,
@@ -803,8 +803,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2331.45312919688,
-                 "y":2664.5178619393
+                 "x":2331.45,
+                 "y":2664.52
                 }, 
                 {
                  "height":0,
@@ -815,8 +815,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2134.21233887632,
-                 "y":2897.76640755682
+                 "x":2134.21,
+                 "y":2897.77
                 }, 
                 {
                  "height":0,
@@ -827,8 +827,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2331.00462461872,
-                 "y":2895.7984846994
+                 "x":2331,
+                 "y":2895.8
                 }, 
                 {
                  "height":0,
@@ -839,8 +839,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":173.802458668927,
-                 "y":1816.44764730818
+                 "x":173.802,
+                 "y":1816.45
                 }, 
                 {
                  "height":0,
@@ -851,8 +851,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":288.155802861685,
-                 "y":1813.39427662957
+                 "x":288.156,
+                 "y":1813.39
                 }, 
                 {
                  "height":0,
@@ -863,8 +863,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":400.43720190779,
-                 "y":1812.40063593005
+                 "x":400.437,
+                 "y":1812.4
                 }, 
                 {
                  "height":0,
@@ -875,8 +875,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":511.724960254372,
-                 "y":1812.40063593005
+                 "x":511.725,
+                 "y":1812.4
                 }, 
                 {
                  "height":0,
@@ -887,8 +887,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":90.9842845326716,
-                 "y":2320.69006262555
+                 "x":90.9843,
+                 "y":2320.69
                 }, 
                 {
                  "height":0,
@@ -899,8 +899,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":239.055729867025,
-                 "y":2218.73599282833
+                 "x":239.056,
+                 "y":2218.74
                 }, 
                 {
                  "height":0,
@@ -911,8 +911,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":352.607201553862,
-                 "y":2402.5100851636
+                 "x":352.607,
+                 "y":2402.51
                 }, 
                 {
                  "height":0,
@@ -923,8 +923,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":480.352607201554,
-                 "y":2215.00074704916
+                 "x":480.353,
+                 "y":2215
                 }, 
                 {
                  "height":0,
@@ -935,8 +935,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":576.304998337582,
-                 "y":2406.0733680594
+                 "x":576.305,
+                 "y":2406.07
                 }, 
                 {
                  "height":0,
@@ -947,8 +947,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":702.648786434667,
-                 "y":2218.77424359969
+                 "x":702.649,
+                 "y":2218.77
                 }, 
                 {
                  "height":0,
@@ -959,8 +959,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":832.317411060623,
-                 "y":2408.28992574532
+                 "x":832.317,
+                 "y":2408.29
                 }, 
                 {
                  "height":0,
@@ -971,8 +971,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2626.63535726266,
-                 "y":868.835961086884
+                 "x":2626.64,
+                 "y":868.836
                 }, 
                 {
                  "height":0,
@@ -983,8 +983,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":2250.92250922509,
-                 "y":863.80409258638
+                 "x":2250.92,
+                 "y":863.804
                 }, 
                 {
                  "height":0,
@@ -995,8 +995,128 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1928.88292519289,
-                 "y":862.126803086213
+                 "x":1928.88,
+                 "y":862.127
+                }, 
+                {
+                 "height":0,
+                 "id":23,
+                 "name":"oilSpawn1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3215,
+                 "y":3133
+                }, 
+                {
+                 "height":0,
+                 "id":24,
+                 "name":"oilSpawn2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2839,
+                 "y":2729
+                }, 
+                {
+                 "height":0,
+                 "id":25,
+                 "name":"oilSpawn3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3858,
+                 "y":2241
+                }, 
+                {
+                 "height":0,
+                 "id":26,
+                 "name":"oilSpawn4",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1169,
+                 "y":1789
+                }, 
+                {
+                 "height":0,
+                 "id":27,
+                 "name":"oilSpawn5",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":37,
+                 "y":2447
+                }, 
+                {
+                 "height":0,
+                 "id":28,
+                 "name":"oilSpawn6",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":923,
+                 "y":1852
+                }, 
+                {
+                 "height":0,
+                 "id":29,
+                 "name":"oilSpawn7",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2887,
+                 "y":1450
+                }, 
+                {
+                 "height":0,
+                 "id":30,
+                 "name":"oilSpawn8",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1582,
+                 "y":1310
+                }, 
+                {
+                 "height":0,
+                 "id":31,
+                 "name":"oilSpawn9",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2184,
+                 "y":350.666666666667
+                }, 
+                {
+                 "height":0,
+                 "id":32,
+                 "name":"oilSpawn10",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2961.33333333333,
+                 "y":1856
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1005,7 +1125,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":23,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
