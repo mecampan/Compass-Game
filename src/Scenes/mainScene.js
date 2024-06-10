@@ -6,7 +6,9 @@ class mainDungeon extends Phaser.Scene {
     create() {
         // Create a new tilemap which uses 16x16 tiles, and is 40 tiles wide and 25 tiles tall
         this.map = this.add.tilemap("dungeon");
-
+        this.collectedBooks = 0;
+        this.allBooksCollected = false;
+        this.books = [];
         // Add a tileset to the map
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
@@ -55,34 +57,26 @@ class mainDungeon extends Phaser.Scene {
 
         // Create minimap and fog of war
         this.createMinimap();
+        this.spawnBooks(this.player);
         // NOTE: comment out this line below to show full minimap (1/4)
         //this.fogOfWar = new Array(this.map.height).fill(null).map(() => new Array(this.map.width).fill(true)); // Initialize fog of war
+        
     }
-
 
     //This function is unfinished, it currently isn't working.
     createMaze(map, wallLayer, tileset) {
         const mazeWidth = 66;
         const mazeHeight = 42;
-        // const startX = 105;
-        // const startY = -104;
         const endX = 170;
         const endY = -62;
         const startX = 104;
         const startY = 1;
-        // const endX = 33;
-        // const endY = 21;
         const wallTileID = 1234;
-        //const wallTileID = 403;
-
         const mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight, startX, startY, endX, endY, wallTileID, map, wallLayer, tileset);
         mazeGenerator.applyMaze();
-
         // Ensure the layer is visible
         wallLayer.setVisible(true);
     }
-
-
 
     createMinimap() {
         const minimapWidth = 250; // Width of the minimap
@@ -138,24 +132,64 @@ class mainDungeon extends Phaser.Scene {
         );
 
         //this.playerFOV.drawFOVOutline(this.debugGraphics);
-
         // Draw debug for each enemy in the group
         // this.enemies.getChildren().forEach(enemy => {
         //     enemy.enemyInstance.renderDebug(this.debugGraphics);
         // });
     }
 
+    spawnBooks(player) {
+        // Only spawn books if there are no books or if some books have been collected
+        if (this.allBooksCollected === false) {
+            this.player = player;
+            const bookSpawnPoints = {
+                "spell_book1": ["bookA1", "bookA2", "bookA3", "bookA4"],
+                "spell_book2": ["bookB1", "bookB2", "bookB3", "bookB4", "bookB5", "bookB6", "bookB7", "bookB8", "bookB9", "bookB10", "bookB11"],
+                "spell_book3": ["bookC1", "bookC2", "bookC3"]
+            };
+    
+            Object.keys(bookSpawnPoints).forEach(bookType => {
+                const spawnPoints = bookSpawnPoints[bookType];
+                const randomSpawnPointName = Phaser.Utils.Array.GetRandom(spawnPoints);
+                const spawnPoint = this.map.findObject("spawnsLayer", obj => obj.name === randomSpawnPointName);
+    
+                if (spawnPoint) {
+                    const book = new Book(this, spawnPoint.x, spawnPoint.y, bookType);
+                    this.books.push(book);
+                    this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+                }
+            });
+        }
+    }
+    
 
+    collectBook(player, book) {
+        book.collect();
+        this.collectedBooks++; // Increment book count
+        // Remove the collected book from the books array
+        this.books = this.books.filter(b => b !== book);
+        this.minimapGraphics.clear();
+        // Check if all books are collected
+        if (this.collectedBooks === 3) {
+            console.log("All Books collected");
+            this.allBooksCollected = true;
+            //this.collectedBooks = 0; // Reset book count
+            // Reinitialize books if needed
+            this.spawnBooks(this.player);
+        }
+        // Update the minimap
+        this.updateMinimap();
+        // Update the UI scene with the collected book count
+        this.scene.get('hudScene').events.emit('updateHud', this.collectedBooks);
+    }
 
 
     update() {
         this.playerControl.update();
-
         // Draw debug graphics if debug mode is active
         if (this.debugActive) {
             this.drawDebug();
         }
-
         this.updateMinimap();
         // NOTE: comment out this line below to show full minimap (2/4)
         //this.revealMinimap();
@@ -197,6 +231,21 @@ class mainDungeon extends Phaser.Scene {
             scaleX * this.player.width * playerMinimapScale, 
             scaleY * this.player.height * playerMinimapScale
         );
+
+        // For Debug. Hide this when using revealed minimap.
+        const bookMinimapScale = 1;
+        // Draw the books onto the minimap with a smaller scale
+        this.books.forEach(book => {
+            book.setOrigin(0.5);
+            this.minimapGraphics.fillStyle(0x0000ff, 1); // Blue for the books
+            this.minimapGraphics.fillRect(
+                (book.x * scaleX) - ((scaleX * book.width * (bookMinimapScale - 1)) / 2),
+                (book.y * scaleY) - ((scaleY * book.height * (bookMinimapScale - 1)) / 2),
+                scaleX * book.width * bookMinimapScale,
+                scaleY * book.height * bookMinimapScale
+            );
+        });
+
         // Trigger an event to update the HUD with the new minimap graphics
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
     }
@@ -205,7 +254,6 @@ class mainDungeon extends Phaser.Scene {
         const revealRadius = 10; // Radius around the player to reveal tiles
         const playerTileX = Math.floor(this.player.x / this.map.tileWidth);
         const playerTileY = Math.floor(this.player.y / this.map.tileHeight);
-
         for (let y = -revealRadius; y <= revealRadius; y++) {
             for (let x = -revealRadius; x <= revealRadius; x++) {
                 const revealX = playerTileX + x;
