@@ -9,23 +9,25 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
-        this.load.audio("ui_sound", "UI_click.wav");
+        this.load.audio("ui_sound", "audio/UI_click.wav");
+        this.load.audio("titleMusic", "audio/myst_on_the_moor.ogg");
+
         // Load Enemy
-        this.load.atlas("evil_wizard", "evil_wizard.png", "evil_wizard.json");
+        this.load.atlas("evil_wizard", "images/evil_wizard.png", "evil_wizard.json");
 
         //load bitmap:
         //this.load.bitmapFont("myFont", "gameFontTest.png", "gameFontTest.fnt");
         this.load.bitmapFont("myFont", "font_2.png", "font_2.xml");
 
         // books:
-        this.load.image("spell_book1", "spellBook1.png");
-        this.load.image("spell_book2", "spellBook2.png");
-        this.load.image("spell_book3", "spellBook3.png");
+        this.load.image("spell_book1", "images/spellBook1.png");
+        this.load.image("spell_book2", "images/spellBook2.png");
+        this.load.image("spell_book3", "images/spellBook3.png");
 
         // Lantern:
-        this.load.image("lantern", "lantern.png");
-        this.load.image("oilBar", "oilBar.png");
-        this.load.image("oilBottle", "oilBottle.png");
+        this.load.image("lantern", "images/lantern.png");
+        this.load.image("oilBar", "images/oilBar.png");
+        this.load.image("oilBottle", "images/oilBottle.png");
 
         // Load tilemap information
         this.load.image("tilemap_tiles", "catacombs_tilemap.png");
@@ -34,6 +36,9 @@ class Load extends Phaser.Scene {
     }
 
     create() {
+        this.music = this.sound.add('titleMusic', { loop: true });
+        this.music.play();
+        
         // Create the animation for the evil wizard
         this.anims.create({
             key: 'idle',

@@ -5,6 +5,7 @@ class TitleScreen extends Phaser.Scene{
 
     create(){
         let sound = this.sound.add('ui_sound');
+
         // Load the tilemap and tileset
         // this.map = this.add.tilemap("dungeon", 62, 52, 16, 16);
         // this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
@@ -30,7 +31,7 @@ class TitleScreen extends Phaser.Scene{
         let title = this.add.bitmapText(centerX, centerY - 50, 'myFont', 'Exorcism Dungeon', 56).setOrigin(0.5);
     
         // For the 'Play' button
-        let play = this.add.bitmapText(centerX, centerY + 120, 'myFont', 'Play', 32)
+        let play = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Play', 64)
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => play.setScale(1.2))
@@ -42,7 +43,7 @@ class TitleScreen extends Phaser.Scene{
             });
 
         // For the 'Credits' button
-        let credits = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Credits', 32)
+        let credits = this.add.bitmapText(centerX, centerY + 180, 'myFont', 'Credits', 32)
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => credits.setScale(1.2))
@@ -51,6 +52,17 @@ class TitleScreen extends Phaser.Scene{
                 sound.play();
                 this.scene.start('creditsScene');  // Example scene change
             });
+
+                    // For the 'Credits' button
+        let howTo = this.add.bitmapText(centerX, centerY + 230, 'myFont', 'How to Play', 32)
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', () => howTo.setScale(1.2))
+        .on('pointerout', () => howTo.setScale(1))
+        .on('pointerdown', () => {
+            sound.play();
+            this.scene.start('howtoscene');  // Example scene change
+        });
     }
     
     

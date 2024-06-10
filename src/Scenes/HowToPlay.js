@@ -1,6 +1,6 @@
-class Credits extends Phaser.Scene{
+class HowToPlay extends Phaser.Scene{
     constructor() {
-        super("creditsScene");
+        super("howtoscene");
     }
 
     create(){
@@ -27,13 +27,12 @@ class Credits extends Phaser.Scene{
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
     
-        this.add.bitmapText(centerX, centerY - 350, 'myFont', 'Credits', 56).setOrigin(0.5);
+        this.add.bitmapText(centerX, centerY - 350, 'myFont', 'How to Play', 56).setOrigin(0.5);
     
-        this.add.bitmapText(centerX, centerY - 200, 'myFont', 'Asset Packs: Szadi Art, Bagong Games, LuizMelo', 42).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY, 'myFont', 'Game Designers: Micheal Campanile, Jacqueline Gracey', 42).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY - 100, 'myFont', 'Level Designer: Luan Ta', 42).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY + 100, 'myFont', 'Title Music:', 42).setOrigin(0.5);
-        this.add.bitmapText(centerX, centerY + 200, 'myFont', '"Myst on the Moor" Kevin MacLeod (incompetech.com)\n Licensed under Creative Commons: By Attribution 4.0 License\n http://creativecommons.org/licenses/by/4.0/', 42).setOrigin(0.5);
+        this.add.bitmapText(centerX, centerY - 200, 'myFont', 'Controls', 42).setOrigin(0.5);
+        this.add.bitmapText(centerX, centerY - 50, 'myFont', 'Move Up - W / Up Arrow\nMove Down - S / Down Arrow\nMove Right - A / Left Arrow\nMove Right - D / Right Arrow\n Stun Enemies - Space Key', 42).setOrigin(0.5);
+
+        this.add.bitmapText(centerX, centerY + 200, 'myFont', 'Pick up 3 books and bring them to the alter to break the evil ritual and escape the dungeon. Oil bottles increase lantern fuel allowing you to see further.', 42).setOrigin(0.5).setMaxWidth(1000);
 
         let back = this.add.bitmapText(centerX, centerY + 400, 'myFont', 'Back', 32)
             .setOrigin(0.5)
