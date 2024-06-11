@@ -21,7 +21,7 @@ class Level_1 extends Phaser.Scene {
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
         // Layer that doesn't interact with light source
-        this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0); 
+        this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0);
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
         // Fade in camera
@@ -194,26 +194,28 @@ class Level_1 extends Phaser.Scene {
     }
 
     stunEnemy() {
-        this.HUD.useOilStun();
-        this.playerFOV.stunEnemiesInFOV();
+        if (this.HUD.oilAmount >= 10) {
+            this.HUD.useOilStun();
+            this.playerFOV.stunEnemiesInFOV();
 
-        const radius = 3 * this.map.tileWidth;
-        let circle = this.add.graphics();
+            const radius = 3 * this.map.tileWidth;
+            let circle = this.add.graphics();
 
-        for (let i = radius; i > 0; i--) {
-            let alpha = i / radius;
-            circle.fillStyle(0xffe64e, alpha);
-            circle.fillCircle(this.player.x, this.player.y, i);
-        }
-
-        this.tweens.add({
-            targets: circle,
-            alpha: { from: 0.1, to: 0 },
-            duration: 500,
-            onComplete: () => {
-                circle.destroy();
+            for (let i = radius; i > 0; i--) {
+                let alpha = i / radius;
+                circle.fillStyle(0xffe64e, alpha);
+                circle.fillCircle(this.player.x, this.player.y, i);
             }
-        });
+
+            this.tweens.add({
+                targets: circle,
+                alpha: { from: 0.1, to: 0 },
+                duration: 500,
+                onComplete: () => {
+                    circle.destroy();
+                }
+            });
+        }
     }
 
     toggleDebug() {
@@ -288,9 +290,9 @@ class Level_1 extends Phaser.Scene {
 
         this.minimapGraphics.fillStyle(0x00ff00, 1);
         this.minimapGraphics.fillRect(
-            (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2), 
-            (this.player.y * scaleY) - ((scaleY * this.player.height * (playerMinimapScale - 1)) / 2), 
-            scaleX * this.player.width * playerMinimapScale, 
+            (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2),
+            (this.player.y * scaleY) - ((scaleY * this.player.height * (playerMinimapScale - 1)) / 2),
+            scaleX * this.player.width * playerMinimapScale,
             scaleY * this.player.height * playerMinimapScale
         );
 
