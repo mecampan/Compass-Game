@@ -33,7 +33,7 @@ class Enemy {
     }
 
     enemyStun() {
-        console.log("Enemy stunned", this.stunned);
+        //console.log("Enemy stunned", this.stunned);
         if (!this.stunned) {
             this.stunned = true;
             this.canAttack = false;
@@ -41,6 +41,7 @@ class Enemy {
             this.sprite.anims.play('stunned');
 
             this.scene.time.delayedCall(10000, () => {
+                //console.log("Enemy no longer stunned", this.stunned);
                 this.stunned = false;
                 this.canAttack = true;
                 this.sprite.anims.play('run');

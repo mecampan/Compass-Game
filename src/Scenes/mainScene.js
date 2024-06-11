@@ -13,8 +13,8 @@ class mainDungeon extends Phaser.Scene {
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
         // Create the layers
-        this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
-        this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+        this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
+        this.wallLayer = this.map.createLayer("Walls", this.tileset, 0, 0);
         this.wallLayer.setCollisionByProperty({collides: true});
         
         // Fade in the scene

@@ -76,7 +76,7 @@ class FOV {
                 }
             }
 
-            if (this.movingFrequency % 100 === 0) {
+            if (this.movingFrequency % 50 === 0) {
                 if (enemy) {
                     if (isInFOV && !enemy.attacking && !enemy.stunned) {
                         enemy.pathfinder.chase();

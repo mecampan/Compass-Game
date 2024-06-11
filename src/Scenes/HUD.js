@@ -89,7 +89,7 @@ class HUD extends Phaser.Scene {
         if (this.minimapContainer) {
             this.minimapContainer.removeAll(true);
         } else {
-            console.error('minimapContainer is not defined');
+            //console.error('minimapContainer is not defined');
             return;
         }
         
@@ -110,7 +110,7 @@ class HUD extends Phaser.Scene {
 
     updateMinimap(minimapGraphics) {
         if (!this.minimapGraphics) {
-            console.error('minimapGraphics is not defined');
+            //console.error('minimapGraphics is not defined');
             return;
         }
     
