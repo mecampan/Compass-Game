@@ -20,8 +20,11 @@ class Level_1 extends Phaser.Scene {
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
+
         // Layer that doesn't interact with light source
         this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0);
+        
+        // spawnLayer objects
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
         // Fade in camera
@@ -59,8 +62,11 @@ class Level_1 extends Phaser.Scene {
             this.physics.add.overlap(this.player, bottle, this.collectOil, null, this);
         });
 
-        // this.wallLayer.setCollisionByProperty({collides: true});
+        //this.wallLayer.setCollisionByProperty({collides: true});
+        //this.frontLayer.setCollisionByProperty({collides: true});
+
         this.physics.add.collider(this.player, this.wallLayer);
+        this.physics.add.collider(this.player, this.frontLayer);
         this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
 
         // Initialize enemies

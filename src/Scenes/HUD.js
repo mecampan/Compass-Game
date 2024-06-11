@@ -109,6 +109,7 @@ class HUD extends Phaser.Scene {
     
 
     updateMinimap(minimapGraphics) {
+        
         if (!this.minimapGraphics) {
             //console.error('minimapGraphics is not defined');
             return;
@@ -117,8 +118,6 @@ class HUD extends Phaser.Scene {
         // Ensure the minimap graphics in the container are updated
         this.minimapGraphics = minimapGraphics;
     }
-
-
 
     update() {
     }

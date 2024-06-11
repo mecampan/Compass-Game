@@ -20,7 +20,7 @@ let config = {
         mode: Phaser.Scale.FIT, // Fit to window
         autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game canvas in the window
         width: 1900,
-        height: 900
+        height: 1200
     },
     physics: {
         default: 'arcade',
