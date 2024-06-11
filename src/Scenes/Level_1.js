@@ -54,8 +54,17 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
+ 
 
         //this.createMaze(this.map, this.wallLayer, this.tileset);
+
+        //Create Collision Zone For Game End Condition:
+        this.targetZone = this.add.zone(2725, 1955, 48, 32);
+        this.physics.world.enable(this.targetZone);
+        this.targetZone.body.setAllowGravity(false);
+        this.targetZone.body.moves = false;
+
+        this.physics.add.overlap(this.player, this.targetZone, this.playerInZone, null, this);
 
         // Collision detection for the oil:
         this.oilBottles.forEach(bottle => {
@@ -329,6 +338,13 @@ class Level_1 extends Phaser.Scene {
                     this.fogOfWar[revealY][revealX] = false;
                 }
             }
+        }
+    }
+
+    playerInZone(player, zone) {
+        console.log("Player is in the target zone!");
+        if(this.allBooksCollected == true){
+            this.scene.start("gameWonScene");
         }
     }
 }
