@@ -6,6 +6,8 @@ class GameWon extends Phaser.Scene{
     create(){
         let sound = this.sound.add('ui_sound');
 
+        this.cameras.main.fadeIn(500, 0, 0, 0);
+
         // Centering text based on the game's configuration
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
