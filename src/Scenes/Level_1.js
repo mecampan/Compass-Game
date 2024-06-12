@@ -14,6 +14,12 @@ class Level_1 extends Phaser.Scene {
         this.collectedBooks = 0;
         this.allBooksCollected = false;
         this.books = [];
+
+        // Array to store playerDB positions
+        this.playerDBPositions = [];
+        this.currentDBIndex = 0; // Current destination index
+
+
         // Add a tileset to the map
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
@@ -55,8 +61,6 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
 
-        //this.createMaze(this.map, this.wallLayer, this.tileset);
-
         //Create Collision Zone For Game End Condition:
         this.targetZone = this.add.zone(2725, 1955, 48, 32);
         this.physics.world.enable(this.targetZone);
@@ -75,7 +79,6 @@ class Level_1 extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.wallLayer);
         this.physics.add.collider(this.player, this.frontLayer);
-        this.sceneTransition = new SceneTransition(this, "Scene1->2", "DungeonScene", this.player);
 
         // Initialize enemies
         this.enemies = this.physics.add.group();
@@ -95,6 +98,11 @@ class Level_1 extends Phaser.Scene {
         // Add key listener for toggling debug mode
         this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
         this.input.keyboard.on('keydown-SPACE', this.stunEnemy, this);
+
+        // Fetch playerDB positions from spawnLayer
+        this.fetchPlayerDBPositions();
+        // Keyboard input for teleportation
+        this.input.keyboard.on('keydown-B', this.teleportPlayer, this);
     }
 
     update() {
@@ -121,18 +129,29 @@ class Level_1 extends Phaser.Scene {
 
     }
 
-   
-    createMaze(map, wallLayer, tileset) {
-        const mazeWidth = 66;
-        const mazeHeight = 42;
-        const endX = 170;
-        const endY = -62;
-        const startX = 104;
-        const startY = 1;
-        const wallTileID = 1234;
-        const mazeGenerator = new MazeGenerator(mazeWidth, mazeHeight, startX, startY, endX, endY, wallTileID, map, wallLayer, tileset);
-        mazeGenerator.applyMaze();
-        wallLayer.setVisible(true);
+    // Method to fetch playerDB positions
+    fetchPlayerDBPositions() {
+        this.spawnLayer.objects.forEach(obj => {
+            if (obj.name.startsWith('playerDB')) {
+                this.playerDBPositions.push({ x: obj.x, y: obj.y });
+            }
+        });
+    }
+
+    // Method to teleport player to the next playerDB position
+    teleportPlayer() {
+        // Check if there are playerDB positions
+        if (this.playerDBPositions.length === 0) {
+            console.error("No playerDB positions found.");
+            return;
+        }
+
+        // Teleport player to the next position
+        const nextPosition = this.playerDBPositions[this.currentDBIndex];
+        this.player.setPosition(nextPosition.x, nextPosition.y);
+
+        // Increment currentDBIndex and loop back to 0 if it exceeds the array length
+        this.currentDBIndex = (this.currentDBIndex + 1) % this.playerDBPositions.length;
     }
 
     createMinimap() {
@@ -289,54 +308,6 @@ class Level_1 extends Phaser.Scene {
         const tile = this.groundLayer.getTileAt(x, y);
         return tile && tile.index !== -1;
     }
-
-    // updateMinimap() {
-    //     const minimapWidth = 250;
-    //     const minimapHeight = 250;
-    //     const scaleX = minimapWidth / this.map.widthInPixels;
-    //     const scaleY = minimapHeight / this.map.heightInPixels;
-    
-    //     // Clear previous minimap graphics
-    //     this.minimapGraphics.clear();
-
-    //     // Draw the minimap
-    //     this.map.layers.forEach(layer => {
-    //         layer.data.forEach(row => {
-    //             row.forEach(tile => {
-    //                 if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) {
-    //                     const color = layer.name === 'groundLayer' ? 0x888888 : 0xcccccc;
-    //                     this.minimapGraphics.fillStyle(color, 1);
-    //                     this.minimapGraphics.fillRect(tile.pixelX * scaleX, tile.pixelY * scaleY, scaleX * tile.width, scaleY * tile.height);
-    //                 }
-    //             });
-    //         });
-    //     });
-    
-    //     const playerMinimapScale = 2.5;
-    
-    //     this.minimapGraphics.fillStyle(0x00ff00, 1);
-    //     this.minimapGraphics.fillRect(
-    //         (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2),
-    //         (this.player.y * scaleY) - ((scaleY * this.player.height * (playerMinimapScale - 1)) / 2),
-    //         scaleX * this.player.width * playerMinimapScale,
-    //         scaleY * this.player.height * playerMinimapScale
-    //     );
-    
-    //     const bookMinimapScale = 1;
-    //     this.books.forEach(book => {
-    //         book.setOrigin(0.5);
-    //         this.minimapGraphics.fillStyle(0x0000ff, 1);
-    //         this.minimapGraphics.fillRect(
-    //             (book.x * scaleX) - ((scaleX * book.width * (bookMinimapScale - 1)) / 2),
-    //             (book.y * scaleY) - ((scaleY * book.height * (bookMinimapScale - 1)) / 2),
-    //             scaleX * book.width * bookMinimapScale,
-    //             scaleY * book.height * bookMinimapScale
-    //         );
-    //     });
-    
-    //     // Emit event to update the HUD with the new minimap graphics
-    //     this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
-    // }
 
     updateMinimap() {
         const minimapWidth = 250;

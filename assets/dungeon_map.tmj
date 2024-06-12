@@ -1102,6 +1102,42 @@
                  "width":0,
                  "x":3217.33,
                  "y":3461.33
+                }, 
+                {
+                 "height":0,
+                 "id":53,
+                 "name":"playerDB1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2482.08223311958,
+                 "y":2781.96906827612
+                }, 
+                {
+                 "height":0,
+                 "id":54,
+                 "name":"playerDB2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":365.168539325843,
+                 "y":1955.48833189283
+                }, 
+                {
+                 "height":0,
+                 "id":55,
+                 "name":"playerDB3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2605.87726879862,
+                 "y":2035.43647363872
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1110,7 +1146,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":53,
+ "nextobjectid":56,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

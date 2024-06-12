@@ -138,6 +138,7 @@ class FOV {
         this.updateFrontLayerVisibility(originX, originY, radius);
         this.updateEnemyVisibility(originX, originY, radius);
         this.updateOilBottleVisibility(originX, originY, radius);
+        this.updateBookVisibility(originX, originY, radius);
     
         if (this.showFOVOutline) {
             this.drawFOVOutline(); // Draw the FOV outline
@@ -201,6 +202,30 @@ class FOV {
 
             if (!isInFOV) {
                 bottle.alpha = 0;
+            }
+        });
+    }
+
+    updateBookVisibility(originX, originY, radius) {
+        this.scene.books.forEach(book => {
+            const bookTileX = this.map.worldToTileX(book.x);
+            const bookTileY = this.map.worldToTileY(book.y);
+
+            let oilLevel = this.scene.scene.get('hudScene').getOilAmount();
+
+            let isInFOV = false;
+            for (let { x, y } of this.visibleTiles) {
+                if (x === bookTileX && y === bookTileY) {
+                    isInFOV = true;
+                    const distance = Phaser.Math.Distance.Between(originX, originY, bookTileX, bookTileY);
+                    const alpha = 1.8 - (distance / radius) + oilLevel - 0.6;
+                    book.alpha = alpha;
+                    break;
+                }
+            }
+
+            if (!isInFOV) {
+                book.alpha = 0;
             }
         });
     }
