@@ -38,7 +38,7 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON("dungeon_map", "dungeon_map.tmj");
         this.load.tilemapTiledJSON("dungeon", "dungeon.tmj");
 
-        //this.load.atlasXML('player', 'player.png', 'player.xml');
+        this.load.atlasXML('player', 'player.png', 'player.xml');
     }
 
     create() {

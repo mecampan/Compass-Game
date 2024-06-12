@@ -5,7 +5,7 @@ class Level_1 extends Phaser.Scene {
 
     preload() {
         // Load necessary assets here
-        this.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
+        //this.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     }
 
     create() {
@@ -386,7 +386,6 @@ class Level_1 extends Phaser.Scene {
     playerInZone(player, zone) {
         console.log("Player is in the target zone!");
         if(this.allBooksCollected == true){
-            this.scene.stop("Level1Scene");
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
         }
@@ -398,7 +397,6 @@ class Level_1 extends Phaser.Scene {
             this.fadeOutAudio(this.load.music);
             this.gameOversfx.play();
             this.time.delayedCall(1500, () => {
-                this.scene.stop("Level1Scene");
                 this.scene.stop("hudScene")
                 this.scene.start("gameOverScene");
             });
