@@ -23,8 +23,8 @@ class GameOver extends Phaser.Scene{
             .on('pointerout', () => playAgain.setScale(1))
             .on('pointerdown', () => {
                 sound.play();
-                this.scene.stop("gameWonScene");
-                this.scene.start("level1Scene");
+                this.scene.stop("gameOverScene");
+                this.scene.get("level1Scene").resetGame();
             });
 
 
@@ -35,7 +35,7 @@ class GameOver extends Phaser.Scene{
             .on('pointerout', () => home.setScale(1))
             .on('pointerdown', () => {
                 sound.play();
-                this.scene.stop("gameWonScene");
+                this.scene.stop("gameOverScene");
                 this.scene.start("titleScreenScene");
             });
     }

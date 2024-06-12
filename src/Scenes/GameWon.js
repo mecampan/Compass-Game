@@ -24,7 +24,8 @@ class GameWon extends Phaser.Scene{
             .on('pointerdown', () => {
                 sound.play();
                 this.scene.stop("gameWonScene");
-                this.scene.start("level1Scene");
+                this.scene.get("level1Scene").resetGame();
+                //this.scene.start("level1Scene");
             });
 
 
