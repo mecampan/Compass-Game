@@ -127,7 +127,7 @@ class PlayerControl {
     }
 
     update() {
-        const speed = 75;
+        const speed = 125;
         const player = this.player;
         const cursors = this.cursors;
         const keys = this.keys;

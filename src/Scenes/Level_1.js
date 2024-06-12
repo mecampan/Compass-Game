@@ -54,7 +54,6 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.setZoom(4.0);
- 
 
         //this.createMaze(this.map, this.wallLayer, this.tileset);
 
@@ -122,6 +121,7 @@ class Level_1 extends Phaser.Scene {
 
     }
 
+   
     createMaze(map, wallLayer, tileset) {
         const mazeWidth = 66;
         const mazeHeight = 42;
@@ -138,23 +138,32 @@ class Level_1 extends Phaser.Scene {
     createMinimap() {
         const minimapWidth = 250; // Width of the minimap
         const minimapHeight = 250; // Height of the minimap
-
-        // Create a graphics object for the minimap
+        const padding = 10; // Padding from the edges
+        
+        // Create the miniCam for the minimap
+        this.miniCam = this.cameras.add(padding, padding, minimapWidth, minimapHeight);
+        this.miniCam.setZoom(1);
+        this.miniCam.setBackgroundColor(0x000000); // Black background for visibility
+    
+        // Draw a rectangle for the minimap background (optional, for visibility)
         this.minimapGraphics = this.add.graphics();
         this.minimapGraphics.setScrollFactor(0); // Ensure it stays in place
-
+        this.minimapGraphics.fillStyle(0x000000, 0.5); // Black background with 50% opacity
+        this.minimapGraphics.fillRect(0, 0, minimapWidth, minimapHeight);
+    
         // Trigger an event to update the HUD with the minimap
         this.scene.get('hudScene').events.emit('createMinimap', this.minimapGraphics, minimapWidth, minimapHeight);
         minimapCreated = true;
     }
+    
 
     spawnBooks(player) {
         if (this.allBooksCollected === false) {
             this.player = player;
             const bookSpawnPoints = {
                 "spell_book1": ["bookA1", "bookA2", "bookA3", "bookA4"],
-                "spell_book2": ["bookB1", "bookB2", "bookB3", "bookB4", "bookB5", "bookB6", "bookB7", "bookB8", "bookB9", "bookB10", "bookB11"],
-                "spell_book3": ["bookC1", "bookC2", "bookC3"]
+                "spell_book2": ["bookB1", "bookB2", "bookB3", "bookB4"],
+                "spell_book3": ["bookB5", "bookB6", "bookB7", "bookB8", "bookB9", "bookB10", "bookB11"]
             };
 
             Object.keys(bookSpawnPoints).forEach(bookType => {
@@ -281,14 +290,67 @@ class Level_1 extends Phaser.Scene {
         return tile && tile.index !== -1;
     }
 
+    // updateMinimap() {
+    //     const minimapWidth = 250;
+    //     const minimapHeight = 250;
+    //     const scaleX = minimapWidth / this.map.widthInPixels;
+    //     const scaleY = minimapHeight / this.map.heightInPixels;
+    
+    //     // Clear previous minimap graphics
+    //     this.minimapGraphics.clear();
+
+    //     // Draw the minimap
+    //     this.map.layers.forEach(layer => {
+    //         layer.data.forEach(row => {
+    //             row.forEach(tile => {
+    //                 if (tile.index !== -1 && !this.fogOfWar[tile.y][tile.x]) {
+    //                     const color = layer.name === 'groundLayer' ? 0x888888 : 0xcccccc;
+    //                     this.minimapGraphics.fillStyle(color, 1);
+    //                     this.minimapGraphics.fillRect(tile.pixelX * scaleX, tile.pixelY * scaleY, scaleX * tile.width, scaleY * tile.height);
+    //                 }
+    //             });
+    //         });
+    //     });
+    
+    //     const playerMinimapScale = 2.5;
+    
+    //     this.minimapGraphics.fillStyle(0x00ff00, 1);
+    //     this.minimapGraphics.fillRect(
+    //         (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2),
+    //         (this.player.y * scaleY) - ((scaleY * this.player.height * (playerMinimapScale - 1)) / 2),
+    //         scaleX * this.player.width * playerMinimapScale,
+    //         scaleY * this.player.height * playerMinimapScale
+    //     );
+    
+    //     const bookMinimapScale = 1;
+    //     this.books.forEach(book => {
+    //         book.setOrigin(0.5);
+    //         this.minimapGraphics.fillStyle(0x0000ff, 1);
+    //         this.minimapGraphics.fillRect(
+    //             (book.x * scaleX) - ((scaleX * book.width * (bookMinimapScale - 1)) / 2),
+    //             (book.y * scaleY) - ((scaleY * book.height * (bookMinimapScale - 1)) / 2),
+    //             scaleX * book.width * bookMinimapScale,
+    //             scaleY * book.height * bookMinimapScale
+    //         );
+    //     });
+    
+    //     // Emit event to update the HUD with the new minimap graphics
+    //     this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
+    // }
+
     updateMinimap() {
         const minimapWidth = 250;
         const minimapHeight = 250;
         const scaleX = minimapWidth / this.map.widthInPixels;
         const scaleY = minimapHeight / this.map.heightInPixels;
-
+    
+        // Clear previous minimap graphics
         this.minimapGraphics.clear();
-
+    
+        // Set the camera viewport to match the minimap dimensions
+        this.miniCam.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    
+            // Draw the minimap
         this.map.layers.forEach(layer => {
             layer.data.forEach(row => {
                 row.forEach(tile => {
@@ -300,9 +362,9 @@ class Level_1 extends Phaser.Scene {
                 });
             });
         });
-
+    
         const playerMinimapScale = 2.5;
-
+    
         this.minimapGraphics.fillStyle(0x00ff00, 1);
         this.minimapGraphics.fillRect(
             (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2),
@@ -310,7 +372,7 @@ class Level_1 extends Phaser.Scene {
             scaleX * this.player.width * playerMinimapScale,
             scaleY * this.player.height * playerMinimapScale
         );
-
+    
         const bookMinimapScale = 1;
         this.books.forEach(book => {
             book.setOrigin(0.5);
@@ -322,9 +384,11 @@ class Level_1 extends Phaser.Scene {
                 scaleY * book.height * bookMinimapScale
             );
         });
-
+    
+        // Emit event to update the HUD with the new minimap graphics
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
     }
+    
 
     revealMinimap() {
         const revealRadius = 10;

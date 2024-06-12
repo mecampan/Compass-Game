@@ -57,6 +57,8 @@ class mainDungeon extends Phaser.Scene {
         this.input.keyboard.on('keydown-B', () => this.DBTeleport(this.player, "PlayerDBSpawn"), this);
 
         // Create minimap and fog of war
+        this.minimapGraphics = this.add.graphics();
+    this.minimapGraphics.setScrollFactor(0); // Ensure it stays in place
         this.createMinimap();
         this.spawnBooks(this.player);
         // NOTE: comment out this line below to show full minimap (1/4)
