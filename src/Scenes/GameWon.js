@@ -5,6 +5,7 @@ class GameWon extends Phaser.Scene{
 
     create(){
         let sound = this.sound.add('ui_sound');
+        let winSound = this.sound.add('win_sfx');
 
         this.cameras.main.fadeIn(500, 0, 0, 0);
 
@@ -14,7 +15,7 @@ class GameWon extends Phaser.Scene{
 
         this.add.bitmapText(centerX, centerY - 250, 'myFont', 'Game Won', 56).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY - 150, 'myFont', 'You have successfully exorcised the demon of the dungeon.', 36).setOrigin(0.5);
-
+        winSound.play();
 
         let playAgain = this.add.bitmapText(centerX, centerY, 'myFont', 'Play Again', 42)
             .setOrigin(0.5)

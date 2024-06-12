@@ -6,6 +6,9 @@ class PlayerControl {
 
         // Scale down the player size by half
         this.player.setScale(0.5);
+        this.isWalking = false; // Add a flag to track if the player is walking
+        // Add the walking sound effect
+        this.walkSound = this.scene.sound.add('walk_sfx', { loop: true });
 
         // Set the hitbox to half the player's width
         this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.75, true);
@@ -32,6 +35,7 @@ class PlayerControl {
         console.log("Player is dead");
         this.playerDeath = true;
         this.player.anims.play('playerDeath');
+        this.walkSound.stop(); // Stop the walking sound if the player dies
     }
 
     createAnimations() {
@@ -171,6 +175,17 @@ class PlayerControl {
                 player.setVelocityY(speed);
                 isMovingVertically = true;
             }
+
+            const isCurrentlyWalking = isMovingHorizontally || isMovingVertically;
+
+            if (isCurrentlyWalking && !this.isWalking) {
+                this.walkSound.play();
+                this.isWalking = true;
+            } else if (!isCurrentlyWalking && this.isWalking) {
+                this.walkSound.stop();
+                this.isWalking = false;
+            }
+
 
             if (isMovingHorizontally && isMovingVertically) {
                 player.setVelocity(player.body.velocity.x * 0.7071, player.body.velocity.y * 0.7071);

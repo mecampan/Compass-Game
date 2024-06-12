@@ -13,6 +13,9 @@ class Load extends Phaser.Scene {
         this.load.audio("oil_refill_sfx", "audio/oil_refill.ogg");
         this.load.audio("item_pickup_sfx", "audio/item_pickup.ogg");
         this.load.audio("game_over_sfx", "audio/game_over.ogg");
+        this.load.audio("walk_sfx", "audio/16_human_walk_stone_3.wav");
+        this.load.audio("enemy_attack_sfx", "audio/PUNCH_ELECTRIC_HEAVY_05.wav");
+        this.load.audio("win_sfx", "audio/Activate Plinth 03.wav");
 
         this.load.audio("titleMusic", "audio/myst_on_the_moor.ogg");
 

@@ -400,8 +400,10 @@ class Level_1 extends Phaser.Scene {
         if(!this.gameOverState) {
             this.gameOverState = true
             this.fadeOutAudio(this.load.music);
-            this.gameOversfx.play();
-            this.time.delayedCall(1500, () => {
+            
+            this.time.delayedCall(1000, () => {
+                this.gameOversfx.play();
+                this.scene.stop("Level1Scene");
                 this.scene.stop("hudScene")
                 this.scene.start("gameOverScene");
             });

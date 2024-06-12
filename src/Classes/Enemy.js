@@ -9,6 +9,7 @@ class Enemy {
         this.sprite.enemyInstance = this; // Reference to the Enemy instance
 
         this.sprite.anims.play('run');
+        this.attackSound = this.scene.sound.add('enemy_attack_sfx');
 
         this.pathfinder = new Pathfinder(this.scene, this.sprite);
         this.pathfinder.create();
@@ -20,6 +21,7 @@ class Enemy {
             this.attacking = true;
             this.pathfinder.stopCharacter();
             this.sprite.anims.play('attackA');
+            this.attackSound.play();
 
             this.scene.time.delayedCall(1000, () => {
                 this.sprite.anims.play('run');
