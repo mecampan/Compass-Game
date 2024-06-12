@@ -28,6 +28,7 @@ class Level_1 extends Phaser.Scene {
         this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         this.gameOversfx = this.sound.add('game_over_sfx');
         this.lightSound = this.sound.add('light_sfx');
+        this.walkSound = this.sound.add('walk_sfx');
 
 
         // Add a tileset to the map
@@ -398,6 +399,9 @@ class Level_1 extends Phaser.Scene {
             this.fadeOutAudio(this.load.music);
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
+
+            // Stop the walkSound audio
+            this.playerControl.stopWalkSound();
         }
     }
 
