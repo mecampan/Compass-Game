@@ -87,6 +87,11 @@ class FOV {
             if (enemy.pathfinder.chasing && !isInFOV && !enemy.stunned) {
                 enemy.pathfinder.searchingTimer();
             }
+
+            if (isInFOV && enemy.attacking) {
+                this.scene.playerControl.deathTrigger();
+                this.scene.gameOver();
+            }
         });
     }
 

@@ -2,6 +2,7 @@ class PlayerControl {
     constructor(scene, player) {
         this.scene = scene;
         this.player = player;
+        this.playerDeath = false;
 
         // Scale down the player size by half
         this.player.setScale(0.5);
@@ -13,7 +14,6 @@ class PlayerControl {
             // Create animations
             this.createAnimations();
         }
-        
 
         // Set default animation
         this.player.anims.play('frontIdle');
@@ -26,6 +26,12 @@ class PlayerControl {
             S: Phaser.Input.Keyboard.KeyCodes.S,
             D: Phaser.Input.Keyboard.KeyCodes.D
         });
+    }
+
+    deathTrigger() {
+        console.log("Player is dead");
+        this.playerDeath = true;
+        this.player.anims.play('playerDeath');
     }
 
     createAnimations() {
@@ -117,12 +123,23 @@ class PlayerControl {
         anims.create({
             key: 'leftIdle',
             frames: [
-                { key: 'player', frame: 'rightIdle1'},
-                { key: 'player', frame: 'rightIdle2'}
+                { key: 'player', frame: 'rightIdle1' },
+                { key: 'player', frame: 'rightIdle2' }
             ],
             frameRate: 2,
             repeat: -1
         });
+
+        // Front Idle
+        anims.create({
+            key: 'playerDeath',
+            frames: [
+                { key: 'player', frame: 'frontIdle1' },
+                { key: 'player', frame: 'frontIdle2' }
+            ],
+            frameRate: 2,
+        });
+
         loadAnim = true;
     }
 
@@ -137,55 +154,58 @@ class PlayerControl {
         let isMovingHorizontally = false;
         let isMovingVertically = false;
 
-        if (cursors.left.isDown || keys.A.isDown) {
-            player.setVelocityX(-speed);
-            isMovingHorizontally = true;
-        } else if (cursors.right.isDown || keys.D.isDown) {
-            player.setVelocityX(speed);
-            isMovingHorizontally = true;
-        }
+        if (!this.playerDeath) {
 
-        if (cursors.up.isDown || keys.W.isDown) {
-            player.setVelocityY(-speed);
-            isMovingVertically = true;
-        } else if (cursors.down.isDown || keys.S.isDown) {
-            player.setVelocityY(speed);
-            isMovingVertically = true;
-        }
+            if (cursors.left.isDown || keys.A.isDown) {
+                player.setVelocityX(-speed);
+                isMovingHorizontally = true;
+            } else if (cursors.right.isDown || keys.D.isDown) {
+                player.setVelocityX(speed);
+                isMovingHorizontally = true;
+            }
 
-        if (isMovingHorizontally && isMovingVertically) {
-            player.setVelocity(player.body.velocity.x * 0.7071, player.body.velocity.y * 0.7071);
-            if (player.body.velocity.y < 0) {
-                player.anims.play('backWalk', true);
-            } else {
-                player.anims.play('frontWalk', true);
+            if (cursors.up.isDown || keys.W.isDown) {
+                player.setVelocityY(-speed);
+                isMovingVertically = true;
+            } else if (cursors.down.isDown || keys.S.isDown) {
+                player.setVelocityY(speed);
+                isMovingVertically = true;
             }
-        } else if (isMovingHorizontally) {
-            if (player.body.velocity.x < 0) {
-                player.setFlip(true, false);
-                player.anims.play('leftWalk', true);
+
+            if (isMovingHorizontally && isMovingVertically) {
+                player.setVelocity(player.body.velocity.x * 0.7071, player.body.velocity.y * 0.7071);
+                if (player.body.velocity.y < 0) {
+                    player.anims.play('backWalk', true);
+                } else {
+                    player.anims.play('frontWalk', true);
+                }
+            } else if (isMovingHorizontally) {
+                if (player.body.velocity.x < 0) {
+                    player.setFlip(true, false);
+                    player.anims.play('leftWalk', true);
+                } else {
+                    player.setFlip(false, false);
+                    player.anims.play('rightWalk', true);
+                }
+            } else if (isMovingVertically) {
+                if (player.body.velocity.y < 0) {
+                    player.anims.play('backWalk', true);
+                } else {
+                    player.anims.play('frontWalk', true);
+                }
             } else {
-                player.setFlip(false, false);
-                player.anims.play('rightWalk', true);
-            }
-        } else if (isMovingVertically) {
-            if (player.body.velocity.y < 0) {
-                player.anims.play('backWalk', true);
-            } else {
-                player.anims.play('frontWalk', true);
-            }
-        } else {
-            if (player.body.velocity.x === 0 && player.body.velocity.y === 0) {
-                if (player.anims.currentAnim) {
-                    let currentKey = player.anims.currentAnim.key;
-                    if (currentKey.includes('front')) {
-                        player.anims.play('frontIdle', true);
-                    } else if (currentKey.includes('back')) {
-                        player.anims.play('backIdle', true);
-                    } else if (currentKey.includes('right')) {
-                        player.anims.play('rightIdle', true);
-                    } else if (currentKey.includes('left')) {
-                        player.anims.play('leftIdle', true);
+                if (player.body.velocity.x === 0 && player.body.velocity.y === 0) {
+                    if (player.anims.currentAnim) {
+                        let currentKey = player.anims.currentAnim.key;
+                        if (currentKey.includes('front')) {
+                            player.anims.play('frontIdle', true);
+                        } else if (currentKey.includes('back')) {
+                            player.anims.play('backIdle', true);
+                        } else if (currentKey.includes('right')) {
+                            player.anims.play('rightIdle', true);
+                        } else if (currentKey.includes('left')) {
+                            player.anims.play('leftIdle', true);
+                        }
                     }
                 }
             }

@@ -28,7 +28,7 @@ class Level_1 extends Phaser.Scene {
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
 
         // Layer that doesn't interact with light source
-        this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0);
+        this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0).setDepth(5);
         
         // spawnLayer objects
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
@@ -379,7 +379,17 @@ class Level_1 extends Phaser.Scene {
     playerInZone(player, zone) {
         console.log("Player is in the target zone!");
         if(this.allBooksCollected == true){
+            this.scene.stop("Level1Scene");
+            this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
         }
+    }
+
+    gameOver() {
+        this.time.delayedCall(1000, () => {
+            this.scene.stop("Level1Scene");
+            this.scene.stop("hudScene")
+            this.scene.start("gameOverScene");
+        });
     }
 }
