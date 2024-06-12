@@ -10,6 +10,10 @@ class Load extends Phaser.Scene {
         this.load.setPath("./assets/");
 
         this.load.audio("ui_sound", "audio/UI_click.wav");
+        this.load.audio("oil_refill_sfx", "audio/oil_refill.ogg");
+        this.load.audio("item_pickup_sfx", "audio/item_pickup.ogg");
+        this.load.audio("game_over_sfx", "audio/game_over.ogg");
+
         this.load.audio("titleMusic", "audio/myst_on_the_moor.ogg");
 
         // Load Enemy
@@ -38,6 +42,15 @@ class Load extends Phaser.Scene {
     create() {
         this.music = this.sound.add('titleMusic', { loop: true });
         this.music.play();
+
+        this.tweens.add({
+            targets: this.music,
+            volume: 0,
+            duration: 2000, // duration in milliseconds
+            onComplete: () => {
+                this.music.stop();
+            }
+        });
         
         // Create the animation for the evil wizard
         this.anims.create({

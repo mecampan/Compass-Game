@@ -13,6 +13,7 @@ class Book extends Phaser.Physics.Arcade.Sprite {
     collect() {
         // destroy book sprite 
         // add ui to bottom of screen to confirm book has been collected
+
         this.disableBody(true, true);
         this.setVisible(false);
         console.log("Book collected");
