@@ -3,6 +3,18 @@ class Level_1 extends Phaser.Scene {
         super("level1Scene");
     }
 
+    init(){
+        this.collectedBooks = 0;
+        this.allBooksCollected = false;
+        this.books = [];
+
+        // Array to store playerDB positions
+        this.playerDBPositions = [];
+        this.currentDBIndex = 0; // Current destination index
+
+        this.gameOverState = false;
+    }
+
     preload() {
         // Load necessary assets here
         //this.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
@@ -11,17 +23,10 @@ class Level_1 extends Phaser.Scene {
     create() {
         // Create a new tilemap which uses 16x16 tiles, and is 40 tiles wide and 25 tiles tall
         this.map = this.add.tilemap("dungeon_map");
-        this.collectedBooks = 0;
-        this.allBooksCollected = false;
-        this.books = [];
 
         // sfx Sounds
         this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         this.gameOversfx = this.sound.add('game_over_sfx');
-        this.gameOverState = false;
-        // Array to store playerDB positions
-        this.playerDBPositions = [];
-        this.currentDBIndex = 0; // Current destination index
 
 
         // Add a tileset to the map
@@ -384,7 +389,7 @@ class Level_1 extends Phaser.Scene {
     }
 
     playerInZone(player, zone) {
-        console.log("Player is in the target zone!");
+        //console.log("Player is in the target zone!");
         if(this.allBooksCollected == true){
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
@@ -421,5 +426,10 @@ class Level_1 extends Phaser.Scene {
                 audio.stop();
             }
         });
+    }
+
+    resetGame() {
+        //this.init();
+        this.scene.restart(); // This will re-trigger create()
     }
 }
