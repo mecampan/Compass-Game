@@ -272,6 +272,6 @@ class FOV {
 
     update() {
         this.movingFrequency++;
-        this.updateFOV(8);
+        this.updateFOV(6);
     }
 }
