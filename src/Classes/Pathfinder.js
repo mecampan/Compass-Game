@@ -128,6 +128,10 @@ class Pathfinder {
 
     moveCharacter(path, character, onComplete) {
         this.stopCharacter();
+        this.movingSpeed = 125;
+        if(this.roaming) {
+            this.movingSpeed = 300;
+        }
 
         var tweens = [];
         for (var i = 0; i < path.length - 1; i++) {
@@ -142,7 +146,7 @@ class Pathfinder {
             tweens.push({
                 x: ex * this.TILESIZE,
                 y: ey * this.TILESIZE,
-                duration: 150,
+                duration: this.movingSpeed,
                 onStart: () => {
                     if (character.x > ex * this.TILESIZE) {
                         character.flipX = true; // Flip sprite when moving left
