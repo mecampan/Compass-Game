@@ -33,7 +33,7 @@ let config = {
             }
         }
     },
-    scene: [Load, TitleScreen, Credits, HowToPlay, Level_1, mainDungeon, HUD, EndScene, GameWon, GameOver]
+    scene: [Load, TitleScreen, Credits, HowToPlay, Level_1, mainDungeon, HUD, GameWon, gameOver]
 }
 
 var cursors;
