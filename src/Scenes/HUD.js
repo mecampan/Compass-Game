@@ -10,6 +10,8 @@ class HUD extends Phaser.Scene {
         this.createBookHud();
         this.createLanternHud();
         this.oilDeplete();
+        
+        this.oilRefillsfx = this.sound.add('oil_refill_sfx');
 
         this.events.on('updateHud', this.updateHud, this);
         this.events.on('refilOil', this.refilOil, this);
@@ -41,6 +43,7 @@ class HUD extends Phaser.Scene {
     }
 
     refilOil() {
+        this.oilRefillsfx.play();
         this.oilAmount += 50;
         if (this.oilAmount > 100) {
             this.oilAmount = 100;

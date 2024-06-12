@@ -15,6 +15,10 @@ class Level_1 extends Phaser.Scene {
         this.allBooksCollected = false;
         this.books = [];
 
+        // sfx Sounds
+        this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
+        this.gameOversfx = this.sound.add('game_over_sfx');
+        this.gameOverState = false;
         // Array to store playerDB positions
         this.playerDBPositions = [];
         this.currentDBIndex = 0; // Current destination index
@@ -40,6 +44,7 @@ class Level_1 extends Phaser.Scene {
 
         this.scene.launch('hudScene'); // Start the UI scene
         this.HUD = this.scene.get('hudScene');
+        this.load = this.scene.get('loadScene');
 
         // Add collectable oil bottles:
         this.oilBottles = [];
@@ -200,6 +205,8 @@ class Level_1 extends Phaser.Scene {
     }
 
     collectBook(player, book) {
+        this.itemPickUpsfx.play();
+
         book.collect();
         this.collectedBooks++;
         this.books = this.books.filter(b => b !== book);
@@ -386,10 +393,35 @@ class Level_1 extends Phaser.Scene {
     }
 
     gameOver() {
-        this.time.delayedCall(1000, () => {
-            this.scene.stop("Level1Scene");
-            this.scene.stop("hudScene")
-            this.scene.start("gameOverScene");
+        if(!this.gameOverState) {
+            this.gameOverState = true
+            this.fadeOutAudio(this.load.music);
+            this.gameOversfx.play();
+            this.time.delayedCall(1500, () => {
+                this.scene.stop("Level1Scene");
+                this.scene.stop("hudScene")
+                this.scene.start("gameOverScene");
+            });
+        }
+    }
+
+    fadeInAudio(audio, duration = 500) {
+        audio.setVolume(0); // Start with volume 0
+        this.tweens.add({
+            targets: audio,
+            volume: 1,
+            duration: duration
+        });
+    }
+
+    fadeOutAudio(audio, duration = 500) {
+        this.tweens.add({
+            targets: audio,
+            volume: 0,
+            duration: duration,
+            onComplete: () => {
+                audio.stop();
+            }
         });
     }
 }
