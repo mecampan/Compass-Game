@@ -50,6 +50,8 @@ class Level_1 extends Phaser.Scene {
 
         this.scene.launch('hudScene'); // Start the UI scene
         this.HUD = this.scene.get('hudScene');
+        this.HUD.resetOil();
+
         this.load = this.scene.get('loadScene');
 
         // Add collectable oil bottles:
@@ -393,6 +395,7 @@ class Level_1 extends Phaser.Scene {
     playerInZone(player, zone) {
         //console.log("Player is in the target zone!");
         if(this.allBooksCollected == true){
+            this.fadeOutAudio(this.load.music);
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
         }

@@ -68,6 +68,10 @@ class HUD extends Phaser.Scene {
         }
     }
 
+    resetOil() {
+        this.oilAmount = 100;
+    }
+
     createBookHud() {
         this.bookHudDisplay = [];
         for (let i = 0; i < 3; i++) {
