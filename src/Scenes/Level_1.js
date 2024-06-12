@@ -27,6 +27,7 @@ class Level_1 extends Phaser.Scene {
         // sfx Sounds
         this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         this.gameOversfx = this.sound.add('game_over_sfx');
+        this.lightSound = this.sound.add('light_sfx');
 
 
         // Add a tileset to the map
@@ -255,6 +256,7 @@ class Level_1 extends Phaser.Scene {
 
             const radius = 3 * this.map.tileWidth;
             let circle = this.add.graphics();
+            this.lightSound.play();
 
             for (let i = radius; i > 0; i--) {
                 let alpha = i / radius;
