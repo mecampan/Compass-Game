@@ -34,11 +34,11 @@ class Level_1 extends Phaser.Scene {
 
         // Create the layers
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
+        this.upperGroundLayer = this.map.createLayer("upperGroundLayer", this.tileset, 0, 0);
         this.wallLayer = this.map.createLayer("wallLayer", this.tileset, 0, 0);
 
         // Layer that doesn't interact with light source
         this.frontLayer = this.map.createLayer("frontLayer", this.tileset, 0, 0).setDepth(5);
-        
         // spawnLayer objects
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
