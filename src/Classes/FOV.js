@@ -115,6 +115,11 @@ class FOV {
                     groundTile.alpha = 0;
                 }
     
+                const upperGroundTile = this.scene.upperGroundLayer.getTileAt(x, y);
+                if (upperGroundTile) {
+                    upperGroundTile.alpha = 0;
+                }
+
                 const wallTile = this.scene.wallLayer.getTileAt(x, y);
                 if (wallTile) {
                     wallTile.alpha = 0;
@@ -125,6 +130,7 @@ class FOV {
         let oilLevel = this.scene.scene.get('hudScene').getOilAmount();
         this.visibleTiles.forEach(({ x, y }) => {
             const groundTile = this.scene.groundLayer.getTileAt(x, y);
+            const upperGroundTile = this.scene.upperGroundLayer.getTileAt(x, y);
             const wallTile = this.scene.wallLayer.getTileAt(x, y);
     
             if (groundTile) {
@@ -132,6 +138,12 @@ class FOV {
                 const alpha = 1.4 - (distance / radius) + oilLevel - 0.6;
                 groundTile.alpha = alpha;
             }
+
+            if (upperGroundTile) {
+                const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
+                const alpha = 1.4 - (distance / radius) + oilLevel - 0.6;
+                upperGroundTile.alpha = alpha;
+            }            
     
             if (wallTile) {
                 const distance = Phaser.Math.Distance.Between(originX, originY, x, y);
