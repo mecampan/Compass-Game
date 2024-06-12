@@ -72,7 +72,7 @@ class Level_1 extends Phaser.Scene {
         this.cameras.main.setZoom(4.0);
 
         //Create Collision Zone For Game End Condition:
-        this.targetZone = this.add.zone(2725, 1955, 48, 32);
+        this.targetZone = this.add.zone(2725, 1985, 48, 32);
         this.physics.world.enable(this.targetZone);
         this.targetZone.body.setAllowGravity(false);
         this.targetZone.body.moves = false;
