@@ -5,6 +5,8 @@
 // Phaser: 3.70.0
 //
 // Art assets provided by: https://szadiart.itch.io/rogue-fantasy-catacombs
+// https://luizmelo.itch.io/evil-wizard-2
+// https://bagong-games.itch.io/hana-caraka-base-character
 //
 // debug with extreme prejudice
 "use strict"
@@ -33,7 +35,7 @@ let config = {
             }
         }
     },
-    scene: [Load, TitleScreen, Credits, HowToPlay, Level_1, mainDungeon, HUD, GameWon, gameOver]
+    scene: [Load, TitleScreen, Credits, HowToPlay, Level_1, HUD, GameWon, gameOver]
 }
 
 var cursors;

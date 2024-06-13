@@ -17,8 +17,9 @@ class Credits extends Phaser.Scene{
         this.add.bitmapText(centerX, centerY, 'myFont', 'Asset Packs: Szadi Art, Bagong Games, LuizMelo', 42).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY + 120, 'myFont', 'Title Music:', 39).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY + 200, 'myFont', '"Myst on the Moor" Kevin MacLeod (incompetech.com)\n Licensed under Creative Commons: By Attribution 4.0 License\n http://creativecommons.org/licenses/by/4.0/', 36).setOrigin(0.5);
+        this.add.bitmapText(centerX, centerY + 350, 'myFont', 'FOV Code provided by Dominik Marczuk\n(https://bitbucket.org/umbraprojekt/mrpas)', 36).setOrigin(0.5);
 
-        let back = this.add.bitmapText(centerX, centerY + 400, 'myFont', 'Back', 32)
+        let back = this.add.bitmapText(centerX, centerY + 450, 'myFont', 'Back', 32)
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => back.setScale(1.2))

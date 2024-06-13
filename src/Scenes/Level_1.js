@@ -117,9 +117,9 @@ class Level_1 extends Phaser.Scene {
         this.input.keyboard.on('keydown-SPACE', this.stunEnemy, this);
 
         // Fetch playerDB positions from spawnLayer
-        this.fetchPlayerDBPositions();
+        //this.fetchPlayerDBPositions();
         // Keyboard input for teleportation
-        this.input.keyboard.on('keydown-B', this.teleportPlayer, this);
+        //this.input.keyboard.on('keydown-B', this.teleportPlayer, this);
     }
 
     update() {

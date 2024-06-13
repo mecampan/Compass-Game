@@ -40,7 +40,7 @@ class Load extends Phaser.Scene {
         // Load tilemap information
         this.load.image("tilemap_tiles", "catacombs_tilemap.png");
         this.load.tilemapTiledJSON("dungeon_map", "dungeon_map.tmj");
-        this.load.tilemapTiledJSON("dungeon", "dungeon.tmj");
+        //this.load.tilemapTiledJSON("dungeon", "dungeon.tmj");
 
         // Load the tilemap as a spritesheet
         this.load.spritesheet("tilemap_sheet", "catacombs_tilemap.png", {
