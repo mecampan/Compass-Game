@@ -10,6 +10,7 @@ class Enemy {
 
         this.sprite.anims.play('run');
         this.attackSound = this.scene.sound.add('enemy_attack_sfx');
+        this.screamsfx = this.scene.sound.add('scream_sfx');
 
         this.pathfinder = new Pathfinder(this.scene, this.sprite);
         this.pathfinder.create();
@@ -41,8 +42,9 @@ class Enemy {
             this.canAttack = false;
             this.pathfinder.stopCharacter();
             this.sprite.anims.play('stunned');
+            this.screamsfx.play();
 
-            this.scene.time.delayedCall(10000, () => {
+            this.scene.time.delayedCall(5000, () => {
                 //console.log("Enemy no longer stunned", this.stunned);
                 this.stunned = false;
                 this.canAttack = true;

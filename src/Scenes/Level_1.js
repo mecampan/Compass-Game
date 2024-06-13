@@ -109,7 +109,7 @@ class Level_1 extends Phaser.Scene {
         this.debugActive = false; // Track debug mode status
 
         // Add key listener for toggling debug mode
-        this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
+        //this.input.keyboard.on('keydown-Y', this.toggleDebug, this);
         this.input.keyboard.on('keydown-SPACE', this.stunEnemy, this);
 
         // Fetch playerDB positions from spawnLayer
