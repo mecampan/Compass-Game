@@ -376,17 +376,17 @@ class Level_1 extends Phaser.Scene {
             scaleY * this.player.height * playerMinimapScale
         );
 
-        const bookMinimapScale = 1;
-        this.books.forEach(book => {
-            book.setOrigin(0.5);
-            this.minimapGraphics.fillStyle(0x0000ff, 1);
-            this.minimapGraphics.fillRect(
-                (book.x * scaleX) - ((scaleX * book.width * (bookMinimapScale - 1)) / 2),
-                (book.y * scaleY) - ((scaleY * book.height * (bookMinimapScale - 1)) / 2),
-                scaleX * book.width * bookMinimapScale,
-                scaleY * book.height * bookMinimapScale
-            );
-        });
+        // const bookMinimapScale = 1;
+        // this.books.forEach(book => {
+        //     book.setOrigin(0.5);
+        //     this.minimapGraphics.fillStyle(0x0000ff, 1);
+        //     this.minimapGraphics.fillRect(
+        //         (book.x * scaleX) - ((scaleX * book.width * (bookMinimapScale - 1)) / 2),
+        //         (book.y * scaleY) - ((scaleY * book.height * (bookMinimapScale - 1)) / 2),
+        //         scaleX * book.width * bookMinimapScale,
+        //         scaleY * book.height * bookMinimapScale
+        //     );
+        // });
 
         // Emit event to update the HUD with the new minimap graphics
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
