@@ -1,11 +1,11 @@
-class gameOver extends Phaser.Scene{
+class gameOver extends Phaser.Scene {
     constructor() {
         super("gameOverScene");
     }
 
-    create(){
+    create() {
         let sound = this.sound.add('ui_sound');
-
+        
         this.cameras.main.fadeIn(500, 0, 0, 0);
 
         // Centering text based on the game's configuration
@@ -14,7 +14,6 @@ class gameOver extends Phaser.Scene{
 
         this.add.bitmapText(centerX, centerY - 250, 'myFont', 'Game Over', 56).setOrigin(0.5);
         this.add.bitmapText(centerX, centerY - 150, 'myFont', 'You were defeated by the evil cultists.', 36).setOrigin(0.5);
-
 
         let playAgain = this.add.bitmapText(centerX, centerY, 'myFont', 'Play Again', 42)
             .setOrigin(0.5)
@@ -25,8 +24,8 @@ class gameOver extends Phaser.Scene{
                 sound.play();
                 this.scene.stop("gameOverScene");
                 this.scene.get("level1Scene").resetGame();
+                backgroundMusic.play();
             });
-
 
         let home = this.add.bitmapText(centerX, centerY + 100, 'myFont', 'Home', 42)
             .setOrigin(0.5)
@@ -37,7 +36,7 @@ class gameOver extends Phaser.Scene{
                 sound.play();
                 this.scene.stop("gameOverScene");
                 this.scene.start("titleScreenScene");
+                backgroundMusic.play();
             });
     }
-
 }

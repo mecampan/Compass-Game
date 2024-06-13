@@ -18,7 +18,7 @@ class Load extends Phaser.Scene {
         this.load.audio("win_sfx", "audio/Activate Plinth 03.wav");
         this.load.audio("light_sfx", "audio/BLLTRico_Metallic_11.wav");
         this.load.audio("scream_sfx", "audio/painful_scream.ogg");
-        this.load.audio("titleMusic", "audio/myst_on_the_moor.ogg");
+        this.load.audio("background_music", "audio/myst_on_the_moor.ogg");
 
         // Load Enemy
         this.load.atlas("evil_wizard", "images/evil_wizard.png", "evil_wizard.json");
@@ -42,22 +42,19 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON("dungeon_map", "dungeon_map.tmj");
         this.load.tilemapTiledJSON("dungeon", "dungeon.tmj");
 
+        // Load the tilemap as a spritesheet
+        this.load.spritesheet("tilemap_sheet", "catacombs_tilemap.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+
         this.load.atlasXML('player', 'player.png', 'player.xml');
     }
 
     create() {
-        this.music = this.sound.add('titleMusic', { loop: true });
-        this.music.play();
+        backgroundMusic = this.sound.add('background_music', { loop: true });
+        backgroundMusic.play();
 
-        this.tweens.add({
-            targets: this.music,
-            volume: 0,
-            duration: 2000, // duration in milliseconds
-            onComplete: () => {
-                this.music.stop();
-            }
-        });
-        
         // Create the animation for the evil wizard
         this.anims.create({
             key: 'idle',
@@ -71,7 +68,7 @@ class Load extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
+
 
         this.anims.create({
             key: 'run',
@@ -96,7 +93,7 @@ class Load extends Phaser.Scene {
                 zeroPad: 2
             }),
             frameRate: 10,
-        });        
+        });
 
         this.anims.create({
             key: 'attackB',
@@ -108,8 +105,8 @@ class Load extends Phaser.Scene {
                 zeroPad: 2
             }),
             frameRate: 10,
-        }); 
-        
+        });
+
         this.anims.create({
             key: 'death',
             frames: this.anims.generateFrameNames('evil_wizard', {
@@ -120,8 +117,8 @@ class Load extends Phaser.Scene {
                 zeroPad: 2
             }),
             frameRate: 10,
-        }); 
-        
+        });
+
         this.anims.create({
             key: 'take_hit',
             frames: [
@@ -130,8 +127,8 @@ class Load extends Phaser.Scene {
                 { key: 'evil_wizard', frame: 'take_hit_03.png' }
             ],
             frameRate: 10,
-        });  
-        
+        });
+
         this.anims.create({
             key: 'stunned',
             frames: [
@@ -141,7 +138,14 @@ class Load extends Phaser.Scene {
             ],
             frameRate: 2,
             repeat: -1
-        });          
+        });
+
+        this.anims.create({
+            key: 'torchAnimation',
+            frames: this.anims.generateFrameNumbers('tilemap_sheet', { frames: [66, 67, 68, 69] }),
+            frameRate: 5,
+            repeat: -1
+        });
 
         this.scene.start("titleScreenScene");
     }

@@ -39,5 +39,6 @@ let config = {
 var cursors;
 const SCALE = 2.0;
 var my = { sprite: {}, text: {}, vfx: {} };
+let backgroundMusic; // Global variable for the background music
 
 const game = new Phaser.Game(config);

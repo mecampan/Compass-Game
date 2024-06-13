@@ -3,10 +3,11 @@ class Level_1 extends Phaser.Scene {
         super("level1Scene");
     }
 
-    init(){
+    init() {
         this.collectedBooks = 0;
         this.allBooksCollected = false;
         this.books = [];
+        this.bookGlows = new Map(); // Map to store references to book glows
 
         // Array to store playerDB positions
         this.playerDBPositions = [];
@@ -30,7 +31,6 @@ class Level_1 extends Phaser.Scene {
         this.lightSound = this.sound.add('light_sfx');
         this.walkSound = this.sound.add('walk_sfx');
 
-
         // Add a tileset to the map
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
@@ -44,6 +44,10 @@ class Level_1 extends Phaser.Scene {
         // spawnLayer objects
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
+        this.lightLayer = this.map.getObjectLayer('lightObjects');
+        this.lightObjects = this.physics.add.group();
+        this.createLightObjects();
+
         // Fade in camera
         this.cameras.main.fadeIn(500, 0, 0, 0);
         // Enable collision for the wallLayer
@@ -52,8 +56,6 @@ class Level_1 extends Phaser.Scene {
         this.scene.launch('hudScene'); // Start the UI scene
         this.HUD = this.scene.get('hudScene');
         this.HUD.resetOil();
-
-        this.load = this.scene.get('loadScene');
 
         // Add collectable oil bottles:
         this.oilBottles = [];
@@ -90,9 +92,6 @@ class Level_1 extends Phaser.Scene {
 
         //this.wallLayer.setCollisionByProperty({collides: true});
         //this.frontLayer.setCollisionByProperty({collides: true});
-
-        this.physics.add.collider(this.player, this.wallLayer);
-        this.physics.add.collider(this.player, this.frontLayer);
 
         // Initialize enemies
         this.enemies = this.physics.add.group();
@@ -172,23 +171,22 @@ class Level_1 extends Phaser.Scene {
         const minimapWidth = 250; // Width of the minimap
         const minimapHeight = 250; // Height of the minimap
         const padding = 10; // Padding from the edges
-        
+
         // Create the miniCam for the minimap
         this.miniCam = this.cameras.add(padding, padding, minimapWidth, minimapHeight);
         this.miniCam.setZoom(1);
         this.miniCam.setBackgroundColor(0x000000); // Black background for visibility
-    
+
         // Draw a rectangle for the minimap background (optional, for visibility)
         this.minimapGraphics = this.add.graphics();
         this.minimapGraphics.setScrollFactor(0); // Ensure it stays in place
         this.minimapGraphics.fillStyle(0x000000, 0.5); // Black background with 50% opacity
         this.minimapGraphics.fillRect(0, 0, minimapWidth, minimapHeight);
-    
+
         // Trigger an event to update the HUD with the minimap
         this.scene.get('hudScene').events.emit('createMinimap', this.minimapGraphics, minimapWidth, minimapHeight);
         minimapCreated = true;
     }
-    
 
     spawnBooks(player) {
         if (this.allBooksCollected === false) {
@@ -208,6 +206,10 @@ class Level_1 extends Phaser.Scene {
                     const book = new Book(this, spawnPoint.x, spawnPoint.y, bookType);
                     this.books.push(book);
                     this.physics.add.overlap(this.player, book, this.collectBook, null, this);
+
+                    // Create glow for the book
+                    const glow = this.createLightGlow(spawnPoint.x, spawnPoint.y, 'book');
+                    this.bookGlows.set(book, glow);
                 }
             });
         }
@@ -219,6 +221,14 @@ class Level_1 extends Phaser.Scene {
         book.collect();
         this.collectedBooks++;
         this.books = this.books.filter(b => b !== book);
+        
+        // Destroy the corresponding glow
+        const glow = this.bookGlows.get(book);
+        if (glow) {
+            glow.destroy();
+            this.bookGlows.delete(book);
+        }
+
         this.minimapGraphics.clear();
         if (this.collectedBooks === 3) {
             console.log("All Books collected");
@@ -331,14 +341,14 @@ class Level_1 extends Phaser.Scene {
         const minimapHeight = 250;
         const scaleX = minimapWidth / this.map.widthInPixels;
         const scaleY = minimapHeight / this.map.heightInPixels;
-    
+
         // Clear previous minimap graphics
         this.minimapGraphics.clear();
-    
+
         // Set the camera viewport to match the minimap dimensions
         this.miniCam.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-    
-            // Draw the minimap
+
+        // Draw the minimap
         this.map.layers.forEach(layer => {
             layer.data.forEach(row => {
                 row.forEach(tile => {
@@ -350,9 +360,9 @@ class Level_1 extends Phaser.Scene {
                 });
             });
         });
-    
+
         const playerMinimapScale = 2.5;
-    
+
         this.minimapGraphics.fillStyle(0x00ff00, 1);
         this.minimapGraphics.fillRect(
             (this.player.x * scaleX) - ((scaleX * this.player.width * (playerMinimapScale - 1)) / 2),
@@ -360,7 +370,7 @@ class Level_1 extends Phaser.Scene {
             scaleX * this.player.width * playerMinimapScale,
             scaleY * this.player.height * playerMinimapScale
         );
-    
+
         const bookMinimapScale = 1;
         this.books.forEach(book => {
             book.setOrigin(0.5);
@@ -372,11 +382,10 @@ class Level_1 extends Phaser.Scene {
                 scaleY * book.height * bookMinimapScale
             );
         });
-    
+
         // Emit event to update the HUD with the new minimap graphics
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
     }
-    
 
     revealMinimap() {
         const revealRadius = 10;
@@ -395,8 +404,8 @@ class Level_1 extends Phaser.Scene {
 
     playerInZone(player, zone) {
         //console.log("Player is in the target zone!");
-        if(this.allBooksCollected == true){
-            this.fadeOutAudio(this.load.music);
+        if (this.allBooksCollected == false) {
+            backgroundMusic.stop();
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
 
@@ -406,10 +415,13 @@ class Level_1 extends Phaser.Scene {
     }
 
     gameOver() {
-        if(!this.gameOverState) {
+        if (!this.gameOverState) {
             this.gameOverState = true
-            this.fadeOutAudio(this.load.music);
-            
+            backgroundMusic.stop();
+
+            // Stop the walkSound audio
+            this.playerControl.stopWalkSound();
+
             this.time.delayedCall(1000, () => {
                 this.gameOversfx.play();
                 this.scene.stop("Level1Scene");
@@ -434,13 +446,62 @@ class Level_1 extends Phaser.Scene {
             volume: 0,
             duration: duration,
             onComplete: () => {
+                console.log(audio, " is stopping");
                 audio.stop();
             }
         });
     }
 
     resetGame() {
-        //this.init();
         this.scene.restart(); // This will re-trigger create()
+    }
+
+    createLightObjects() {
+        this.lightLayer.objects.forEach(obj => {
+
+            if (obj.name === 'torch') {
+                const torch = this.lightObjects.create(obj.x, obj.y - 18, 'tilemap_sheet', 66).setOrigin(0, 0).setDepth(20);
+                torch.anims.play('torchAnimation');
+                this.createLightGlow(obj.x, obj.y, 'torch');
+            }
+        });
+    }
+
+    createLightGlow(x, y, type) {
+        const radius = this.map.tileWidth;
+        let circle;
+        if(type === 'torch') {
+            circle = this.add.graphics({ x: x + 8, y : y - 10 });
+        }
+        else {
+            circle = this.add.graphics({ x: x, y : y});
+        }
+
+        circle.setDepth(10);
+
+        // Draw the initial circle
+        for (let i = radius; i > 0; i--) {
+            let alpha = i / radius;
+            if (type === 'torch') {
+                circle.fillStyle(0xffe64e, alpha);
+            } 
+            else {
+                circle.fillStyle(0xAEFEFF, alpha);
+            }
+            circle.fillCircle(0, 0, i);
+        }
+
+        // Create the pulsing tween
+        this.tweens.add({
+            targets: circle,
+            scale: { from: 1, to: 1.05 },
+            alpha: { from: 0.03, to: 0.04 },
+            duration: 200,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
+
+        return circle; // Return the circle graphics object
     }
 }

@@ -26,6 +26,7 @@ class GameWon extends Phaser.Scene{
                 sound.play();
                 this.scene.stop("gameWonScene");
                 this.scene.get("level1Scene").resetGame();
+                backgroundMusic.play();
                 //this.scene.start("level1Scene");
             });
 
@@ -39,6 +40,7 @@ class GameWon extends Phaser.Scene{
                 sound.play();
                 this.scene.stop("gameWonScene");
                 this.scene.start("titleScreenScene");
+                backgroundMusic.play();
             });
     }
 

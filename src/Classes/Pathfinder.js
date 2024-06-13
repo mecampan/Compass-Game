@@ -21,12 +21,18 @@ class Pathfinder {
             ...this.range(1109, 1120),
             ...this.range(1180, 1191),
             ...this.range(1251, 1262),
+            
             ...this.range(806, 811),
             ...this.range(877, 882),
             ...this.range(948, 811),
             ...this.range(1019, 1024),
             ...this.range(1090, 1095),
-            ...this.range(1161, 1166)
+            ...this.range(1161, 1166),
+            
+            ...this.range(1393, 1404),
+            ...this.range(1464, 1475),
+            ...this.range(1535, 1546),
+            ...this.range(1606, 1617)
         ];
 
         //console.log(walkables);
