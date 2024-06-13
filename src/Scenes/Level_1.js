@@ -31,6 +31,7 @@ class Level_1 extends Phaser.Scene {
         this.lightSound = this.sound.add('light_sfx');
         this.walkSound = this.sound.add('walk_sfx');
 
+
         // Add a tileset to the map
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
 
@@ -90,8 +91,11 @@ class Level_1 extends Phaser.Scene {
             this.physics.add.overlap(this.player, bottle, this.collectOil, null, this);
         });
 
-        //this.wallLayer.setCollisionByProperty({collides: true});
+        this.wallLayer.setCollisionByProperty({collides: true});
         //this.frontLayer.setCollisionByProperty({collides: true});
+
+        this.physics.add.collider(this.player, this.wallLayer);
+        //this.physics.add.collider(this.player, this.frontLayer);
 
         // Initialize enemies
         this.enemies = this.physics.add.group();
@@ -187,6 +191,7 @@ class Level_1 extends Phaser.Scene {
         this.scene.get('hudScene').events.emit('createMinimap', this.minimapGraphics, minimapWidth, minimapHeight);
         minimapCreated = true;
     }
+
 
     spawnBooks(player) {
         if (this.allBooksCollected === false) {
@@ -387,6 +392,7 @@ class Level_1 extends Phaser.Scene {
         this.scene.get('hudScene').events.emit('updateMinimap', this.minimapGraphics);
     }
 
+
     revealMinimap() {
         const revealRadius = 10;
         const playerTileX = Math.floor(this.player.x / this.map.tileWidth);
@@ -404,7 +410,7 @@ class Level_1 extends Phaser.Scene {
 
     playerInZone(player, zone) {
         //console.log("Player is in the target zone!");
-        if (this.allBooksCollected == false) {
+        if (!this.allBooksCollected == false) {
             backgroundMusic.stop();
             this.scene.stop("hudScene")
             this.scene.start("gameWonScene");
@@ -431,29 +437,20 @@ class Level_1 extends Phaser.Scene {
         }
     }
 
-    fadeInAudio(audio, duration = 500) {
-        audio.setVolume(0); // Start with volume 0
-        this.tweens.add({
-            targets: audio,
-            volume: 1,
-            duration: duration
-        });
+    resetGame() {
+        //this.init();
+        this.scene.restart(); // This will re-trigger create()
     }
 
-    fadeOutAudio(audio, duration = 500) {
-        this.tweens.add({
-            targets: audio,
-            volume: 0,
-            duration: duration,
-            onComplete: () => {
-                console.log(audio, " is stopping");
-                audio.stop();
+    createLightObjects() {
+        this.lightLayer.objects.forEach(obj => {
+
+            if (obj.name === 'torch') {
+                const torch = this.lightObjects.create(obj.x, obj.y - 18, 'tilemap_sheet', 66).setOrigin(0, 0).setDepth(20);
+                torch.anims.play('torchAnimation');
+                this.createLightGlow(obj.x, obj.y);
             }
         });
-    }
-
-    resetGame() {
-        this.scene.restart(); // This will re-trigger create()
     }
 
     createLightObjects() {
@@ -504,4 +501,5 @@ class Level_1 extends Phaser.Scene {
 
         return circle; // Return the circle graphics object
     }
+    
 }
