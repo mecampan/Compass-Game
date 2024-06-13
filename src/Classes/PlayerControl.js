@@ -147,6 +147,12 @@ class PlayerControl {
         loadAnim = true;
     }
 
+    stopWalkSound() {
+        if (this.walkSound.isPlaying) {
+            this.walkSound.stop();
+        }
+    }
+
     update() {
         const speed = 80;
         const player = this.player;
