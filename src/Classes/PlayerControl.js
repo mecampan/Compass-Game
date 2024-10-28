@@ -31,13 +31,6 @@ class PlayerControl {
         });
     }
 
-    deathTrigger() {
-        console.log("Player is dead");
-        this.playerDeath = true;
-        this.player.anims.play('playerDeath');
-        this.walkSound.stop(); // Stop the walking sound if the player dies
-    }
-
     createAnimations() {
         const anims = this.scene.anims;
 

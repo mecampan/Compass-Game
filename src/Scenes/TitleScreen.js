@@ -8,15 +8,12 @@ class TitleScreen extends Phaser.Scene{
     
         // Fade in the scene
         this.cameras.main.fadeIn(500, 0, 0, 0);
-    
-        // Set the bounds of the world to match the scaled map dimensions
-        // this.physics.world.setBounds(0, 0, this.map.widthInPixels * scaleX, this.map.heightInPixels * scaleY);
-    
+        
         // Centering text based on the game's configuration
         let centerX = this.sys.game.config.width / 2;
         let centerY = this.sys.game.config.height / 2;
     
-        let title = this.add.bitmapText(centerX, centerY - 100, 'myFont', 'Exorcism Dungeon', 56).setOrigin(0.5);
+        let title = this.add.bitmapText(centerX, centerY - 100, 'myFont', 'Compass Game', 56).setOrigin(0.5);
     
         // For the 'Play' button
         let play = this.add.bitmapText(centerX, centerY + 50, 'myFont', 'Play', 64)
@@ -27,7 +24,7 @@ class TitleScreen extends Phaser.Scene{
             .on('pointerdown', () => {
                 sound.play();
                 this.scene.stop("titleScreenScene");
-                this.scene.start("level1Scene");
+                this.scene.start("mainScene");
             });
 
         // For the 'Credits' button
