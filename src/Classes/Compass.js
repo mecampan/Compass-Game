@@ -8,9 +8,9 @@ class Compass {
     }
 
     collect() {
-        this.disableBody(true, true);
-        this.setVisible(false);
-        console.log("Book collected");
+        this.sprite.disableBody(true, true);
+        this.sprite.setVisible(false);
+        console.log("Compass collected");
 
         let message = this.scene.add.bitmapText(this.x, this.y - 20, 'myFont', 'Compass Collected.', 5)
         .setOrigin(0.5);    
@@ -20,6 +20,6 @@ class Compass {
             message.destroy();
         });
 
-        this.destroy();
+        this.sprite.destroy();
     }
 }

@@ -4,7 +4,7 @@ class MainScene extends Phaser.Scene {
     }
 
     init() {
-        this.collectedBooks = 0;
+        this.collectedCompass = 0;
         this.allBooksCollected = false;
         this.books = [];
         this.bookGlows = new Map(); // Map to store references to book glows
@@ -36,7 +36,7 @@ class MainScene extends Phaser.Scene {
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
 
-        this.compassObjects = this.physics.add.group();
+        this.compassObjects = [];
         this.createCompassObjects();
 
         // Set layer for details in front of player
@@ -53,13 +53,19 @@ class MainScene extends Phaser.Scene {
     }
 
     createCompassObjects() {
-        this.compassObjects.objects.forEach(obj => {
+        this.spawnLayer.objects.forEach(obj => {
             if (obj.name === 'compassSpawn') {
-                const compass = new Compass(this, obj.x, obj.y, 'evil_wizard', 'compass_image.png');
-                this.compassObjects.add(compass.sprite);
+                const compass = new Compass(this, obj.x, obj.y, 'compass_image');
+                this.compassObjects.push(compass);
+    
+                this.physics.add.overlap(this.player, compass.sprite, () => {
+                    compass.collect();
+                    this.HUD.events.emit('updateHud', ++this.collectedCompass);
+                });
             }
         });
     }
+    
 
 
     update() {

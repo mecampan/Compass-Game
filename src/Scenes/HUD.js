@@ -4,26 +4,32 @@ class HUD extends Phaser.Scene {
     }
 
     create() {
-        this.createBookHud();
+        this.createCompassHud();
         this.events.on('updateHud', this.updateHud, this);
     }
 
-    createBookHud() {
-        this.bookHudDisplay = [];
+    createCompassHud() {
+        this.compassHudDisplay = [];
         for (let i = 0; i < 3; i++) {
-            let bookHudPos = 120 + i * 50;
-            let bookHud = this.add.sprite(bookHudPos, this.scale.height - 25, 'spell_book1');
-            bookHud.setVisible(false);
-            this.bookHudDisplay.push(bookHud);
+            let hudXpos = 80 + i * 150;
+            let hudYPos = 80;
+            let compassHud = this.add.sprite(hudXpos, hudYPos, 'compass_image').setScale(4);
+            compassHud.setVisible(false);
+            compassHud.setInteractive({ draggable: true }); // Enable dragging
+            this.compassHudDisplay.push(compassHud);
+    
+            // Drag event listeners
+            compassHud.on('drag', (pointer, dragX, dragY) => {
+                compassHud.x = dragX;
+                compassHud.y = dragY;
+            });
         }
-
-        this.add.bitmapText(20, this.scale.height - 40, 'myFont', 'Books: ', 24);
     }
 
     updateHud(collectedBooks) {
         // Update the HUD elements based on the collected book count
-        for (let i = 0; i < this.bookHudDisplay.length; i++) {
-            this.bookHudDisplay[i].setVisible(i < collectedBooks);
+        for (let i = 0; i < this.compassHudDisplay.length; i++) {
+            this.compassHudDisplay[i].setVisible(i < collectedBooks);
         }
     }
 

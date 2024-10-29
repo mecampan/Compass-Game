@@ -14,8 +14,9 @@ class Load extends Phaser.Scene {
         this.load.audio("walk_sfx", "audio/16_human_walk_stone_3.wav");
         this.load.audio("background_music", "audio/myst_on_the_moor.ogg");
 
+        this.load.image("compass_image", "images/compass_image.png");
+
         //load bitmap:
-        //this.load.bitmapFont("myFont", "gameFontTest.png", "gameFontTest.fnt");
         this.load.bitmapFont("myFont", "font_2.png", "font_2.xml");
 
         // Load tilemap information
