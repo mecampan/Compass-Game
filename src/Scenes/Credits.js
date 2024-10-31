@@ -4,7 +4,7 @@ class Credits extends Phaser.Scene{
     }
 
     create(){
-        let sound = this.sound.add('ui_sound');
+        //let sound = this.sound.add('ui_sound');
 
         // Centering text based on the game's configuration
         let centerX = this.sys.game.config.width / 2;
@@ -25,7 +25,7 @@ class Credits extends Phaser.Scene{
             .on('pointerover', () => back.setScale(1.2))
             .on('pointerout', () => back.setScale(1))
             .on('pointerdown', () => {
-                sound.play();
+                //sound.play();
                 this.scene.stop("creditsScene");
                 this.scene.start("titleScreenScene");
             });

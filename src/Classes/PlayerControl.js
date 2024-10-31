@@ -9,7 +9,7 @@ class PlayerControl {
         this.player.body.setSize(this.player.width * 0.5, this.player.height * 0.75, true);
 
         // Add sounds
-        this.walkSound = this.scene.sound.add('walk_sfx', { loop: true });
+        //this.walkSound = this.scene.sound.add('walk_sfx', { loop: true });
 
         // Set up animations
         if (!loadAnim) this.createAnimations();
@@ -116,10 +116,10 @@ class PlayerControl {
 
         // Handle walking sound
         if (isMoving && !this.isWalking) {
-            this.walkSound.play();
+            //this.walkSound.play();
             this.isWalking = true;
         } else if (!isMoving && this.isWalking) {
-            this.stopWalkSound();
+            //this.stopWalkSound();
             this.isWalking = false;
             player.anims.stop(); // Stop animation on no movement
         }

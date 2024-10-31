@@ -4,7 +4,7 @@ class TitleScreen extends Phaser.Scene{
     }
 
     create(){
-        let sound = this.sound.add('ui_sound');
+        //let sound = this.sound.add('ui_sound');
     
         // Fade in the scene
         this.cameras.main.fadeIn(500, 0, 0, 0);
@@ -22,7 +22,7 @@ class TitleScreen extends Phaser.Scene{
             .on('pointerover', () => play.setScale(1.2))
             .on('pointerout', () => play.setScale(1))
             .on('pointerdown', () => {
-                sound.play();
+                //sound.play();
                 this.scene.stop("titleScreenScene");
                 this.scene.start("mainScene");
             });
@@ -34,7 +34,7 @@ class TitleScreen extends Phaser.Scene{
             .on('pointerover', () => credits.setScale(1.2))
             .on('pointerout', () => credits.setScale(1))
             .on('pointerdown', () => {
-                sound.play();
+                //sound.play();
                 this.scene.start('creditsScene');  // Example scene change
             });
 
@@ -45,7 +45,7 @@ class TitleScreen extends Phaser.Scene{
         .on('pointerover', () => howTo.setScale(1.2))
         .on('pointerout', () => howTo.setScale(1))
         .on('pointerdown', () => {
-            sound.play();
+            //sound.play();
             this.scene.start('howtoscene');  // Example scene change
         });
     }

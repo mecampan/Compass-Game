@@ -4,7 +4,7 @@ class HowToPlay extends Phaser.Scene{
     }
 
     create(){
-        let sound = this.sound.add('ui_sound');
+        //let sound = this.sound.add('ui_sound');
     
         // Fade in the scene
         this.cameras.main.fadeIn(500, 0, 0, 0);
@@ -29,7 +29,7 @@ class HowToPlay extends Phaser.Scene{
             .on('pointerover', () => back.setScale(1.2))
             .on('pointerout', () => back.setScale(1))
             .on('pointerdown', () => {
-                sound.play();
+                //sound.play();
                 this.scene.stop("creditsScene");
                 this.scene.start("titleScreenScene");
             });    

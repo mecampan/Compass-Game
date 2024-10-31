@@ -9,10 +9,10 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
-        this.load.audio("ui_sound", "audio/UI_click.wav");
-        this.load.audio("item_pickup_sfx", "audio/item_pickup.ogg");
-        this.load.audio("walk_sfx", "audio/16_human_walk_stone_3.wav");
-        this.load.audio("background_music", "audio/myst_on_the_moor.ogg");
+        //this.load.audio("ui_sound", "audio/UI_click.wav");
+        //this.load.audio("item_pickup_sfx", "audio/item_pickup.ogg");
+        //this.load.audio("walk_sfx", "audio/16_human_walk_stone_3.wav");
+        //this.load.audio("background_music", "audio/myst_on_the_moor.ogg");
 
         this.load.image("compass_image", "images/compass_image.png");
 
@@ -33,8 +33,8 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        backgroundMusic = this.sound.add('background_music', { loop: true });
-        backgroundMusic.play();
+        //backgroundMusic = this.sound.add('background_music', { loop: true });
+        //backgroundMusic.play();
 
         this.scene.start("titleScreenScene");
     }
