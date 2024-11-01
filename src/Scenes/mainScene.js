@@ -66,11 +66,22 @@ class MainScene extends Phaser.Scene {
     createCompassObjects() {
         this.spawnLayer.objects.forEach(obj => {
             if (obj.name === 'compassSpawn') {
-                const compass = new Compass(this, obj.x, obj.y, 'compass_image');
+                let tmpPos = {x:0, y:0};
+                this.spawnLayer.objects.forEach(obj2 => {
+                    if(obj2.name === 'compassSpawn' && obj.properties[1].value === obj2.properties[0].value){
+                        tmpPos = {x:obj2.x, y:obj2.y};
+                        console.log("start");
+                        console.log(obj);
+                        console.log(obj2);
+                    }
+                });
+                const compass = new Compass(this, obj.x, obj.y, tmpPos.x, tmpPos.y, 'compass_image');
                 this.compassObjects.push(compass);
                 this.physics.add.overlap(this.player, compass.sprite, () => {
+                    let tmpPos = {x: compass.targetX, y: compass.targetY};
                     compass.collect();
-                    this.HUD.events.emit('updateHud', ++this.collectedCompass, );
+                    this.HUD.updateHud(tmpPos);
+                    //this.HUD.events.emit('updateHud', ++this.collectedCompass, tmpPos);
                 });
             }
         });

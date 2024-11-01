@@ -1,13 +1,14 @@
 class Compass {
-    constructor(scene, x, y, texture) {
+    constructor(scene, x, y, targetX, targetY, texture) {
         this.x = x;
         this.y = y;
         this.scene = scene;
         this.compass = null; // Initialize pipes as null, will be set in initializePipes
         this.compassID = null;
-        this.target = null;
+        this.targetX = targetX;
+        this.targetY = targetY;
         this.sprite = this.scene.physics.add.sprite(x, y, texture, null).setOrigin(0.5, 0.5).setScale(0.4);
-        console.log(this.sprite);
+        //console.log(this.sprite);
     }
 
     collect() {
