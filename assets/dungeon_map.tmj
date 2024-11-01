@@ -766,8 +766,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":3512.01515151515,
-                 "y":3408.07575757576
+                 "x":3512.02,
+                 "y":3408.08
                 }, 
                 {
                  "height":16,
@@ -788,8 +788,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":3470.78787878788,
-                 "y":2676.84848484848
+                 "x":3470.79,
+                 "y":2676.85
                 }, 
                 {
                  "height":16,
@@ -810,8 +810,74 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":2370.78787878788,
-                 "y":2964.72727272727
+                 "x":2370.79,
+                 "y":2964.73
+                }, 
+                {
+                 "height":16,
+                 "id":110,
+                 "name":"compassSpawn",
+                 "properties":[
+                        {
+                         "name":"compassID",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"target",
+                         "type":"int",
+                         "value":2
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":3349.57575757576,
+                 "y":3401.09090909091
+                }, 
+                {
+                 "height":16,
+                 "id":111,
+                 "name":"compassSpawn",
+                 "properties":[
+                        {
+                         "name":"compassID",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"target",
+                         "type":"int",
+                         "value":2
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":3464.72727272727,
+                 "y":3546.54545454545
+                }, 
+                {
+                 "height":16,
+                 "id":112,
+                 "name":"compassSpawn",
+                 "properties":[
+                        {
+                         "name":"compassID",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"target",
+                         "type":"int",
+                         "value":2
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":3652.60606060606,
+                 "y":3431.39393939394
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -820,7 +886,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":110,
+ "nextobjectid":113,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

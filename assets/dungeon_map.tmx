@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="247" height="232" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="110">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="247" height="232" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="113">
  <editorsettings>
   <export target="dungeon_map.tmj" format="json"/>
  </editorsettings>
@@ -4467,6 +4467,24 @@
    <properties>
     <property name="compassID" type="int" value="3"/>
     <property name="target" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="110" name="compassSpawn" x="3349.58" y="3401.09" width="16" height="16">
+   <properties>
+    <property name="compassID" type="int" value="1"/>
+    <property name="target" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="111" name="compassSpawn" x="3464.73" y="3546.55" width="16" height="16">
+   <properties>
+    <property name="compassID" type="int" value="1"/>
+    <property name="target" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="112" name="compassSpawn" x="3652.61" y="3431.39" width="16" height="16">
+   <properties>
+    <property name="compassID" type="int" value="1"/>
+    <property name="target" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>

@@ -17,7 +17,6 @@ class MainScene extends Phaser.Scene {
         // sfx Sounds
         //this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         //this.walkSound = this.sound.add('walk_sfx');
-        // changes made
         this.map = this.add.tilemap("dungeon_map");
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
@@ -59,12 +58,17 @@ class MainScene extends Phaser.Scene {
                 this.compassObjects.push(compass);
     
                 this.physics.add.overlap(this.player, compass.sprite, () => {
-                    compass.collect();
-                    this.HUD.events.emit('updateHud', ++this.collectedCompass);
+                    if (compass.sprite.visible) { // Ensure it's not collected multiple times
+                        compass.collect();
+                        this.collectedCompass++;
+                        // Emit an event to add a compass to the HUD
+                        this.HUD.events.emit('addCompassToHud');
+                    }
                 });
             }
         });
     }
+    
     
 
 
