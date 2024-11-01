@@ -1,3 +1,6 @@
+Number.prototype.toDeg = function () { 
+    return this * (180 / Math.PI);
+  }
 class MainScene extends Phaser.Scene {
     constructor() {
         super("mainScene");
@@ -17,21 +20,26 @@ class MainScene extends Phaser.Scene {
         // sfx Sounds
         //this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         //this.walkSound = this.sound.add('walk_sfx');
-        // changes made
+
         this.map = this.add.tilemap("dungeon_map");
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
         this.groundLayer = this.map.createLayer("groundLayer", this.tileset, 0, 0);
         this.collisionLayer = this.map.createLayer("collisionLayer", this.tileset, 0, 0);
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
+
         // Start the UI scene
         this.scene.launch('hudScene');
         this.HUD = this.scene.get('hudScene');
+        this.HUD.mainScene = this;
+
+
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
         this.startPoint = this.spawnLayer.objects.find(obj => obj.name === "playerSpawn");
+        console.log("x: " +  this.startPoint.x + ", y: " +  this.startPoint.y);
         this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
@@ -50,6 +58,9 @@ class MainScene extends Phaser.Scene {
         // Set collisions
         this.collisionLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.collisionLayer);
+
+        this.sprite = this.physics.add.sprite(3456, 3408, 'compass_image', null).setOrigin(0.5, 0.5).setScale(0.4);
+        this.sprite.setVisible(true);
     }
 
     createCompassObjects() {
@@ -57,10 +68,9 @@ class MainScene extends Phaser.Scene {
             if (obj.name === 'compassSpawn') {
                 const compass = new Compass(this, obj.x, obj.y, 'compass_image');
                 this.compassObjects.push(compass);
-    
                 this.physics.add.overlap(this.player, compass.sprite, () => {
                     compass.collect();
-                    this.HUD.events.emit('updateHud', ++this.collectedCompass);
+                    this.HUD.events.emit('updateHud', ++this.collectedCompass, );
                 });
             }
         });
@@ -70,5 +80,7 @@ class MainScene extends Phaser.Scene {
 
     update() {
         this.playerControl.update();
+        this.HUD.playerx = this.player.x;
+        this.HUD.playery = this.player.y;
     }
 }

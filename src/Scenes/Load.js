@@ -16,6 +16,8 @@ class Load extends Phaser.Scene {
 
         this.load.image("compass_image", "images/compass_image.png");
 
+        this.load.image("compass_needle_image", "images/compass_needle_image.png");
+
         //load bitmap:
         this.load.bitmapFont("myFont", "font_2.png", "font_2.xml");
 
