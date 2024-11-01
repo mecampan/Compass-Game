@@ -17,6 +17,7 @@ class MainScene extends Phaser.Scene {
         // sfx Sounds
         //this.itemPickUpsfx = this.sound.add('item_pickup_sfx');
         //this.walkSound = this.sound.add('walk_sfx');
+        // Commented changes
 
         this.map = this.add.tilemap("dungeon_map");
         this.tileset = this.map.addTilesetImage("catacombs_tilemap", "tilemap_tiles");
