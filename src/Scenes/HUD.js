@@ -37,6 +37,11 @@ class HUD extends Phaser.Scene {
         //        this.compassHudDisplay[i].targetY = pos.y;
         //    }
         //}
+        console.log(this);
+        let tmpCam = this.cameras.main;
+        for (let HudCompass of this.compassHudDisplay){
+            HudCompass.setPos(tmpCam.worldView.x + Math.random() * tmpCam.worldView.width, tmpCam.worldView.y + Math.random() * tmpCam.worldView.height);
+        }
     }
 
     update() {

@@ -16,12 +16,7 @@ class CompassHUD {
         this.updateNeedle();
 
         this.sprite.on('drag', (pointer, dragX, dragY) => {
-            this.x = dragX;
-            this.y = dragY;
-            this.sprite.x = dragX;
-            this.sprite.y = dragY;
-            this.needle.x = dragX;
-            this.needle.y = dragY;
+            this.setPos(dragX, dragY);
             //let mainCamera = this.scene.cameras.main;
             //this.scene.sprite.x = mainCamera.worldView.x + this.sprite.x / 4 + 50;
             //this.scene.sprite.y = mainCamera.worldView.y + this.sprite.y / 4;
@@ -29,6 +24,15 @@ class CompassHUD {
             //console.log("player x: " + HUD.playerx + ", y: " + HUD.playery);
             this.updateNeedle();
         });
+    }
+
+    setPos(x, y){
+        this.x = x;
+        this.y = y;
+        this.sprite.x = x;
+        this.sprite.y = y;
+        this.needle.x = x;
+        this.needle.y = y;
     }
 
     updateNeedle(){
