@@ -11,7 +11,7 @@ class CompassHUD {
         this.target = null;
         this.sprite = this.HUD.physics.add.sprite(x, y, texture, null).setOrigin(0.5, 0.5).setScale(4);
         this.needle = this.HUD.physics.add.sprite(x, y, needleTexture, null).setOrigin(0.5, 0.5).setScale(0.1);
-        let angles = [0, 90, 180, 270];
+        let angles = [0];
         this.angleOffset = angles[(Math.floor(Math.random() * angles.length))];
         this.updateNeedle();
 
