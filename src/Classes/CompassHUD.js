@@ -6,7 +6,7 @@ class CompassHUD {
         this.targetY = targetY;
         this.scene = scene
         this.HUD = HUD;
-        this.compass = null; // Initialize pipes as null, will be set in initializePipes
+        this.compass = null;
         this.compassID = null;
         this.target = null;
         this.sprite = this.HUD.physics.add.sprite(x, y, texture, null).setOrigin(0.5, 0.5).setScale(4);
@@ -44,9 +44,13 @@ class CompassHUD {
         this.needle.angle = this.angleOffset + Math.atan2(-((mainCamera.worldView.x + this.x / mainCamera.zoom) - this.targetX), (mainCamera.worldView.y + this.y / mainCamera.zoom) - this.targetY).toDeg();
     }
 
-    updateNeedlePos() {
-        this.needle.x = this.sprite.x;
-        this.needle.y = this.sprite.y;
+    updateNeedlePos(x, y) {
+        this.x = x;
+        this.y = y;
+        this.sprite.x = x;
+        this.sprite.y = y;
+        this.needle.x = x;
+        this.needle.y = y;
     }
 
     setVisible(bVisable){
@@ -56,6 +60,6 @@ class CompassHUD {
 
     update() {
         this.updateNeedle();
-        this.updateNeedlePos();
+        this.updateNeedlePos(this.sprite.x, this.sprite.y);
     }
 }

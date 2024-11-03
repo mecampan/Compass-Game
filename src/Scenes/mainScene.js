@@ -93,5 +93,6 @@ class MainScene extends Phaser.Scene {
         this.playerControl.update();
         this.HUD.playerx = this.player.x;
         this.HUD.playery = this.player.y;
+        this.HUD.update();
     }
 }

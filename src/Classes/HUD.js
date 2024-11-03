@@ -18,12 +18,12 @@ class HUD extends Phaser.Scene {
         let hudYPos = 80;
         let compassHud = new CompassHUD(this.mainScene, this, hudXpos, hudYPos, pos.x, pos.y, 'compass_image', 'compass_needle_image');
         compassHud.setVisible(true);
-        compassHud.sprite.setInteractive({ draggable: true }); // Enable dragging
+        compassHud.sprite.setInteractive({ draggable: true });
         this.compassHudDisplay.push(compassHud);
         this.compassGroup.add(compassHud.sprite);
 
         compassHud.sprite.setBounce(1);
-        compassHud.sprite.setCollideWorldBounds(true); // Keep within HUD bounds
+        compassHud.sprite.setCollideWorldBounds(true);
         compassHud.sprite.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100));
     }
 
