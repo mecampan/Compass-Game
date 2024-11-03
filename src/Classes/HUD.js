@@ -8,6 +8,9 @@ class HUD extends Phaser.Scene {
 
     create() {
         this.events.on('updateHud', this.updateHud, this);
+
+        this.compassGroup = this.physics.add.group();
+        this.physics.add.collider(this.compassGroup, this.compassGroup);
     }
 
     updateHud(pos) {
@@ -17,11 +20,16 @@ class HUD extends Phaser.Scene {
         compassHud.setVisible(true);
         compassHud.sprite.setInteractive({ draggable: true }); // Enable dragging
         this.compassHudDisplay.push(compassHud);
+        this.compassGroup.add(compassHud.sprite);
+
+        compassHud.sprite.setBounce(1);
+        compassHud.sprite.setCollideWorldBounds(true); // Keep within HUD bounds
+        compassHud.sprite.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100));
     }
 
     update() {
         for (let i = 0; i < this.compassHudDisplay.length; i++) {
-            this.compassHudDisplay[i].updateNeedle();
+            this.compassHudDisplay[i].update();
         }
     }
 }

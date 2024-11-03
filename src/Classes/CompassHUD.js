@@ -22,13 +22,20 @@ class CompassHUD {
             this.sprite.y = dragY;
             this.needle.x = dragX;
             this.needle.y = dragY;
-            //let mainCamera = this.scene.cameras.main;
-            //this.scene.sprite.x = mainCamera.worldView.x + this.sprite.x / 4 + 50;
-            //this.scene.sprite.y = mainCamera.worldView.y + this.sprite.y / 4;
-            //console.log("x: " + dragX + ", y: " + dragY);
-            //console.log("player x: " + HUD.playerx + ", y: " + HUD.playery);
+            this.updateNeedle();
+            this.sprite.setVelocity(0);
+        });
+    
+        this.sprite.on('dragend', () => {
+            this.sprite.setBounce(1);
+            this.sprite.setCollideWorldBounds(true); // Keep within HUD bounds
+            this.sprite.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100));
             this.updateNeedle();
         });
+
+        this.sprite.setBounce(1);
+        this.sprite.setCollideWorldBounds(true); // Keep within HUD bounds
+        this.sprite.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100));
     }
 
     updateNeedle(){
@@ -37,8 +44,18 @@ class CompassHUD {
         this.needle.angle = this.angleOffset + Math.atan2(-((mainCamera.worldView.x + this.x / mainCamera.zoom) - this.targetX), (mainCamera.worldView.y + this.y / mainCamera.zoom) - this.targetY).toDeg();
     }
 
+    updateNeedlePos() {
+        this.needle.x = this.sprite.x;
+        this.needle.y = this.sprite.y;
+    }
+
     setVisible(bVisable){
         this.sprite.setVisible(bVisable);
         this.needle.setVisible(bVisable);
+    }
+
+    update() {
+        this.updateNeedle();
+        this.updateNeedlePos();
     }
 }
