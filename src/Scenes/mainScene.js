@@ -1,3 +1,6 @@
+Number.prototype.toDeg = function () { 
+    return this * (180 / Math.PI);
+  }
 class MainScene extends Phaser.Scene {
     constructor() {
         super("mainScene");
@@ -24,14 +27,19 @@ class MainScene extends Phaser.Scene {
         this.collisionLayer = this.map.createLayer("collisionLayer", this.tileset, 0, 0);
         this.spawnLayer = this.map.getObjectLayer('spawnLayer');
 
+
         // Start the UI scene
         this.scene.launch('hudScene');
         this.HUD = this.scene.get('hudScene');
+        this.HUD.mainScene = this;
+
+
 
         // Set the bounds of the world to match the map dimensions
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
         this.startPoint = this.spawnLayer.objects.find(obj => obj.name === "playerSpawn");
+        console.log("x: " +  this.startPoint.x + ", y: " +  this.startPoint.y);
         this.player = this.physics.add.sprite(this.startPoint.x, this.startPoint.y, 'player');
         this.player.setCollideWorldBounds(true); // Ensure player does not go out of bounds
         this.playerControl = new PlayerControl(this, this.player);
@@ -50,17 +58,30 @@ class MainScene extends Phaser.Scene {
         // Set collisions
         this.collisionLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.player, this.collisionLayer);
+
+        this.sprite = this.physics.add.sprite(3456, 3408, 'compass_image', null).setOrigin(0.5, 0.5).setScale(0.4);
+        this.sprite.setVisible(true);
     }
 
     createCompassObjects() {
         this.spawnLayer.objects.forEach(obj => {
             if (obj.name === 'compassSpawn') {
-                const compass = new Compass(this, obj.x, obj.y, 'compass_image');
+                let tmpPos = {x:0, y:0};
+                this.spawnLayer.objects.forEach(obj2 => {
+                    if(obj2.name === 'compassSpawn' && obj.properties[1].value === obj2.properties[0].value){
+                        tmpPos = {x:obj2.x, y:obj2.y};
+                        console.log("start");
+                        console.log(obj);
+                        console.log(obj2);
+                    }
+                });
+                const compass = new Compass(this, obj.x, obj.y, tmpPos.x, tmpPos.y, 'compass_image');
                 this.compassObjects.push(compass);
-    
                 this.physics.add.overlap(this.player, compass.sprite, () => {
+                    let tmpPos = {x: compass.targetX, y: compass.targetY};
                     compass.collect();
-                    this.HUD.events.emit('updateHud', ++this.collectedCompass);
+                    this.HUD.updateHud(tmpPos);
+                    //this.HUD.events.emit('updateHud', ++this.collectedCompass, tmpPos);
                 });
             }
         });
@@ -70,5 +91,7 @@ class MainScene extends Phaser.Scene {
 
     update() {
         this.playerControl.update();
+        this.HUD.playerx = this.player.x;
+        this.HUD.playery = this.player.y;
     }
 }
