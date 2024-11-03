@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="247" height="232" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="5">
- <tileset firstgid="1" source="spr_grass_tileset.tsx"/>
+ <editorsettings>
+  <export target="forrest_map.tmj" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="spr_grass_tileset" tilewidth="16" tileheight="16" tilecount="870" columns="30">
+  <image source="grasslands_tiles/Pack content/Sprites/Tileset/spr_grass_tileset.png" width="480" height="464"/>
+ </tileset>
  <layer id="3" name="groundLayer" width="247" height="232">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -709,10 +714,25 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="2" name="SpawnLayer">
+ <objectgroup id="2" name="spawnLayer">
   <object id="1" name="playerSpawn" x="3436.67" y="3423.33" width="16" height="16"/>
-  <object id="2" name="compassSpawn" x="3244" y="3640" width="16" height="16"/>
-  <object id="3" name="compassSpawn" x="3459.33" y="3576.67" width="16" height="16"/>
-  <object id="4" name="compassSpawn" x="3536" y="3628.67" width="16" height="16"/>
+  <object id="2" name="compassSpawn" x="3233.33" y="3626.67" width="16" height="16">
+   <properties>
+    <property name="Target" type="int" value="2"/>
+    <property name="compassID" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="3" name="compassSpawn" x="3432" y="3522" width="16" height="16">
+   <properties>
+    <property name="Target" type="int" value="3"/>
+    <property name="compassID" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="4" name="compassSpawn" x="3582.75" y="3594.42" width="16" height="16">
+   <properties>
+    <property name="Target" type="int" value="1"/>
+    <property name="compassID" type="int" value="3"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
