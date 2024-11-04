@@ -61,6 +61,7 @@ class MainScene extends Phaser.Scene {
 
         this.sprite = this.physics.add.sprite(3456, 3408, 'compass_image', null).setOrigin(0.5, 0.5).setScale(0.4);
         this.sprite.setVisible(true);
+        
     }
 
     createCompassObjects() {
