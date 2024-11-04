@@ -22,11 +22,11 @@ class Load extends Phaser.Scene {
         this.load.bitmapFont("myFont", "font_2.png", "font_2.xml");
 
         // Load tilemap information
-        this.load.image("tilemap_tiles", "catacombs_tilemap.png");
-        this.load.tilemapTiledJSON("dungeon_map", "dungeon_map.tmj");
+        this.load.image("tileset", "grasslands_tiles/Pack content/Sprites/Tileset/spr_grass_tileset.png");
+        this.load.tilemapTiledJSON("forrest_map", "forrest_map.tmj");
 
         // Load the tilemap as a spritesheet
-        this.load.spritesheet("tilemap_sheet", "catacombs_tilemap.png", {
+        this.load.spritesheet("tilemap_sheet", "grasslands_tiles/Pack content/Sprites/Tileset/spr_grass_tileset.png", {
             frameWidth: 16,
             frameHeight: 16
         });

@@ -106,11 +106,15 @@ class PlayerControl {
 
         if ((this.cursors.up.isDown || this.keys.W.isDown) && !player.body.blocked.up) {
             player.setVelocityY(-speed);
-            player.anims.play('backWalk', true);
+            if( !player.anims.isPlaying){
+                player.anims.play('backWalk', true);
+            }
             isMoving = true;
         } else if ((this.cursors.down.isDown || this.keys.S.isDown) && !player.body.blocked.down) {
             player.setVelocityY(speed);
-            player.anims.play('frontWalk', true);
+            if( !player.anims.isPlaying){
+                player.anims.play('frontWalk', true);
+            }
             isMoving = true;
         }
 
